@@ -1,0 +1,225 @@
+# copied from https://github.com/cablespaghetti/k3s-monitoring
+# helm upgrade --install prometheus prometheus-community/kube-prometheus-stack --values kube-prometheus-stack-values.yaml
+
+# references
+# https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
+
+# Disable etcd monitoring. See https://github.com/cablespaghetti/k3s-monitoring/issues/4
+kubeEtcd:
+  enabled: false
+
+# Disable kube-controller-manager and kube-scheduler monitoring. See https://github.com/cablespaghetti/k3s-monitoring/issues/2
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+
+alertmanager:
+  config:
+    # global:
+    #  smtp_smarthost: smtp.gmail.com:587
+    #  smtp_auth_username: you@gmail.com
+    #  smtp_auth_password: yourapppassword # https://support.google.com/mail/answer/185833?hl=en-GB
+    #  smtp_auth_identity: you@gmail.com
+    route:
+      group_by: ['job']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 1h
+      receiver: 'null'
+      routes:
+      - match:
+          alertname: Watchdog
+        receiver: 'null'
+      - match:
+          alertname: CPUThrottlingHigh
+        receiver: 'null'
+      - match:
+          alertname: KubeMemoryOvercommit
+        receiver: 'null'
+      - match:
+          alertname: KubeCPUOvercommit
+        receiver: 'null'
+      - match:
+          alertname: KubeletTooManyPods
+        receiver: 'null'
+
+    receivers:
+    - name: 'null'
+
+    # Inhibition rules allow to mute a set of alerts given that another alert is firing.
+    # We use this to mute any warning-level notifications if the same alert is already critical.
+    inhibit_rules:
+    - source_match:
+        severity: 'critical'
+      target_match:
+        severity: 'warning'
+      # Apply inhibition if the alertname is the same.
+      equal: ['alertname', 'namespace']
+
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - nasbox.fritz.box
+    paths:
+      - /alertmanager
+
+  alertmanagerSpec:
+    externalUrl: "http://nasbox.fritz.box/alertmanager/"
+#    replicas: 3
+#    podAntiAffinity: "soft"
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 1Gi
+#    resources:
+#      limits:
+#        cpu: 500m
+#        memory: 64Mi
+#      requests:
+#        cpu: 25m
+#        memory: 32Mi
+#    priorityClassName: high-priority
+
+
+prometheus:
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - nasbox.fritz.box
+    paths:
+      - /prometheus
+
+  prometheusSpec:
+    retention: 7d
+    externalUrl: "http://nasbox.fritz.box/prometheus/"
+
+#    replicas: 2
+#    podAntiAffinity: "hard"
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+#    resources:
+#      limits:
+#        cpu: "2"
+#        memory: 5Gi
+#      requests:
+#        cpu: 100m
+#        memory: 4Gi
+#    priorityClassName: high-priority
+#
+#  service:
+#    sessionAffinity: "ClientIP"
+#
+
+  additionalServiceMonitors:
+  - name: prometheus-lt-kube-prometh-prometheus
+    selector:
+      matchLabels:
+        app: kube-prometheus-stack-prometheus
+        release: prometheus-lt
+    endpoints:
+    - path: /metrics
+      port: web
+  - name: traefik
+    endpoints:
+    - port: metrics
+    namespaceSelector:
+      matchNames:
+      - kube-system
+    selector:
+      matchLabels:
+        app: traefik
+
+additionalPrometheusRulesMap:
+  prometheus-node-exporter.rules:
+    groups:
+    - name: node-exporter-lt.rules
+      rules:
+      - record: instance:node_memory_MemAvailable_bytes:avg15m
+        expr: avg_over_time(node_memory_MemAvailable_bytes[15m])
+
+grafana:
+  plugins:
+    - grafana-piechart-panel
+  grafana.ini:
+    server:
+      domain: nasbox.fritz.box
+      root_url: "%(protocol)s://%(domain)s/grafana"
+      serve_from_sub_path: true
+  ingress:
+    enabled: true
+    hosts:
+      - nasbox.fritz.box
+    path: /grafana
+  additionalDataSources:
+    # prometheus-lt instances deployed separately
+    - name: prometheus-lt
+      type: prometheus
+      url: http://prometheus-lt-kube-prometh-prometheus:9090/
+      access: proxy
+      jsonData:
+        timeInterval: 15m
+#  resources:
+#    limits:
+#      cpu: 500m
+#      memory: 128Mi
+#    requests:
+#      cpu: 25m
+#      memory: 64Mi
+#
+#  sidecar:
+#    resources:
+#      limits:
+#        cpu: 100m
+#        memory: 128Mi
+#      requests:
+#        cpu: 5m
+#        memory: 64Mi
+
+#prometheusOperator:
+#  resources:
+#    limits:
+#      cpu: 1
+#      memory: 512Mi
+#    requests:
+#      cpu: 50m
+#      memory: 128Mi
+#  priorityClassName: high-priority
+
+#prometheus-node-exporter:
+#  resources:
+#    limits:
+#      cpu: 50m
+#      memory: 50Mi
+#    requests:
+#      cpu: 5m
+#      memory: 16Mi
+#  priorityClassName: high-priority
+
+kube-state-metrics:
+#  resources:
+#    limits:
+#      cpu: 1
+#      memory: 512Mi
+#    requests:
+#      cpu: 5m
+#      memory: 128Mi
+#  priorityClassName: high-priority
+
+# Use an unofficial multi-arch image until kube-state-metrics v2 is stable
+  image:
+    repository: eddiezane/kube-state-metrics
+    tag: v1.9.7

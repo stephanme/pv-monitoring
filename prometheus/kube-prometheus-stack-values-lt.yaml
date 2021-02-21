@@ -1,0 +1,148 @@
+# Long term storage prometheus
+# 15 min scrape interval, basically no retention
+# fetches only a few selected series from the std prometheus instance
+# No Grafana, no alert manager (tbd), no exporters etc.
+
+# copied from https://github.com/cablespaghetti/k3s-monitoring
+# helm upgrade --install prometheus-lt prometheus-community/kube-prometheus-stack --values kube-prometheus-stack-values-lt.yaml
+
+# references
+# https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
+
+defaultRules:
+  create: true
+  rules:
+    alertmanager: false
+    etcd: false
+    general: true
+    k8s: false
+    kubeApiserver: false
+    kubeApiserverAvailability: false
+    kubeApiserverError: false
+    kubeApiserverSlos: false
+    kubelet: false
+    kubePrometheusGeneral: false
+    kubePrometheusNodeAlerting: false
+    kubePrometheusNodeRecording: false
+    kubernetesAbsent: false
+    kubernetesApps: false
+    kubernetesResources: false
+    kubernetesStorage: false
+    kubernetesSystem: false
+    kubeScheduler: false
+    kubeStateMetrics: false
+    network: false
+    node: false
+    prometheus: false
+    prometheusOperator: false
+    time: true
+
+
+prometheus:
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - nasbox.fritz.box
+    paths:
+      - /prometheus-lt
+
+  prometheusSpec:
+    scrapeInterval: 15m
+    evaluationInterval: 15m
+    retention: 10y
+    externalUrl: "http://nasbox.fritz.box/prometheus-lt/"
+
+    query:
+      lookbackDelta: 30m
+
+#    replicas: 2
+#    podAntiAffinity: "hard"
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+#    resources:
+#      limits:
+#        cpu: "2"
+#        memory: 5Gi
+#      requests:
+#        cpu: 100m
+#        memory: 4Gi
+#    priorityClassName: high-priority
+#
+#  service:
+#    sessionAffinity: "ClientIP"
+#
+  # this instance is monitored by std prometheus
+  serviceMonitor:
+    selfMonitor: false
+  # poll selected metrics from kube-prometheus-stack-prometheus into long-term instance
+  additionalServiceMonitors:
+  - name: prometheus-federate
+    selector:
+      matchLabels:
+        app: kube-prometheus-stack-prometheus
+        release: prometheus
+    endpoints:
+    - path: /federate
+      port: web
+      honorLabels: true
+      params:
+        'match[]':
+          - 'node_exporter_build_info{job="node-exporter"}'
+          - 'node_cpu_seconds_total{job="node-exporter"}'
+          - 'node_load15{job="node-exporter"}'
+          - 'node_memory_MemTotal_bytes{job="node-exporter"}'
+          - 'instance:node_memory_MemAvailable_bytes:avg15m{job="node-exporter"}'
+          - 'node_filesystem_avail_bytes{job="node-exporter",fstype="ext4"}'
+          - 'node_filesystem_size_bytes{job="node-exporter",fstype="ext4"}'
+
+# Prometheus rules for the polled metrics with adaption to 15m scrape interval
+additionalPrometheusRulesMap:
+  prometheus-lt-node-exporter.rules:
+    groups:
+    - name: node-exporter.rules
+      rules:
+      - record: instance:node_num_cpu:sum
+        expr: count without(cpu) (count without(mode) (node_cpu_seconds_total{job="node-exporter"}))
+      - record: instance:node_cpu_utilisation:rate30m
+        expr: 1 - avg without(cpu, mode) (rate(node_cpu_seconds_total{job="node-exporter",mode="idle"}[30m]))
+      - record: instance:node_load15_per_cpu:ratio
+        expr: (node_load15{job="node-exporter"} / instance:node_num_cpu:sum{job="node-exporter"})
+
+
+# disable operator, alert manager, grafana
+prometheusOperator:
+  enabled: false
+  admissionWebhooks:
+      enabled: false # https://github.com/helm/charts/issues/23326
+alertmanager:
+  enabled: false
+grafana:
+  enabled: false
+
+# disable exporters etc.
+kubeApiServer:
+  enabled: false
+kubelet:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+coreDns:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
+kubeStateMetrics:
+  enabled: false
+nodeExporter:
+  enabled: false
