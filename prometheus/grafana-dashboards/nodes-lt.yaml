@@ -23,17 +23,14 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 0,
-      "iteration": 1613377264308,
+      "iteration": 1614190593446,
       "links": [],
       "panels": [
         {
           "datasource": "prometheus-lt",
           "fieldConfig": {
             "defaults": {
-              "custom": {
-                "align": null,
-                "filterable": false
-              },
+              "custom": {},
               "mappings": [],
               "thresholds": {
                 "mode": "absolute",
@@ -58,6 +55,7 @@ data:
             "y": 0
           },
           "id": 12,
+          "maxDataPoints": 1,
           "options": {
             "colorMode": "value",
             "graphMode": "none",
@@ -70,18 +68,19 @@ data:
               "fields": "",
               "values": false
             },
+            "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "7.3.5",
+          "pluginVersion": "7.4.2",
           "targets": [
             {
-              "expr": "instance:node_num_cpu:sum",
+              "expr": "instance:node_num_cpu:sum{instance=\"$instance\"}",
               "interval": "",
               "legendFormat": "# of CPUs",
               "refId": "A"
             },
             {
-              "expr": "node_memory_MemTotal_bytes / 2^30",
+              "expr": "node_memory_MemTotal_bytes{instance=\"$instance\"} / 2^30",
               "interval": "",
               "legendFormat": "Mem Total [GiB]",
               "refId": "B"
@@ -90,6 +89,7 @@ data:
           "timeFrom": null,
           "timeShift": null,
           "title": "Instance $instance",
+          "transformations": [],
           "type": "stat"
         },
         {
@@ -121,6 +121,7 @@ data:
             "y": 0
           },
           "id": 14,
+          "maxDataPoints": 1,
           "options": {
             "colorMode": "value",
             "graphMode": "none",
@@ -133,12 +134,13 @@ data:
               "fields": "",
               "values": false
             },
+            "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "7.3.5",
+          "pluginVersion": "7.4.2",
           "targets": [
             {
-              "expr": "node_filesystem_size_bytes / 2^30",
+              "expr": "node_filesystem_size_bytes{instance=\"$instance\"} / 2^30",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -190,7 +192,7 @@ data:
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.3.5",
+          "pluginVersion": "7.4.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -201,6 +203,7 @@ data:
           "targets": [
             {
               "expr": "instance:node_cpu_utilisation:rate30m{instance=\"$instance\"}",
+              "format": "time_series",
               "instant": false,
               "interval": "",
               "legendFormat": "{{instance}}",
@@ -289,7 +292,7 @@ data:
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.3.5",
+          "pluginVersion": "7.4.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -330,7 +333,7 @@ data:
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -387,7 +390,7 @@ data:
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.3.5",
+          "pluginVersion": "7.4.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -485,7 +488,7 @@ data:
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.3.5",
+          "pluginVersion": "7.4.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -546,7 +549,7 @@ data:
         }
       ],
       "refresh": false,
-      "schemaVersion": 26,
+      "schemaVersion": 27,
       "style": "dark",
       "tags": [
         "lt"
@@ -562,6 +565,7 @@ data:
             },
             "datasource": "prometheus-lt",
             "definition": "label_values(node_exporter_build_info{job=\"node-exporter\"}, instance)",
+            "description": null,
             "error": null,
             "hide": 0,
             "includeAll": false,
@@ -569,7 +573,10 @@ data:
             "multi": false,
             "name": "instance",
             "options": [],
-            "query": "label_values(node_exporter_build_info{job=\"node-exporter\"}, instance)",
+            "query": {
+              "query": "label_values(node_exporter_build_info{job=\"node-exporter\"}, instance)",
+              "refId": "prometheus-lt-instance-Variable-Query"
+            },
             "refresh": 2,
             "regex": "",
             "skipUrlSync": false,
@@ -590,5 +597,5 @@ data:
       "timezone": "",
       "title": "Nodes (lt)",
       "uid": "TjmsQhPGz",
-      "version": 10
+      "version": 2
     }
