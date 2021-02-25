@@ -101,12 +101,6 @@ prometheus:
     retention: 7d
     externalUrl: "http://nasbox.fritz.box/prometheus/"
 
-    ## External labels to add to any time series or alerts when communicating with external systems
-    ## The cluster label is required to ensure recording rules work - value can be changed as per convenience
-    ## https://github.com/prometheus-community/helm-charts/pull/648
-    externalLabels:
-      cluster: "default"
-
 #    replicas: 2
 #    podAntiAffinity: "hard"
     storageSpec:
@@ -214,36 +208,6 @@ grafana:
 #      cpu: 5m
 #      memory: 16Mi
 #  priorityClassName: high-priority
-
-# cluster label is needed by Grafana dashboards
-kubelet:
-  serviceMonitor:
-    cAdvisorRelabelings:
-      - sourceLabels: [__metrics_path__]
-        targetLabel: metrics_path
-      - targetLabel: cluster
-        replacement: default
-    resourceRelabelings:
-      - sourceLabels: [__metrics_path__]
-        targetLabel: metrics_path
-      - targetLabel: cluster
-        replacement: default
-    probesRelabelings:
-      - sourceLabels: [__metrics_path__]
-        targetLabel: metrics_path
-      - targetLabel: cluster
-        replacement: default
-    relabelings:
-      - sourceLabels: [__metrics_path__]
-        targetLabel: metrics_path
-      - targetLabel: cluster
-        replacement: default
-
-kubeStateMetrics:
-  serviceMonitor:
-    relabelings:
-      - targetLabel: cluster
-        replacement: default
 
 kube-state-metrics:
 #  resources:
