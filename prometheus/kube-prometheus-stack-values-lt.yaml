@@ -59,6 +59,8 @@ prometheus:
 
 #    replicas: 2
 #    podAntiAffinity: "hard"
+    nodeSelector:
+      kubernetes.io/hostname: nasbox
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -67,14 +69,10 @@ prometheus:
             requests:
               storage: 10Gi
 
-#    resources:
-#      limits:
-#        cpu: "2"
-#        memory: 5Gi
-#      requests:
-#        cpu: 100m
-#        memory: 4Gi
-#    priorityClassName: high-priority
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
 #
 #  service:
 #    sessionAffinity: "ClientIP"

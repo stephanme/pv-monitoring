@@ -9,6 +9,7 @@ kubeEtcd:
   enabled: false
 
 # Disable kube-controller-manager and kube-scheduler monitoring. See https://github.com/cablespaghetti/k3s-monitoring/issues/2
+# and https://github.com/prometheus-community/helm-charts/pull/626
 kubeControllerManager:
   enabled: false
 kubeScheduler:
@@ -70,6 +71,8 @@ alertmanager:
     externalUrl: "http://nasbox.fritz.box/alertmanager/"
 #    replicas: 3
 #    podAntiAffinity: "soft"
+    nodeSelector:
+      kubernetes.io/hostname: nasbox
     storage:
       volumeClaimTemplate:
         spec:
@@ -77,14 +80,10 @@ alertmanager:
           resources:
             requests:
               storage: 1Gi
-#    resources:
-#      limits:
-#        cpu: 500m
-#        memory: 64Mi
-#      requests:
-#        cpu: 25m
-#        memory: 32Mi
-#    priorityClassName: high-priority
+    resources:
+      requests:
+        cpu: 25m
+        memory: 32Mi
 
 
 prometheus:
@@ -103,6 +102,8 @@ prometheus:
 
 #    replicas: 2
 #    podAntiAffinity: "hard"
+    nodeSelector:
+      kubernetes.io/hostname: nasbox
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -111,18 +112,10 @@ prometheus:
             requests:
               storage: 10Gi
 
-#    resources:
-#      limits:
-#        cpu: "2"
-#        memory: 5Gi
-#      requests:
-#        cpu: 100m
-#        memory: 4Gi
-#    priorityClassName: high-priority
-#
-#  service:
-#    sessionAffinity: "ClientIP"
-#
+    resources:
+      requests:
+        cpu: 200m
+        memory: 400Mi
 
   additionalServiceMonitors:
   - name: prometheus-lt-kube-prometh-prometheus
@@ -172,54 +165,30 @@ grafana:
       access: proxy
       jsonData:
         timeInterval: 15m
-#  resources:
-#    limits:
-#      cpu: 500m
-#      memory: 128Mi
-#    requests:
-#      cpu: 25m
-#      memory: 64Mi
-#
-#  sidecar:
-#    resources:
-#      limits:
-#        cpu: 100m
-#        memory: 128Mi
-#      requests:
-#        cpu: 5m
-#        memory: 64Mi
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+  sidecar:
+    resources:
+      requests:
+        cpu: 5m
+        memory: 64Mi
 
-#prometheusOperator:
-#  resources:
-#    limits:
-#      cpu: 1
-#      memory: 512Mi
-#    requests:
-#      cpu: 50m
-#      memory: 128Mi
-#  priorityClassName: high-priority
+prometheusOperator:
+ resources:
+   requests:
+     cpu: 50m
+     memory: 128Mi
 
-#prometheus-node-exporter:
-#  resources:
-#    limits:
-#      cpu: 50m
-#      memory: 50Mi
-#    requests:
-#      cpu: 5m
-#      memory: 16Mi
-#  priorityClassName: high-priority
+prometheus-node-exporter:
+ resources:
+   requests:
+     cpu: 10m
+     memory: 16Mi
 
 kube-state-metrics:
-#  resources:
-#    limits:
-#      cpu: 1
-#      memory: 512Mi
-#    requests:
-#      cpu: 5m
-#      memory: 128Mi
-#  priorityClassName: high-priority
-
-# Use an unofficial multi-arch image until kube-state-metrics v2 is stable
-  image:
-    repository: eddiezane/kube-state-metrics
-    tag: v1.9.7
+  resources:
+    requests:
+      cpu: 5m
+      memory: 64Mi
