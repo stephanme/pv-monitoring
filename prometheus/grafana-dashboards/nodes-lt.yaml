@@ -55,7 +55,7 @@ data:
             "y": 0
           },
           "id": 12,
-          "maxDataPoints": 1,
+          "maxDataPoints": 100,
           "options": {
             "colorMode": "value",
             "graphMode": "none",
@@ -121,7 +121,7 @@ data:
             "y": 0
           },
           "id": 14,
-          "maxDataPoints": 1,
+          "maxDataPoints": 100,
           "options": {
             "colorMode": "value",
             "graphMode": "none",
@@ -597,5 +597,5 @@ data:
       "timezone": "",
       "title": "Nodes (lt)",
       "uid": "TjmsQhPGz",
-      "version": 2
+      "version": 3
     }

@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nodes-lt-dashboard
+  name: nodes-temp-dashboard
   labels:
      grafana_dashboard: "true"
 data:
-  nodes-lt-dashboard.json: |-
+  nodes-temp-dashboard.json: |-
     {
       "annotations": {
         "list": [
