@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: modbus-exporter
+spec:
+  selector:
+    matchLabels:
+      app: modbus-exporter
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: modbus-exporter
+    spec:
+      containers:
+        - name: modbus-exporter
+          image: stephanme/modbus_exporter
+          ports:
+            - containerPort: 9602
+          volumeMounts:
+            - name: config
+              mountPath: /app/modbus.yml
+              subPath: modbus.yml
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: modbus-exporter-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: modbus-exporter
+spec:
+  ports:
+    - port: 9602
+      targetPort: 9602
+      name: metrics
+  selector:
+    app: modbus-exporter
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: modbus-exporter-config
+data:
+  modbus.yml: |-
+    modules:
+
+        # Module name, needs to be passed as parameter by Prometheus.
+      - name: "kostal-inverter"
+        protocol: 'tcp/ip'
+        metrics:
+          - name: "kpc_dc_power_total_watts"
+            help: "Total DC power"
+            address: 300100
+            dataType: float32
+            metricType: gauge
+          - name: "kpc_dc_power_watts"
+            help: "DC power"
+            labels:
+              source: "DC1"
+            address: 300260
+            dataType: float32
+            metricType: gauge
+          - name: "kpc_dc_power_watts"
+            labels:
+              source: "DC2"
+            address: 300270
+            dataType: float32
+            metricType: gauge
+          - name: "kpc_dc_power_watts"
+            labels:
+              source: "DC3"
+            address: 300280
+            dataType: float32
+            metricType: gauge
+
+          - name: "kpc_dc_energy_yield_total_wh_total"
+            help: "DC power total yield"
+            address: 300320
+            dataType: float32
+            metricType: gauge
+
+          - name: "kpc_home_power_consumption_wh_total"
+            help: "Total home consumption"
+            labels:
+              source: "battery"
+            address: 300110
+            dataType: float32
+            metricType: counter
+          - name: "kpc_home_power_consumption_wh_total"
+            labels:
+              source: "grid"
+            address: 300112
+            dataType: float32
+            metricType: counter
+          - name: "kpc_home_power_consumption_wh_total"
+            labels:
+              source: "pv"
+            address: 300114
+            dataType: float32
+            metricType: counter
+          - name: "kpc_home_power_consumption_total_wh_total"
+            address: 300118
+            dataType: float32
+            metricType: counter
+
+          - name: "kpc_home_power_consumption_watts"
+            help: "Current home consumption"
+            labels:
+              source: "battery"
+            address: 300106
+            dataType: float32
+            metricType: gauge
+          - name: "kpc_home_power_consumption_watts"
+            labels:
+              source: "grid"
+            address: 300108
+            dataType: float32
+            metricType: gauge
+          - name: "kpc_home_power_consumption_watts"
+            labels:
+              source: "pv"
+            address: 300116
+            dataType: float32
+            metricType: gauge
+
+          - name: "kpc_dc_energy_wh_total"
+            labels:
+              source: "dc1"
+            address: 301058
+            dataType: float32
+            metricType: counter
+          - name: "kpc_dc_energy_wh_total"
+            labels:
+              source: "dc2"
+            address: 301060
+            dataType: float32
+            metricType: counter
+          - name: "kpc_dc_energy_wh_total"
+            labels:
+              source: "dc3"
+            address: 301062
+            dataType: float32
+            metricType: counter
+          - name: "kpc_dc_energy_total_wh_total"
+            address: 301056
+            dataType: float32
+            metricType: counter
+
+          - name: "kpc_ac_energy_to_grid_wh_total"
+            address: 301064
+            dataType: float32
+            metricType: counter

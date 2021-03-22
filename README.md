@@ -11,6 +11,13 @@ Monitoring of a photovoltaic system
 - [k3s](https://k3s.io) lightweight Kubernetes cluster
   - k3s server (using sqlite) running on a nasbox: Celeron G3900 (2 core), 4G RAM, 128G SSD, 3T raid1 disks
   - k3s agent running on Raspberry 4 8G RAM
-- WIP: PV charge control for electric car
-  - [pv-chargecontrol](https://github.com/stephanme/pv-chargecontrol)
+- WIP: PV control for controlling electric car charger
+  - [pv-control](https://github.com/stephanme/pv-control)
   - 1 and 3 phase charging to get a wide control range starting at 1.3 kW up to (theoretical) 11kW
+
+## Deploy
+
+```
+helm repo update
+./deploy.sh
+```
