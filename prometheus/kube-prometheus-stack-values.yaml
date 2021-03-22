@@ -135,6 +135,14 @@ prometheus:
     selector:
       matchLabels:
         app: traefik
+  - name: pvcontrol
+    endpoints:
+    - path: /metrics
+      port: tcp
+    selector:
+      matchLabels:
+        app: pvcontrol
+
 
 additionalPrometheusRulesMap:
   prometheus-node-exporter.rules:

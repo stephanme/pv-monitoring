@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pvcontrol-deployment
+spec:
+  selector:
+    matchLabels:
+      app: pvcontrol
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: pvcontrol
+    spec:
+      containers:
+        - name: pvcontrol
+          image: stephanme/pv-control:main
+          imagePullPolicy: Always # for :main, remove when versioned
+          command:
+            - python
+            - -m
+            - pvcontrol
+            - --simulate-meter
+          ports:
+            - containerPort: 8080
+          securityContext:
+            privileged: true
+      nodeSelector:
+        kubernetes.io/hostname: pi1
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pvcontrol-service
+  labels:
+    app: pvcontrol
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: tcp
+  selector:
+    app: pvcontrol
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pvcontrol-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /pvcontrol
+            pathType: Prefix
+            backend:
+              service:
+                name: pvcontrol-service
+                port:
+                  number: 8080
