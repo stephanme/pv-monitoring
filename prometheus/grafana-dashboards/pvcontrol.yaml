@@ -23,7 +23,6 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 1,
-      "id": 25,
       "links": [],
       "panels": [
         {
@@ -80,14 +79,14 @@ data:
               "refId": "A"
             },
             {
-              "expr": "pvcontrol_meter_power_consumption_total_watts-pvcontrol_charger_power_watts",
+              "expr": "pvcontrol_meter_power_consumption_total_watts-pvcontrol_wallbox_power_watts",
               "hide": false,
               "interval": "",
               "legendFormat": "Home",
               "refId": "B"
             },
             {
-              "expr": "pvcontrol_charger_power_watts",
+              "expr": "pvcontrol_wallbox_power_watts",
               "hide": false,
               "interval": "",
               "legendFormat": "Car",
@@ -290,7 +289,12 @@ data:
           "seriesOverrides": [
             {
               "$$hashKey": "object:592",
-              "alias": "# Phases",
+              "alias": "# Phases (out)",
+              "yaxis": 2
+            },
+            {
+              "$$hashKey": "object:109",
+              "alias": "# Phases (in)",
               "yaxis": 2
             }
           ],
@@ -299,24 +303,31 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "pvcontrol_charger_max_current_amperes",
+              "expr": "pvcontrol_wallbox_max_current_amperes",
               "interval": "",
               "legendFormat": "Max Current",
               "refId": "A"
             },
             {
-              "expr": "pvcontrol_charger_phases",
+              "expr": "pvcontrol_wallbox_phases_out",
               "hide": false,
               "interval": "",
-              "legendFormat": "# Phases",
+              "legendFormat": "# Phases (out)",
               "refId": "B"
+            },
+            {
+              "expr": "pvcontrol_wallbox_phases_in",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "# Phases (in)",
+              "refId": "C"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Charger",
+          "title": "Wallbox",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -337,7 +348,7 @@ data:
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -364,12 +375,12 @@ data:
         "list": []
       },
       "time": {
-        "from": "now-6h",
+        "from": "now-1h",
         "to": "now"
       },
       "timepicker": {},
       "timezone": "",
       "title": "PV Control",
       "uid": "DhDWBAkRk",
-      "version": 5
+      "version": 6
     }
