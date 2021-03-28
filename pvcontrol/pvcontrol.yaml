@@ -26,6 +26,15 @@ spec:
             - SimulatedMeter
             - --wallbox
             - SimulatedWallboxWithRelay
+            - --config
+            - |-
+              {
+                "meter": {
+                  "pv_max": 7000,
+                  "consumption_baseline": 0,
+                  "consumption_max": 0
+                }
+              }
           ports:
             - containerPort: 8080
           securityContext:

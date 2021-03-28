@@ -155,6 +155,7 @@ additionalPrometheusRulesMap:
 grafana:
   plugins:
     - grafana-piechart-panel
+    - flant-statusmap-panel
   grafana.ini:
     server:
       domain: nasbox.fritz.box
