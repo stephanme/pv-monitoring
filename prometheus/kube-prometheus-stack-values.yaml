@@ -141,6 +141,22 @@ prometheus:
       selector:
         matchLabels:
           app: pvcontrol
+    - name: modbus-exporter
+      endpoints:
+        - path: /metrics
+          port: tcp
+        - path: /modbus
+          port: tcp
+          params:
+            target: ["scb.fritz.box:1502"]
+            module: ["kostal-inverter"]
+            sub_target: ["71"] # Modbus unit identifier
+          relabelings:
+            - sourceLabels: [__param_target]
+              targetLabel: instance
+      selector:
+        matchLabels:
+          app: modbus-exporter
 
 additionalPrometheusRulesMap:
   prometheus-node-exporter.rules:

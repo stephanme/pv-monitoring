@@ -100,6 +100,11 @@ prometheus:
           - 'instance:node_memory_MemAvailable_bytes:avg15m{job="node-exporter"}'
           - 'node_filesystem_avail_bytes{job="node-exporter",fstype="ext4"}'
           - 'node_filesystem_size_bytes{job="node-exporter",fstype="ext4"}'
+          - 'kpc_home_power_consumption_wh_total'
+          - 'kpc_home_power_consumption_total_wh_total'
+          - 'kpc_dc_energy_yield_total_wh_total'
+          - 'kpc_dc_energy_total_wh_total'
+          - 'kpc_dc_energy_wh_total'
 
 # Prometheus rules for the polled metrics with adaption to 15m scrape interval
 additionalPrometheusRulesMap:
