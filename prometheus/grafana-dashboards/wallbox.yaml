@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pvcontrol-dashboard
+  name: wallbox-dashboard
   labels:
      grafana_dashboard: "true"
 data:
-  pvcontrol-dashboard.json: |-
+  wallbox-dashboard.json: |-
     {
       "annotations": {
         "list": [
@@ -23,6 +23,7 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 1,
+      "id": 29,
       "links": [],
       "panels": [
         {
@@ -37,7 +38,7 @@ data:
             },
             "overrides": []
           },
-          "fill": 0,
+          "fill": 1,
           "fillGradient": 0,
           "gridPos": {
             "h": 9,
@@ -73,31 +74,17 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(pvcontrol_meter_power_consumption_total_watts) without (pod, instance)",
+              "expr": "max(goe_power_total_watts) without(pod, instance)",
               "interval": "",
               "legendFormat": "Total",
               "refId": "A"
-            },
-            {
-              "expr": "max(pvcontrol_meter_power_consumption_total_watts-pvcontrol_wallbox_power_watts) without (pod, instance)",
-              "hide": false,
-              "interval": "",
-              "legendFormat": "Home",
-              "refId": "B"
-            },
-            {
-              "expr": "max(pvcontrol_wallbox_power_watts) without (pod, instance)",
-              "hide": false,
-              "interval": "",
-              "legendFormat": "Car",
-              "refId": "C"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Power Consumption",
+          "title": "Charge Power",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -118,7 +105,7 @@ data:
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -142,7 +129,6 @@ data:
           "dashLength": 10,
           "dashes": false,
           "datasource": null,
-          "description": "Positive grid values = consume from grid; negative grid values = feeding into grid\n",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -152,7 +138,7 @@ data:
           "fill": 0,
           "fillGradient": 0,
           "gridPos": {
-            "h": 10,
+            "h": 8,
             "w": 24,
             "x": 0,
             "y": 9
@@ -185,124 +171,24 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(pvcontrol_meter_power_watts) without(pod, instance)",
+              "expr": "max(goe_max_current_amperes) without (pod,instance)",
+              "interval": "",
+              "legendFormat": "Max",
+              "refId": "A"
+            },
+            {
+              "expr": "max(goe_current_amperes) without (pod, instance)",
+              "hide": false,
               "interval": "",
               "legendFormat": "{{source}}",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [
-            {
-              "$$hashKey": "object:82",
-              "colorMode": "warning",
-              "fill": false,
-              "line": true,
-              "op": "lt",
-              "value": 0,
-              "yaxis": "left"
-            }
-          ],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Power Sources",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:62",
-              "format": "watt",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:63",
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": null,
-          "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
-            "overrides": []
-          },
-          "fill": 0,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 19
-          },
-          "hiddenSeries": false,
-          "id": 6,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.4.2",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "max(pvcontrol_wallbox_max_current_amperes) without (pod, instance)",
-              "interval": "",
-              "legendFormat": "Max Current",
-              "refId": "A"
+              "refId": "B"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Wallbox: Max Current",
+          "title": "Current",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -318,22 +204,21 @@ data:
           },
           "yaxes": [
             {
-              "$$hashKey": "object:346",
+              "$$hashKey": "object:69",
               "format": "amp",
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
-              "$$hashKey": "object:347",
-              "decimals": 0,
+              "$$hashKey": "object:70",
               "format": "short",
-              "label": "",
+              "label": null,
               "logBase": 1,
-              "max": "3",
-              "min": "0",
+              "max": null,
+              "min": null,
               "show": true
             }
           ],
@@ -360,10 +245,10 @@ data:
             "h": 5,
             "w": 24,
             "x": 0,
-            "y": 27
+            "y": 17
           },
           "hiddenSeries": false,
-          "id": 9,
+          "id": 10,
           "legend": {
             "avg": false,
             "current": false,
@@ -390,25 +275,121 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(pvcontrol_wallbox_phases_out) without (pod, instance)",
-              "hide": false,
+              "expr": "max( floor(goe_phases / 32) % 2  + floor(goe_phases / 16) % 2 + floor(goe_phases / 8) % 2) without (pod,instance)",
               "interval": "",
-              "legendFormat": "# Phases (out)",
-              "refId": "B"
+              "legendFormat": "In",
+              "refId": "A"
             },
             {
-              "expr": "max(pvcontrol_wallbox_phases_in) without (pod, instance)",
+              "expr": "max( floor(goe_phases / 4) % 2  + floor(goe_phases / 2) % 2 + goe_phases % 2) without (pod,instance)",
               "hide": false,
               "interval": "",
-              "legendFormat": "# Phases (in)",
-              "refId": "C"
+              "legendFormat": "Out",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "Phases",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transformations": [],
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:783",
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": "3",
+              "min": "0",
+              "show": true
+            },
+            {
+              "$$hashKey": "object:784",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 4,
+            "w": 24,
+            "x": 0,
+            "y": 22
+          },
+          "hiddenSeries": false,
+          "id": 6,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.4.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "max(goe_allow_charging) without(pod,instance)",
+              "interval": "",
+              "legendFormat": "",
+              "refId": "A"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Wallbox: Phases",
+          "title": "Allow Charging",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -424,23 +405,22 @@ data:
           },
           "yaxes": [
             {
-              "$$hashKey": "object:346",
+              "$$hashKey": "object:330",
               "decimals": 0,
-              "format": "short",
+              "format": "none",
               "label": null,
               "logBase": 1,
-              "max": "3",
+              "max": "1",
               "min": "0",
               "show": true
             },
             {
-              "$$hashKey": "object:347",
-              "decimals": 0,
+              "$$hashKey": "object:331",
               "format": "short",
-              "label": "",
+              "label": null,
               "logBase": 1,
-              "max": "3",
-              "min": "0",
+              "max": null,
+              "min": null,
               "show": true
             }
           ],
@@ -465,22 +445,28 @@ data:
             "mode": "discrete",
             "thresholds": [
               {
-                "$$hashKey": "object:125",
+                "$$hashKey": "object:600",
                 "color": "#C0D8FF",
-                "tooltip": "OFF_1P",
+                "tooltip": "No Car",
                 "value": "1"
               },
               {
-                "$$hashKey": "object:133",
-                "color": "#73BF69",
-                "tooltip": "PV_ONLY",
+                "$$hashKey": "object:604",
+                "color": "#1F60C4",
+                "tooltip": "Charging",
                 "value": "2"
               },
               {
-                "$$hashKey": "object:137",
-                "color": "#37872D",
-                "tooltip": "PV_ALL",
+                "$$hashKey": "object:608",
+                "color": "#FFB357",
+                "tooltip": "Waiting for Car",
                 "value": "3"
+              },
+              {
+                "$$hashKey": "object:612",
+                "color": "#37872D",
+                "tooltip": "Finished",
+                "value": "4"
               }
             ]
           },
@@ -495,7 +481,7 @@ data:
             "h": 4,
             "w": 24,
             "x": 0,
-            "y": 32
+            "y": 26
           },
           "highlightCards": true,
           "id": 8,
@@ -511,29 +497,13 @@ data:
           },
           "targets": [
             {
-              "expr": "(max_over_time(pvcontrol_controller_mode{pvcontrol_controller_mode=\"MANUAL\"}[$__interval]) == 1) * 1",
+              "expr": "max(goe_car_state) without (pod, instance)",
               "interval": "",
-              "legendFormat": "Mode",
+              "legendFormat": " ",
               "refId": "A"
-            },
-            {
-              "expr": "(max_over_time(pvcontrol_controller_mode{pvcontrol_controller_mode=\"PV_ONLY\"}[$__interval]) == 1) * 2",
-              "hide": false,
-              "interval": "",
-              "legendFormat": "Mode",
-              "refId": "C"
-            },
-            {
-              "expr": "(max_over_time(pvcontrol_controller_mode{pvcontrol_controller_mode=\"PV_ALL\"}[$__interval]) == 1) * 3",
-              "hide": false,
-              "interval": "",
-              "legendFormat": "Mode",
-              "refId": "D"
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Charge Mode",
+          "title": "Car State",
           "tooltip": {
             "extraInfo": "",
             "freezeOnClick": true,
@@ -573,7 +543,7 @@ data:
       },
       "timepicker": {},
       "timezone": "",
-      "title": "PV Control",
-      "uid": "DhDWBAkRk",
-      "version": 2
+      "title": "Wallbox",
+      "uid": "F7zlNsmgk",
+      "version": 3
     }
