@@ -23,16 +23,16 @@ spec:
             - -m
             - pvcontrol
             - --meter
-            - SimulatedMeter
+            - KostalMeter
             - --wallbox
             - SimulatedWallboxWithRelay
             - --config
             - |-
               {
                 "meter": {
-                  "pv_max": 7000,
-                  "consumption_baseline": 0,
-                  "consumption_max": 0
+                  "host": "scb.fritz.box",
+                  "port": 1502,
+                  "unit_id": 71
                 }
               }
           ports:
