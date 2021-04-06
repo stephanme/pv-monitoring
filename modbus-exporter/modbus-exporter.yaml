@@ -216,12 +216,10 @@ data:
           - name: "goe_car_state"
             address: 400100
             dataType: uint16
-            endianness: little
             metricType: gauge
           - name: "goe_error"
             address: 400101
             dataType: uint16
-            endianness: little
             metricType: gauge
 
           - name: "goe_voltage_volts"
@@ -229,28 +227,28 @@ data:
               source: "L1"
             address: 400108
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
           - name: "goe_voltage_volts"
             labels:
               source: "L2"
             address: 400110
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
           - name: "goe_voltage_volts"
             labels:
               source: "L3"
             address: 400112
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
           - name: "goe_voltage_volts"
             labels:
               source: "N"
             address: 400144
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
 
           - name: "goe_current_amperes"
@@ -258,7 +256,7 @@ data:
               source: "L1"
             address: 400114
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
             factor: 0.1
           - name: "goe_current_amperes"
@@ -266,7 +264,7 @@ data:
               source: "L2"
             address: 400116
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
             factor: 0.1
           - name: "goe_current_amperes"
@@ -274,20 +272,20 @@ data:
               source: "L3"
             address: 400118
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
             factor: 0.1
 
           - name: "goe_power_total_watts"
             address: 400120
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
             factor: 10
           - name: "goe_energy_wh_total"
             address: 400128
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: counter
             factor: 100
 
@@ -296,7 +294,7 @@ data:
               source: "L1"
             address: 400146
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
             factor: 100
           - name: "goe_power_watts"
@@ -304,7 +302,7 @@ data:
               source: "L2"
             address: 400148
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
             factor: 100
           - name: "goe_power_watts"
@@ -312,22 +310,19 @@ data:
               source: "L3"
             address: 400150
             dataType: uint32
-            endianness: little
+            endianness: yolo
             metricType: gauge
             factor: 100
 
           - name: "goe_allow_charging"
             address: 300200
             dataType: uint16
-            endianness: little
             metricType: gauge
           - name: "goe_phases"
             address: 400205
             dataType: uint16
-            endianness: little
             metricType: gauge
           - name: "goe_max_current_amperes"
             address: 300299
             dataType: uint16
-            endianness: little
             metricType: gauge

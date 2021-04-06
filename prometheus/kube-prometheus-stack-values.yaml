@@ -154,6 +154,15 @@ prometheus:
           relabelings:
             - sourceLabels: [__param_target]
               targetLabel: instance
+        - path: /modbus
+          port: tcp
+          params:
+            target: ["go-echarger.fritz.box:502"]
+            module: ["go-e-wallbox"]
+            sub_target: ["1"] # Modbus unit identifier
+          relabelings:
+            - sourceLabels: [__param_target]
+              targetLabel: instance
       selector:
         matchLabels:
           app: modbus-exporter
