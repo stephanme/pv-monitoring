@@ -105,6 +105,7 @@ prometheus:
           - 'kpc_dc_energy_yield_total_wh_total'
           - 'kpc_dc_energy_total_wh_total'
           - 'kpc_dc_energy_wh_total'
+          - 'kpc_ac_energy_to_grid_wh_total'
           - 'goe_energy_wh_total'
 
 # Prometheus rules for the polled metrics with adaption to 15m scrape interval

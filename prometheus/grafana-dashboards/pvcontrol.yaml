@@ -467,7 +467,7 @@ data:
               {
                 "$$hashKey": "object:125",
                 "color": "#C0D8FF",
-                "tooltip": "OFF_1P",
+                "tooltip": "OFF",
                 "value": "1"
               },
               {
@@ -481,6 +481,18 @@ data:
                 "color": "#37872D",
                 "tooltip": "PV_ALL",
                 "value": "3"
+              },
+              {
+                "$$hashKey": "object:186",
+                "color": "#C4162A",
+                "tooltip": "MAX",
+                "value": "4"
+              },
+              {
+                "$$hashKey": "object:190",
+                "color": "#FF780A",
+                "tooltip": "MANUAL",
+                "value": "5"
               }
             ]
           },
@@ -511,7 +523,7 @@ data:
           },
           "targets": [
             {
-              "expr": "(max_over_time(pvcontrol_controller_mode{pvcontrol_controller_mode=\"MANUAL\"}[$__interval]) == 1) * 1",
+              "expr": "(max_over_time(pvcontrol_controller_mode{pvcontrol_controller_mode=\"OFF\"}[$__interval]) == 1) * 1",
               "interval": "",
               "legendFormat": "Mode",
               "refId": "A"
@@ -529,6 +541,20 @@ data:
               "interval": "",
               "legendFormat": "Mode",
               "refId": "D"
+            },
+            {
+              "expr": "(max_over_time(pvcontrol_controller_mode{pvcontrol_controller_mode=\"MAX\"}[$__interval]) == 1) * 4",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "Mode",
+              "refId": "B"
+            },
+            {
+              "expr": "(max_over_time(pvcontrol_controller_mode{pvcontrol_controller_mode=\"MANUAL\"}[$__interval]) == 1) * 5",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "Mode",
+              "refId": "E"
             }
           ],
           "timeFrom": null,
@@ -575,5 +601,5 @@ data:
       "timezone": "",
       "title": "PV Control",
       "uid": "DhDWBAkRk",
-      "version": 2
+      "version": 3
     }

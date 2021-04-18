@@ -25,7 +25,7 @@ spec:
             - --meter
             - KostalMeter
             - --wallbox
-            - SimulatedWallboxWithRelay
+            - GoeWallbox
             - --config
             - |-
               {
@@ -33,6 +33,12 @@ spec:
                   "host": "scb.fritz.box",
                   "port": 1502,
                   "unit_id": 71
+                },
+                "wallbox": {
+                  "url": "http://go-echarger.fritz.box"
+                },
+                "controller": {
+                  "enable_phase_switching": false
                 }
               }
           ports:
