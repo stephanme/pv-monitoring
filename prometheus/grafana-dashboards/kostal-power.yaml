@@ -32,9 +32,7 @@ data:
           "dashes": false,
           "datasource": null,
           "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
+            "defaults": {},
             "overrides": []
           },
           "fill": 0,
@@ -65,7 +63,7 @@ data:
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.4.2",
+          "pluginVersion": "7.5.3",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -80,7 +78,8 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(kpc_powermeter_total_watts) without(pod, instance)",
+              "exemplar": true,
+              "expr": "kpc_powermeter_total_watts",
               "interval": "",
               "legendFormat": "Total",
               "refId": "A"
@@ -146,9 +145,7 @@ data:
           "dashes": false,
           "datasource": null,
           "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
+            "defaults": {},
             "overrides": []
           },
           "fill": 5,
@@ -178,7 +175,7 @@ data:
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.4.2",
+          "pluginVersion": "7.5.3",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -214,7 +211,8 @@ data:
               "refId": "B"
             },
             {
-              "expr": "max(kpc_home_power_consumption_watts{source!=\"battery\"}) without(pod, instance)",
+              "exemplar": true,
+              "expr": "kpc_home_power_consumption_watts{source!=\"battery\"}",
               "interval": "",
               "legendFormat": "{{source}}",
               "refId": "A"
@@ -270,9 +268,7 @@ data:
           "dashes": false,
           "datasource": null,
           "fieldConfig": {
-            "defaults": {
-              "custom": {}
-            },
+            "defaults": {},
             "overrides": []
           },
           "fill": 0,
@@ -302,7 +298,7 @@ data:
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.4.2",
+          "pluginVersion": "7.5.3",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -318,21 +314,24 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(kpc_ac_power_total_watts) without (pod, instance)",
+              "exemplar": true,
+              "expr": "kpc_ac_power_total_watts",
               "hide": false,
               "interval": "",
               "legendFormat": "Total AC",
               "refId": "C"
             },
             {
-              "expr": "max(kpc_dc_power_total_watts) without(pod, instance)",
+              "exemplar": true,
+              "expr": "kpc_dc_power_total_watts",
               "hide": false,
               "interval": "",
               "legendFormat": "Total DC",
               "refId": "A"
             },
             {
-              "expr": "max(kpc_dc_power_watts{source!=\"DC3\"}) without (pod, instance)\n",
+              "exemplar": true,
+              "expr": "kpc_dc_power_watts{source!=\"DC3\"}\n",
               "interval": "",
               "legendFormat": "{{source}}",
               "refId": "B"

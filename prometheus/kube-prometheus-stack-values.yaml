@@ -116,56 +116,65 @@ prometheus:
         cpu: 200m
         memory: 400Mi
 
+    # scrape exporter metrics=external system, not the pods of the exporter -> no pod label etc.
+    # prometheus seems to need a manual restart to pick up changes -> statefulset
+    additionalScrapeConfigs:
+      - job_name: modbus-exporter-kostal
+        metrics_path: /modbus
+        params:
+          target: ["scb.fritz.box:1502"]
+          module: ["kostal-inverter"]
+          sub_target: ["71"] # Modbus unit identifier
+        relabel_configs:
+          - source_labels: [__param_target]
+            target_label: instance
+        static_configs:
+          - targets: ["modbus-exporter.monitoring.svc.cluster.local:9602"]
+      - job_name: modbus-exporter-wallbox
+        metrics_path: /modbus
+        params:
+          target: ["go-echarger.fritz.box:502"]
+          module: ["go-e-wallbox"]
+          sub_target: ["1"] # Modbus unit identifier
+        relabel_configs:
+          - source_labels: [__param_target]
+            target_label: instance
+        static_configs:
+          - targets: ["modbus-exporter.monitoring.svc.cluster.local:9602"]
+
+  # every pod of the service in scraped, metrics get pod label
   additionalServiceMonitors:
-    - name: prometheus-lt-kube-prometh-prometheus
-      selector:
-        matchLabels:
-          app: kube-prometheus-stack-prometheus
-          release: prometheus-lt
-      endpoints:
-        - path: /metrics
-          port: web
-    - name: traefik
-      endpoints:
-        - port: metrics
-      namespaceSelector:
-        matchNames:
-          - kube-system
-      selector:
-        matchLabels:
-          app: traefik
-    - name: pvcontrol
-      endpoints:
-        - path: /metrics
-          port: tcp
-      selector:
-        matchLabels:
-          app: pvcontrol
-    - name: modbus-exporter
-      endpoints:
-        - path: /metrics
-          port: tcp
-        - path: /modbus
-          port: tcp
-          params:
-            target: ["scb.fritz.box:1502"]
-            module: ["kostal-inverter"]
-            sub_target: ["71"] # Modbus unit identifier
-          relabelings:
-            - sourceLabels: [__param_target]
-              targetLabel: instance
-        - path: /modbus
-          port: tcp
-          params:
-            target: ["go-echarger.fritz.box:502"]
-            module: ["go-e-wallbox"]
-            sub_target: ["1"] # Modbus unit identifier
-          relabelings:
-            - sourceLabels: [__param_target]
-              targetLabel: instance
-      selector:
-        matchLabels:
-          app: modbus-exporter
+  - name: prometheus-lt-kube-prometh-prometheus
+    selector:
+      matchLabels:
+        app: kube-prometheus-stack-prometheus
+        release: prometheus-lt
+    endpoints:
+      - path: /metrics
+        port: web
+  - name: traefik
+    endpoints:
+      - port: metrics
+    namespaceSelector:
+      matchNames:
+        - kube-system
+    selector:
+      matchLabels:
+        app: traefik
+  - name: pvcontrol
+    endpoints:
+      - path: /metrics
+        port: tcp
+    selector:
+      matchLabels:
+        app: pvcontrol
+  - name: modbus-exporter
+    endpoints:
+      - path: /metrics
+        port: tcp
+    selector:
+      matchLabels:
+        app: modbus-exporter
 
 additionalPrometheusRulesMap:
   prometheus-node-exporter.rules:
