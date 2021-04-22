@@ -41,12 +41,14 @@ defaultRules:
 prometheus:
   ingress:
     enabled: true
+    ingressClassName: traefik
     annotations:
       traefik.ingress.kubernetes.io/rewrite-target: /
     hosts:
       - nasbox.fritz.box
     paths:
       - /prometheus-lt
+    pathType: Prefix
 
   prometheusSpec:
     scrapeInterval: 15m

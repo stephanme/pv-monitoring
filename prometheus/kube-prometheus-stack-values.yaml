@@ -60,12 +60,14 @@ alertmanager:
 
   ingress:
     enabled: true
+    ingressClassName: traefik
     annotations:
       traefik.ingress.kubernetes.io/rewrite-target: /
     hosts:
       - nasbox.fritz.box
     paths:
       - /alertmanager
+    pathType: Prefix
 
   alertmanagerSpec:
     externalUrl: "http://nasbox.fritz.box/alertmanager/"
@@ -88,12 +90,14 @@ alertmanager:
 prometheus:
   ingress:
     enabled: true
+    ingressClassName: traefik
     annotations:
       traefik.ingress.kubernetes.io/rewrite-target: /
     hosts:
       - nasbox.fritz.box
     paths:
       - /prometheus
+    pathType: Prefix
 
   prometheusSpec:
     retention: 7d
@@ -212,6 +216,7 @@ grafana:
     hosts:
       - nasbox.fritz.box
     path: /grafana
+
   additionalDataSources:
     # prometheus-lt instances deployed separately
     - name: prometheus-lt

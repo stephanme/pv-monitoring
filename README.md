@@ -18,6 +18,7 @@ Monitoring of a photovoltaic system
 ## Deploy
 
 ```
+helm list -n monitoring
 helm repo update
 ./deploy.sh
 ```
