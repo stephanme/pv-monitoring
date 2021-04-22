@@ -102,9 +102,9 @@ prometheus:
           - 'node_filesystem_size_bytes{job="node-exporter",fstype="ext4"}'
           - 'kpc_home_power_consumption_wh_total'
           - 'kpc_home_power_consumption_total_wh_total'
-          - 'kpc_dc_energy_yield_total_wh_total'
           - 'kpc_dc_energy_total_wh_total'
           - 'kpc_dc_energy_wh_total'
+          - 'kpc_ac_energy_yield_wh_total'
           - 'kpc_ac_energy_to_grid_wh_total'
           - 'goe_energy_wh_total'
 

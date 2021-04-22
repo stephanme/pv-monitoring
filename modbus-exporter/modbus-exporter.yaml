@@ -14,13 +14,17 @@ spec:
     spec:
       containers:
         - name: modbus-exporter
-          image: stephanme/modbus_exporter
+          image: stephanme/modbus_exporter:main
+          imagePullPolicy: Always # for :main, remove when versioned
           ports:
             - containerPort: 9602
+          command:
+            - ./modbus_exporter
+            - -config.file
+            - /app/config/modbus.yml
           volumeMounts:
             - name: config
-              mountPath: /app/modbus.yml
-              subPath: modbus.yml
+              mountPath: /app/config
               readOnly: true
       volumes:
         - name: config
@@ -76,12 +80,6 @@ data:
             address: 300280
             dataType: float32
             metricType: gauge
-
-          - name: "kpc_dc_energy_yield_total_wh_total"
-            help: "DC power total yield"
-            address: 300320
-            dataType: float32
-            metricType: counter
 
           - name: "kpc_home_power_consumption_wh_total"
             help: "Total home consumption"
@@ -181,7 +179,6 @@ data:
             dataType: float32
             metricType: gauge
 
-
           - name: "kpc_dc_energy_wh_total"
             labels:
               source: "dc1"
@@ -202,6 +199,12 @@ data:
             metricType: counter
           - name: "kpc_dc_energy_total_wh_total"
             address: 301056
+            dataType: float32
+            metricType: counter
+
+          - name: "kpc_ac_energy_yield_wh_total"
+            help: "AC energy total yield"
+            address: 300320
             dataType: float32
             metricType: counter
 
