@@ -23,9 +23,71 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 1,
-      "iteration": 1618850654320,
+      "iteration": 1619124567995,
       "links": [],
       "panels": [
+        {
+          "datasource": "${datasource}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-yellow",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "watth"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 5,
+            "x": 0,
+            "y": 0
+          },
+          "id": 20,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "diff"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "value"
+          },
+          "pluginVersion": "7.5.3",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "kpc_ac_energy_yield_wh_total",
+              "interval": "",
+              "intervalFactor": 10,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "title": "PV",
+          "type": "stat"
+        },
         {
           "datasource": "${datasource}",
           "fieldConfig": {
@@ -50,7 +112,65 @@ data:
           "gridPos": {
             "h": 4,
             "w": 5,
-            "x": 0,
+            "x": 5,
+            "y": 0
+          },
+          "id": 6,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "diff"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {},
+            "textMode": "value"
+          },
+          "pluginVersion": "7.5.3",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "kpc_ac_energy_to_grid_wh_total",
+              "interval": "",
+              "intervalFactor": 10,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "title": "Energy to Grid",
+          "type": "stat"
+        },
+        {
+          "datasource": "${datasource}",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-orange",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "watth"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 5,
+            "x": 10,
             "y": 0
           },
           "id": 10,
@@ -82,7 +202,7 @@ data:
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Overall Home Consumption",
+          "title": "Home Consumption",
           "type": "stat"
         },
         {
@@ -109,8 +229,8 @@ data:
           },
           "gridPos": {
             "h": 4,
-            "w": 4,
-            "x": 5,
+            "w": 3,
+            "x": 15,
             "y": 0
           },
           "id": 12,
@@ -118,7 +238,7 @@ data:
             "colorMode": "value",
             "graphMode": "none",
             "justifyMode": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "diff"
@@ -136,7 +256,7 @@ data:
               "expr": "kpc_home_power_consumption_wh_total{source=\"pv\"}",
               "interval": "",
               "intervalFactor": 10,
-              "legendFormat": "",
+              "legendFormat": "PV",
               "refId": "A"
             }
           ],
@@ -169,8 +289,8 @@ data:
           },
           "gridPos": {
             "h": 4,
-            "w": 5,
-            "x": 9,
+            "w": 3,
+            "x": 18,
             "y": 0
           },
           "id": 14,
@@ -208,63 +328,6 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "watth"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 5,
-            "x": 14,
-            "y": 0
-          },
-          "id": 6,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "diff"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "text": {},
-            "textMode": "value"
-          },
-          "pluginVersion": "7.5.3",
-          "targets": [
-            {
-              "exemplar": true,
-              "expr": "kpc_ac_energy_to_grid_wh_total",
-              "interval": "",
-              "intervalFactor": 10,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "title": "Overall Energy to Grid",
-          "type": "stat"
-        },
-        {
-          "datasource": "${datasource}",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
                 "fixedColor": "blue",
                 "mode": "fixed"
               },
@@ -284,8 +347,8 @@ data:
           },
           "gridPos": {
             "h": 4,
-            "w": 5,
-            "x": 19,
+            "w": 3,
+            "x": 21,
             "y": 0
           },
           "id": 18,
@@ -314,7 +377,7 @@ data:
               "refId": "A"
             }
           ],
-          "title": "Car",
+          "title": "... to Car",
           "type": "stat"
         },
         {
@@ -362,6 +425,7 @@ data:
             {
               "$$hashKey": "object:1221",
               "alias": "Total",
+              "color": "#FA6400",
               "stack": false
             },
             {
@@ -478,11 +542,30 @@ data:
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [],
+          "seriesOverrides": [
+            {
+              "$$hashKey": "object:176",
+              "alias": "PV",
+              "color": "#E0B400"
+            },
+            {
+              "$$hashKey": "object:184",
+              "alias": "To Grid",
+              "color": "#56A64B"
+            }
+          ],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
           "targets": [
+            {
+              "exemplar": true,
+              "expr": "kpc_ac_energy_yield_wh_total - kpc_ac_energy_yield_wh_total offset $resolution",
+              "hide": false,
+              "interval": "$resolution",
+              "legendFormat": "PV",
+              "refId": "B"
+            },
             {
               "exemplar": true,
               "expr": "kpc_ac_energy_to_grid_wh_total - kpc_ac_energy_to_grid_wh_total offset $resolution",
@@ -495,7 +578,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Energy to Grid",
+          "title": "PV",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -692,7 +775,7 @@ data:
           },
           {
             "current": {
-              "selected": true,
+              "selected": false,
               "text": "default",
               "value": "default"
             },
@@ -714,12 +797,12 @@ data:
         ]
       },
       "time": {
-        "from": "now-7d",
+        "from": "now-3d",
         "to": "now"
       },
       "timepicker": {},
       "timezone": "",
       "title": "Kostal Energy",
       "uid": "bGXzWbiRz",
-      "version": 3
+      "version": 1
     }
