@@ -291,6 +291,12 @@ data:
             endianness: yolo
             metricType: counter
             factor: 100
+          - name: "goe_charged_energy_wh"
+            address: 400132
+            dataType: uint32
+            endianness: yolo
+            metricType: counter
+            factor: 0.00277778
 
           - name: "goe_power_watts"
             labels:
