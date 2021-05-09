@@ -110,6 +110,8 @@ prometheus:
           - 'kpc_ac_energy_yield_wh_total'
           - 'kpc_ac_energy_to_grid_wh_total'
           - 'goe_energy_wh_total'
+          - 'pvcontrol:total_charged_energy_wh_total'
+          - 'pvcontrol:charged_energy_wh_total'
 
 # Prometheus rules for the polled metrics with adaption to 15m scrape interval
 additionalPrometheusRulesMap:

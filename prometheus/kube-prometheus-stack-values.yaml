@@ -181,6 +181,14 @@ prometheus:
         app: modbus-exporter
 
 additionalPrometheusRulesMap:
+  pv-control.rules:
+    groups:
+      - name: pv-control.rules
+        rules:
+          - record: pvcontrol:total_charged_energy_wh_total
+            expr: max(pvcontrol_controller_total_charged_energy_wh_total) by (job)
+          - record: pvcontrol:charged_energy_wh_total
+            expr: max(pvcontrol_controller_charged_energy_wh_total) by (job, source)
   energy-rate.rules:
     groups:
       - name: energy-rate.rules
