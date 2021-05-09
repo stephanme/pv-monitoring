@@ -23,7 +23,7 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 1,
-      "iteration": 1619124567995,
+      "iteration": 1620592025254,
       "links": [],
       "panels": [
         {
@@ -54,7 +54,7 @@ data:
           },
           "gridPos": {
             "h": 4,
-            "w": 5,
+            "w": 4,
             "x": 0,
             "y": 0
           },
@@ -79,6 +79,7 @@ data:
             {
               "exemplar": true,
               "expr": "kpc_ac_energy_yield_wh_total",
+              "instant": false,
               "interval": "",
               "intervalFactor": 10,
               "legendFormat": "",
@@ -111,8 +112,8 @@ data:
           },
           "gridPos": {
             "h": 4,
-            "w": 5,
-            "x": 5,
+            "w": 4,
+            "x": 4,
             "y": 0
           },
           "id": 6,
@@ -169,8 +170,8 @@ data:
           },
           "gridPos": {
             "h": 4,
-            "w": 5,
-            "x": 10,
+            "w": 4,
+            "x": 8,
             "y": 0
           },
           "id": 10,
@@ -230,7 +231,7 @@ data:
           "gridPos": {
             "h": 4,
             "w": 3,
-            "x": 15,
+            "x": 12,
             "y": 0
           },
           "id": 12,
@@ -290,7 +291,7 @@ data:
           "gridPos": {
             "h": 4,
             "w": 3,
-            "x": 18,
+            "x": 15,
             "y": 0
           },
           "id": 14,
@@ -348,7 +349,7 @@ data:
           "gridPos": {
             "h": 4,
             "w": 3,
-            "x": 21,
+            "x": 18,
             "y": 0
           },
           "id": 18,
@@ -375,6 +376,90 @@ data:
               "interval": "",
               "legendFormat": "",
               "refId": "A"
+            }
+          ],
+          "title": "... to Car",
+          "type": "stat"
+        },
+        {
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "blue",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "watth"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
+            "x": 21,
+            "y": 0
+          },
+          "id": 22,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {
+              "titleSize": 24,
+              "valueSize": 24
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "7.5.3",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "increase(pvcontrol:total_charged_energy_wh_total[$__range])",
+              "instant": true,
+              "interval": "",
+              "intervalFactor": 10,
+              "legendFormat": "Total",
+              "refId": "A"
+            },
+            {
+              "exemplar": true,
+              "expr": "increase(pvcontrol:charged_energy_wh_total{source=\"pv\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "... PV",
+              "refId": "C"
+            },
+            {
+              "exemplar": true,
+              "expr": "increase(pvcontrol:charged_energy_wh_total{source=\"grid\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "legendFormat": "... Grid",
+              "refId": "B"
             }
           ],
           "title": "... to Car",
@@ -642,7 +727,7 @@ data:
             "current": false,
             "max": false,
             "min": false,
-            "show": false,
+            "show": true,
             "total": false,
             "values": false
           },
@@ -662,6 +747,11 @@ data:
               "$$hashKey": "object:328",
               "alias": "Car",
               "color": "#5794F2"
+            },
+            {
+              "$$hashKey": "object:368",
+              "alias": "Grid",
+              "color": "#E02F44"
             }
           ],
           "spaceLength": 10,
@@ -670,10 +760,18 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "goe_energy_wh_total - goe_energy_wh_total offset $resolution",
+              "expr": "increase(pvcontrol:total_charged_energy_wh_total[$resolution])",
               "interval": "$resolution",
               "legendFormat": "Car",
               "refId": "A"
+            },
+            {
+              "exemplar": true,
+              "expr": "increase(pvcontrol:charged_energy_wh_total{source=\"grid\"}[$resolution])",
+              "hide": false,
+              "interval": "$resolution",
+              "legendFormat": "Grid",
+              "refId": "B"
             }
           ],
           "thresholds": [],
@@ -797,7 +895,7 @@ data:
         ]
       },
       "time": {
-        "from": "now-3d",
+        "from": "now-7d",
         "to": "now"
       },
       "timepicker": {},

@@ -38,7 +38,8 @@ spec:
                   "url": "http://go-echarger.fritz.box"
                 },
                 "controller": {
-                  "enable_phase_switching": false
+                  "enable_phase_switching": true,
+                  "enable_auto_phase_switching": false
                 }
               }
           ports:
