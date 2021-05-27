@@ -2,4 +2,4 @@
 set -ex
 
 scriptdir=$(dirname "$0")
-kubectl apply --namespace monitoring -f $scriptdir/pvcontrol.yaml
+kubectl apply --namespace monitoring -f $scriptdir

@@ -26,6 +26,8 @@ spec:
             - KostalMeter
             - --wallbox
             - GoeWallbox
+            - --car
+            - VolkswagenIDCar
             - --config
             - |-
               {
@@ -40,8 +42,29 @@ spec:
                 "controller": {
                   "enable_phase_switching": true,
                   "enable_auto_phase_switching": false
+                },
+                "car": {
+                  "user": "$(car_user)",
+                  "password": "$(car_password)",
+                  "vin": "$(car_vin)"
                 }
               }
+          env:
+            - name: car_user
+              valueFrom:
+                secretKeyRef:
+                  name: pvcontrol
+                  key: car_user
+            - name: car_password
+              valueFrom:
+                secretKeyRef:
+                  name: pvcontrol
+                  key: car_password
+            - name: car_vin
+              valueFrom:
+                secretKeyRef:
+                  name: pvcontrol
+                  key: car_vin
           ports:
             - containerPort: 8080
           securityContext:
