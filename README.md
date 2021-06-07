@@ -22,3 +22,25 @@ helm list -n monitoring
 helm repo update
 ./deploy.sh
 ```
+
+## k3s Installation
+
+Standard installation as described in https://rancher.com/docs/k3s/latest/en/quick-start/
+
+Server on nasbox:
+```
+curl -sfL https://get.k3s.io | sh -
+```
+
+Agent on Reaspberry Pi:
+```
+curl -sfL http://get.k3s.io | K3S_URL=https://192.168.178.10:6443 \
+K3S_TOKEN=<join_token> sh -
+```
+
+Automatic k3s updates: https://rancher.com/docs/k3s/latest/en/upgrades/automated/
+```
+kubectl apply -f https://github.com/rancher/system-upgrade-controller/releases/download/v0.6.2/system-upgrade-controller.yaml
+```
+
+Maintain k3s version in upgrade plans: `./k3s-upgrade/k3s-upgrade.yaml`
