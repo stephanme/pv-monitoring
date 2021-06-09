@@ -17,9 +17,12 @@ Monitoring of a photovoltaic system
 
 ## Deploy
 
+Software versions including helm chart versions are maintained in deploy.sh and yaml files.
+
 ```
 helm list -n monitoring
 helm repo update
+
 ./deploy.sh
 ```
 
