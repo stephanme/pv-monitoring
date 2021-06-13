@@ -23,7 +23,7 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 1,
-      "iteration": 1620592025254,
+      "iteration": 1623428979656,
       "links": [],
       "panels": [
         {
@@ -74,7 +74,7 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "7.5.3",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
               "exemplar": true,
@@ -132,7 +132,7 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "7.5.3",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
               "exemplar": true,
@@ -190,7 +190,7 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "7.5.3",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
               "exemplar": true,
@@ -250,7 +250,7 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "7.5.3",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
               "exemplar": true,
@@ -310,7 +310,7 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "7.5.3",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
               "exemplar": true,
@@ -368,7 +368,7 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "7.5.3",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
               "exemplar": true,
@@ -432,7 +432,7 @@ data:
             },
             "textMode": "auto"
           },
-          "pluginVersion": "7.5.3",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
               "exemplar": true,
@@ -466,67 +466,130 @@ data:
           "type": "stat"
         },
         {
-          "aliasColors": {},
-          "bars": true,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${datasource}",
           "fieldConfig": {
-            "defaults": {},
-            "overrides": []
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": -1,
+                "drawStyle": "bars",
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "watth"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.stacking",
+                    "value": {
+                      "group": false,
+                      "mode": "normal"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-orange",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "grid"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "pv"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-yellow",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 24,
             "x": 0,
             "y": 4
           },
-          "hiddenSeries": false,
           "id": 2,
-          "legend": {
-            "alignAsTable": false,
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": false,
-          "linewidth": 1,
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.5.3",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "$$hashKey": "object:1221",
-              "alias": "Total",
-              "color": "#FA6400",
-              "stack": false
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
             },
-            {
-              "$$hashKey": "object:1236",
-              "alias": "pv",
-              "color": "#E0B400"
-            },
-            {
-              "$$hashKey": "object:1244",
-              "alias": "grid",
-              "color": "#E02F44"
+            "tooltip": {
+              "mode": "multi"
             }
-          ],
-          "spaceLength": 10,
-          "stack": true,
-          "steppedLine": false,
+          },
+          "pluginVersion": "8.0.1",
           "targets": [
             {
               "exemplar": true,
@@ -544,104 +607,114 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [],
           "timeFrom": null,
-          "timeRegions": [],
           "timeShift": null,
           "title": "Home Consumption",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:774",
-              "format": "watth",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "$$hashKey": "object:775",
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {},
-          "bars": true,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${datasource}",
           "fieldConfig": {
-            "defaults": {},
-            "overrides": []
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": -1,
+                "drawStyle": "bars",
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "watth"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "PV"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-yellow",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "To Grid"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-green",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 24,
             "x": 0,
             "y": 13
           },
-          "hiddenSeries": false,
           "id": 4,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": false,
-          "linewidth": 1,
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.5.3",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "$$hashKey": "object:176",
-              "alias": "PV",
-              "color": "#E0B400"
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
             },
-            {
-              "$$hashKey": "object:184",
-              "alias": "To Grid",
-              "color": "#56A64B"
+            "tooltip": {
+              "mode": "multi"
             }
-          ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          },
+          "pluginVersion": "8.0.1",
           "targets": [
             {
               "exemplar": true,
@@ -659,104 +732,114 @@ data:
               "refId": "A"
             }
           ],
-          "thresholds": [],
           "timeFrom": null,
-          "timeRegions": [],
           "timeShift": null,
           "title": "PV",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:1410",
-              "format": "watth",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "$$hashKey": "object:1411",
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {},
-          "bars": true,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "${datasource}",
           "fieldConfig": {
-            "defaults": {},
-            "overrides": []
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": -1,
+                "drawStyle": "bars",
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "watth"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Car"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Grid"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 1,
-          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 24,
             "x": 0,
             "y": 21
           },
-          "hiddenSeries": false,
           "id": 16,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": false,
-          "linewidth": 1,
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.5.3",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "$$hashKey": "object:328",
-              "alias": "Car",
-              "color": "#5794F2"
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
             },
-            {
-              "$$hashKey": "object:368",
-              "alias": "Grid",
-              "color": "#E02F44"
+            "tooltip": {
+              "mode": "multi"
             }
-          ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
+          },
+          "pluginVersion": "8.0.1",
           "targets": [
             {
               "exemplar": true,
@@ -774,52 +857,14 @@ data:
               "refId": "B"
             }
           ],
-          "thresholds": [],
           "timeFrom": null,
-          "timeRegions": [],
           "timeShift": null,
           "title": "Car Charging",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:68",
-              "format": "watth",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "$$hashKey": "object:69",
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          "type": "timeseries"
         }
       ],
       "refresh": false,
-      "schemaVersion": 27,
+      "schemaVersion": 30,
       "style": "dark",
       "tags": [],
       "templating": {
