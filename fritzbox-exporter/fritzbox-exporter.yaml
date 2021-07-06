@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fritzbox-exporter
+spec:
+  selector:
+    matchLabels:
+      app: fritzbox-exporter
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fritzbox-exporter
+    spec:
+      containers:
+        - name: fritzbox-exporter
+          image: jaymedh/fritzbox_smarthome_exporter:v0.0.8
+          ports:
+            - containerPort: 9103
+          command:
+            - ./fritzbox_smarthome_exporter
+            - -url
+            - http://fritz.box
+          env:
+            - name: USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: fritzbox-exporter
+                  key: USERNAME
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: fritzbox-exporter
+                  key: PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fritzbox-exporter
+  labels:
+    app: fritzbox-exporter
+spec:
+  ports:
+    - port: 9103
+      targetPort: 9103
+      name: tcp
+  selector:
+    app: fritzbox-exporter

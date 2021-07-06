@@ -179,6 +179,13 @@ prometheus:
     selector:
       matchLabels:
         app: modbus-exporter
+  - name: fritzbox-exporter
+    endpoints:
+      - path: /metrics
+        port: tcp
+    selector:
+      matchLabels:
+        app: fritzbox-exporter
 
 additionalPrometheusRulesMap:
   pv-control.rules:
