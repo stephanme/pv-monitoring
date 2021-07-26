@@ -23,7 +23,7 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 1,
-      "iteration": 1623428979656,
+      "iteration": 1627332757555,
       "links": [],
       "panels": [
         {
@@ -382,7 +382,7 @@ data:
           "type": "stat"
         },
         {
-          "datasource": null,
+          "datasource": "${datasource}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -918,7 +918,7 @@ data:
           },
           {
             "current": {
-              "selected": false,
+              "selected": true,
               "text": "default",
               "value": "default"
             },
@@ -940,7 +940,7 @@ data:
         ]
       },
       "time": {
-        "from": "now-7d",
+        "from": "now-24h",
         "to": "now"
       },
       "timepicker": {},
