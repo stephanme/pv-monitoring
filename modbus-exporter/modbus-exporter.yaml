@@ -32,16 +32,16 @@ spec:
             name: modbus-exporter-config
 ---
 # requires k8s 1.21
-# apiVersion: policy/v1
-# kind: PodDisruptionBudget
-# metadata:
-#   name: modbus-exporter
-# spec:
-#   minAvailable : 1
-#   selector:
-#     matchLabels:
-#       app: modbus-exporter
-# ---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: modbus-exporter
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: modbus-exporter
+---
 apiVersion: v1
 kind: Service
 metadata:
