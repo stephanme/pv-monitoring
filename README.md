@@ -30,7 +30,8 @@ helm search repo prometheus-community/kube-prometheus-stack
 
 ## k3s Installation
 
-Standard installation as described in https://rancher.com/docs/k3s/latest/en/quick-start/
+Standard installation as described in https://rancher.com/docs/k3s/latest/en/quick-start/.
+Requires traefik v2.
 
 Server on nasbox:
 ```

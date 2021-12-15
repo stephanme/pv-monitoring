@@ -59,10 +59,9 @@ alertmanager:
         equal: ["alertname", "namespace"]
 
   ingress:
-    enabled: true
-    ingressClassName: traefik
+    enabled: false
     annotations:
-      traefik.ingress.kubernetes.io/rewrite-target: /
+      traefik.ingress.kubernetes.io/router.middlewares: prometheus-stripprefix@kubernetescrd
     hosts:
       - nasbox.fritz.box
     paths:
@@ -89,10 +88,9 @@ alertmanager:
 
 prometheus:
   ingress:
-    enabled: true
-    ingressClassName: traefik
+    enabled: false
     annotations:
-      traefik.ingress.kubernetes.io/rewrite-target: /
+      traefik.ingress.kubernetes.io/router.middlewares: prometheus-stripprefix@kubernetescrd
     hosts:
       - nasbox.fritz.box
     paths:
@@ -227,7 +225,7 @@ grafana:
       org_name: Main Org.
       org_role: Viewer
   ingress:
-    enabled: true
+    enabled: false
     hosts:
       - nasbox.fritz.box
     path: /grafana

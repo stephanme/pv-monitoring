@@ -1,0 +1,16 @@
+# traefik metrics are not exposed by default
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-metrics
+  namespace: kube-system
+  labels:
+    app: traefik
+spec:
+  selector:
+    app.kubernetes.io/instance: traefik
+    app.kubernetes.io/name: traefik
+  ports:
+  - name: metrics
+    port: 9100
+    targetPort: metrics

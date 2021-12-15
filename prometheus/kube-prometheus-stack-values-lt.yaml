@@ -40,10 +40,9 @@ defaultRules:
 
 prometheus:
   ingress:
-    enabled: true
-    ingressClassName: traefik
+    enabled: false
     annotations:
-      traefik.ingress.kubernetes.io/rewrite-target: /
+      traefik.ingress.kubernetes.io/router.middlewares: prometheus-stripprefix@kubernetescrd
     hosts:
       - nasbox.fritz.box
     paths:
