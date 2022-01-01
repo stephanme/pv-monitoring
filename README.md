@@ -24,6 +24,7 @@ Software versions including helm chart versions are maintained in deploy.sh and 
 helm list -n monitoring
 helm repo update
 helm search repo prometheus-community/kube-prometheus-stack
+# check release notes at https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
 
 ./deploy.sh
 ```

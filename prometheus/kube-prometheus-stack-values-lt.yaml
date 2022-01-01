@@ -14,17 +14,16 @@ defaultRules:
   rules:
     alertmanager: false
     etcd: false
+    configReloaders: false
     general: true
     k8s: false
     kubeApiserver: false
     kubeApiserverAvailability: false
-    kubeApiserverError: false
     kubeApiserverSlos: false
     kubelet: false
+    kubeProxy: false
     kubePrometheusGeneral: false
-    kubePrometheusNodeAlerting: false
     kubePrometheusNodeRecording: false
-    kubernetesAbsent: false
     kubernetesApps: false
     kubernetesResources: false
     kubernetesStorage: false
@@ -33,10 +32,10 @@ defaultRules:
     kubeStateMetrics: false
     network: false
     node: false
+    nodeExporterAlerting: false
+    nodeExporterRecording: false
     prometheus: false
     prometheusOperator: false
-    time: true
-
 
 prometheus:
   ingress:
