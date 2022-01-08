@@ -16,18 +16,28 @@ data:
             "hide": true,
             "iconColor": "rgba(0, 211, 255, 1)",
             "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
             "type": "dashboard"
           }
         ]
       },
       "editable": true,
-      "gnetId": null,
+      "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "iteration": 1627332757555,
+      "iteration": 1641214789087,
       "links": [],
+      "liveNow": false,
       "panels": [
         {
-          "datasource": "${datasource}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -74,11 +84,11 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "8.0.1",
+          "pluginVersion": "8.3.3",
           "targets": [
             {
               "exemplar": true,
-              "expr": "kpc_ac_energy_yield_wh_total",
+              "expr": "max(kpc_ac_energy_yield_wh_total)",
               "instant": false,
               "interval": "",
               "intervalFactor": 10,
@@ -90,7 +100,10 @@ data:
           "type": "stat"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -132,11 +145,11 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "8.0.1",
+          "pluginVersion": "8.3.3",
           "targets": [
             {
               "exemplar": true,
-              "expr": "kpc_ac_energy_to_grid_wh_total",
+              "expr": "max(kpc_ac_energy_to_grid_wh_total)",
               "interval": "",
               "intervalFactor": 10,
               "legendFormat": "",
@@ -147,7 +160,10 @@ data:
           "type": "stat"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -190,24 +206,25 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "8.0.1",
+          "pluginVersion": "8.3.3",
           "targets": [
             {
               "exemplar": true,
-              "expr": "kpc_home_power_consumption_total_wh_total",
+              "expr": "max(kpc_home_power_consumption_total_wh_total)",
               "interval": "",
               "intervalFactor": 10,
               "legendFormat": "",
               "refId": "A"
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
           "title": "Home Consumption",
           "type": "stat"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -250,24 +267,25 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "8.0.1",
+          "pluginVersion": "8.3.3",
           "targets": [
             {
               "exemplar": true,
-              "expr": "kpc_home_power_consumption_wh_total{source=\"pv\"}",
+              "expr": "max(kpc_home_power_consumption_wh_total{source=\"pv\"})",
               "interval": "",
               "intervalFactor": 10,
               "legendFormat": "PV",
               "refId": "A"
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
           "title": "... from PV",
           "type": "stat"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -310,11 +328,11 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "8.0.1",
+          "pluginVersion": "8.3.3",
           "targets": [
             {
               "exemplar": true,
-              "expr": "kpc_home_power_consumption_wh_total{source=\"grid\"}",
+              "expr": "max(kpc_home_power_consumption_wh_total{source=\"grid\"})",
               "interval": "",
               "intervalFactor": 10,
               "legendFormat": "",
@@ -325,7 +343,10 @@ data:
           "type": "stat"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -368,11 +389,11 @@ data:
             "text": {},
             "textMode": "value"
           },
-          "pluginVersion": "8.0.1",
+          "pluginVersion": "8.3.3",
           "targets": [
             {
               "exemplar": true,
-              "expr": "goe_energy_wh_total",
+              "expr": "max(goe_energy_wh_total)",
               "interval": "",
               "legendFormat": "",
               "refId": "A"
@@ -382,7 +403,10 @@ data:
           "type": "stat"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -432,11 +456,11 @@ data:
             },
             "textMode": "auto"
           },
-          "pluginVersion": "8.0.1",
+          "pluginVersion": "8.3.3",
           "targets": [
             {
-              "exemplar": true,
-              "expr": "increase(pvcontrol:total_charged_energy_wh_total[$__range])",
+              "exemplar": false,
+              "expr": "increase(max(pvcontrol:total_charged_energy_wh_total)[$__range:])",
               "instant": true,
               "interval": "",
               "intervalFactor": 10,
@@ -444,8 +468,8 @@ data:
               "refId": "A"
             },
             {
-              "exemplar": true,
-              "expr": "increase(pvcontrol:charged_energy_wh_total{source=\"pv\"}[$__range])",
+              "exemplar": false,
+              "expr": "increase(max(pvcontrol:charged_energy_wh_total{source=\"pv\"})[$__range:])",
               "hide": false,
               "instant": true,
               "interval": "",
@@ -453,8 +477,8 @@ data:
               "refId": "C"
             },
             {
-              "exemplar": true,
-              "expr": "increase(pvcontrol:charged_energy_wh_total{source=\"grid\"}[$__range])",
+              "exemplar": false,
+              "expr": "increase(max(pvcontrol:charged_energy_wh_total{source=\"grid\"})[$__range:])",
               "hide": false,
               "instant": true,
               "interval": "",
@@ -466,7 +490,10 @@ data:
           "type": "stat"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -593,7 +620,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "kpc_home_power_consumption_total_wh_total - kpc_home_power_consumption_total_wh_total offset $resolution",
+              "expr": "max(kpc_home_power_consumption_total_wh_total) - max(kpc_home_power_consumption_total_wh_total offset $resolution)",
               "hide": false,
               "interval": "$resolution",
               "legendFormat": "Total",
@@ -601,19 +628,20 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "kpc_home_power_consumption_wh_total{source!=\"battery\"} - kpc_home_power_consumption_wh_total{source!=\"battery\"} offset $resolution",
+              "expr": "max by (source)(kpc_home_power_consumption_wh_total{source!=\"battery\"}) - max by (source)(kpc_home_power_consumption_wh_total{source!=\"battery\"} offset $resolution)",
               "interval": "$resolution",
               "legendFormat": "{{source}}",
               "refId": "A"
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
           "title": "Home Consumption",
           "type": "timeseries"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -718,7 +746,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "kpc_ac_energy_yield_wh_total - kpc_ac_energy_yield_wh_total offset $resolution",
+              "expr": "max(kpc_ac_energy_yield_wh_total) - max(kpc_ac_energy_yield_wh_total offset $resolution)",
               "hide": false,
               "interval": "$resolution",
               "legendFormat": "PV",
@@ -726,19 +754,20 @@ data:
             },
             {
               "exemplar": true,
-              "expr": "kpc_ac_energy_to_grid_wh_total - kpc_ac_energy_to_grid_wh_total offset $resolution",
+              "expr": "max(kpc_ac_energy_to_grid_wh_total) - max(kpc_ac_energy_to_grid_wh_total offset $resolution)",
               "interval": "$resolution",
               "legendFormat": "To Grid",
               "refId": "A"
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
           "title": "PV",
           "type": "timeseries"
         },
         {
-          "datasource": "${datasource}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -843,28 +872,26 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "increase(pvcontrol:total_charged_energy_wh_total[$resolution])",
+              "expr": "increase(max(pvcontrol:total_charged_energy_wh_total)[$resolution:])",
               "interval": "$resolution",
               "legendFormat": "Car",
               "refId": "A"
             },
             {
               "exemplar": true,
-              "expr": "increase(pvcontrol:charged_energy_wh_total{source=\"grid\"}[$resolution])",
+              "expr": "increase(max(pvcontrol:charged_energy_wh_total{source=\"grid\"})[$resolution:])",
               "hide": false,
               "interval": "$resolution",
               "legendFormat": "Grid",
               "refId": "B"
             }
           ],
-          "timeFrom": null,
-          "timeShift": null,
           "title": "Car Charging",
           "type": "timeseries"
         }
       ],
       "refresh": false,
-      "schemaVersion": 30,
+      "schemaVersion": 34,
       "style": "dark",
       "tags": [],
       "templating": {
@@ -878,8 +905,6 @@ data:
               "text": "1h",
               "value": "1h"
             },
-            "description": null,
-            "error": null,
             "hide": 0,
             "label": "Resolution",
             "name": "resolution",
@@ -922,11 +947,8 @@ data:
               "text": "default",
               "value": "default"
             },
-            "description": null,
-            "error": null,
             "hide": 0,
             "includeAll": false,
-            "label": null,
             "multi": false,
             "name": "datasource",
             "options": [],
@@ -947,5 +969,6 @@ data:
       "timezone": "",
       "title": "Kostal Energy",
       "uid": "bGXzWbiRz",
-      "version": 1
+      "version": 1,
+      "weekStart": ""
     }

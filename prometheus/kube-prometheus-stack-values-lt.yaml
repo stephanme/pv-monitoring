@@ -89,7 +89,7 @@ prometheus:
         release: prometheus
     endpoints:
     - path: /federate
-      port: web
+      port: http-web
       honorLabels: true
       params:
         'match[]':
