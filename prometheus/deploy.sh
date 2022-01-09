@@ -4,7 +4,7 @@ set -ex
 scriptdir=$(dirname "$0")
 
 # helm repo update
-kube_prometheus_stack_version=27.0.1
+kube_prometheus_stack_version=30.0.0
 helm upgrade --install --create-namespace --namespace monitoring prometheus prometheus-community/kube-prometheus-stack --version ${kube_prometheus_stack_version} --values $scriptdir/kube-prometheus-stack-values.yaml
 helm upgrade --install --namespace monitoring prometheus-lt prometheus-community/kube-prometheus-stack --version ${kube_prometheus_stack_version} --values $scriptdir/kube-prometheus-stack-values-lt.yaml
 
