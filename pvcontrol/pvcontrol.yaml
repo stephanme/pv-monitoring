@@ -16,8 +16,7 @@ spec:
     spec:
       containers:
         - name: pvcontrol
-          image: stephanme/pv-control:main
-          imagePullPolicy: Always # for :main, remove when versioned
+          image: stephanme/pv-control:latest
           command:
             - python
             - -m
