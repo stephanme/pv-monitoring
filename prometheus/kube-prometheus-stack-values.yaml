@@ -8,12 +8,37 @@
 kubeEtcd:
   enabled: false
 
-# Disable kube-controller-manager and kube-scheduler monitoring. See https://github.com/cablespaghetti/k3s-monitoring/issues/2
-# and https://github.com/prometheus-community/helm-charts/pull/626
+# Need special config for controller, scheduler and proxy for k3s
+# https://github.com/k3s-io/k3s/issues/3619#issuecomment-973188304
+# nasbox.fritz.box = 192.168.178.10 (hacky)
 kubeControllerManager:
-  enabled: false
+  enabled: true
+  endpoints:
+  - 192.168.178.10
+  service:
+    enabled: true
+    port: 10257
+    targetPort: 10257
+  serviceMonitor:
+    enabled: true
+    https: true
+    insecureSkipVerify: true
 kubeScheduler:
-  enabled: false
+  enabled: true
+  endpoints:
+  - 192.168.178.10
+  service:
+    enabled: true
+    port: 10259
+    targetPort: 10259
+  serviceMonitor:
+    enabled: true
+    https: true
+    insecureSkipVerify: true
+kubeProxy:
+  enabled: true
+  endpoints:
+  - 192.168.178.10
 
 alertmanager:
   config:
