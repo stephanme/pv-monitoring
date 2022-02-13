@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: nodes-lt-dashboard
   labels:
-     grafana_dashboard: "true"
+     grafana_dashboard: "1"
 data:
   nodes-lt-dashboard.json: |-
     {

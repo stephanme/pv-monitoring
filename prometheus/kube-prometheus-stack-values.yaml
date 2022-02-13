@@ -141,7 +141,7 @@ prometheus:
     resources:
       requests:
         cpu: 200m
-        memory: 400Mi
+        memory: 1500Mi
 
     # scrape exporter metrics=external system, not the pods of the exporter -> no pod label etc.
     # prometheus seems to need a manual restart to pick up changes -> statefulset
@@ -266,7 +266,7 @@ grafana:
   resources:
     requests:
       cpu: 25m
-      memory: 64Mi
+      memory: 128Mi
   sidecar:
     resources:
       requests:

@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: wallbox-dashboard
   labels:
-     grafana_dashboard: "true"
+     grafana_dashboard: "1"
 data:
   wallbox-dashboard.json: |-
     {
