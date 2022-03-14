@@ -4,9 +4,9 @@ set -ex
 scriptdir=$(dirname "$0")
 
 # assumes that helm repo was updated
-kube_prometheus_stack_version=32.2.0
+kube_prometheus_stack_version=33.2.1
 prom_operator_version=$(helm search repo prometheus-community/kube-prometheus-stack --version "${kube_prometheus_stack_version}" -o json | jq -r '.[].app_version')
-if [ -z "${prom_operator_version}"]
+if [ -z "${prom_operator_version}" ]
 then
   echo "Did not find kube-prometheus-stack version ${kube_prometheus_stack_version}. Forgot to update helm repo?"
   exit 1

@@ -9,7 +9,7 @@ Monitoring of a photovoltaic system
   - long-term Prometheus instance with infinite data data retention and 15min scrape interval connected to the first instance using federation
   - inverter and wall box connected using [modbus_exporter](https://github.com/RichiH/modbus_exporter)
 - [k3s](https://k3s.io) lightweight Kubernetes cluster
-  - k3s server (using sqlite) running on a nasbox: Celeron G3900 (2 core), 4G RAM, 128G SSD, 3T raid1 disks
+  - k3s server (using sqlite) running on a nasbox: Celeron G3900 (2 core), 32G RAM, 128G SSD, 3T raid1 disks
   - k3s agent running on Raspberry 4 8G RAM
 - [pv-control](https://github.com/stephanme/pv-control) for controlling electric car charger
   - charge car by solar power only

@@ -178,7 +178,7 @@ prometheus:
         release: prometheus-lt
     endpoints:
       - path: /metrics
-        port: web
+        port: http-web
   - name: traefik
     endpoints:
       - port: metrics
