@@ -25,6 +25,9 @@ kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-oper
 helm upgrade --install --create-namespace --namespace monitoring prometheus prometheus-community/kube-prometheus-stack --version ${kube_prometheus_stack_version} --values $scriptdir/kube-prometheus-stack-values.yaml
 helm upgrade --install --namespace monitoring prometheus-lt prometheus-community/kube-prometheus-stack --version ${kube_prometheus_stack_version} --values $scriptdir/kube-prometheus-stack-values-lt.yaml
 
+# alertmanager config and secrets
+kubectl apply --namespace monitoring -f $scriptdir/secrets.yaml
+kubectl apply --namespace monitoring -f $scriptdir/alertmanagerconfig.yaml
 # ingress
 kubectl apply --namespace monitoring -f $scriptdir/ingress.yaml
 # service for traefik metrics

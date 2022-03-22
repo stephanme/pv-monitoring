@@ -41,48 +41,6 @@ kubeProxy:
   - 192.168.178.10
 
 alertmanager:
-  config:
-    # global:
-    #  smtp_smarthost: smtp.gmail.com:587
-    #  smtp_auth_username: you@gmail.com
-    #  smtp_auth_password: yourapppassword # https://support.google.com/mail/answer/185833?hl=en-GB
-    #  smtp_auth_identity: you@gmail.com
-    route:
-      group_by: ["job"]
-      group_wait: 30s
-      group_interval: 5m
-      repeat_interval: 1h
-      receiver: "null"
-      routes:
-        - match:
-            alertname: Watchdog
-          receiver: "null"
-        - match:
-            alertname: CPUThrottlingHigh
-          receiver: "null"
-        - match:
-            alertname: KubeMemoryOvercommit
-          receiver: "null"
-        - match:
-            alertname: KubeCPUOvercommit
-          receiver: "null"
-        - match:
-            alertname: KubeletTooManyPods
-          receiver: "null"
-
-    receivers:
-      - name: "null"
-
-    # Inhibition rules allow to mute a set of alerts given that another alert is firing.
-    # We use this to mute any warning-level notifications if the same alert is already critical.
-    inhibit_rules:
-      - source_match:
-          severity: "critical"
-        target_match:
-          severity: "warning"
-        # Apply inhibition if the alertname is the same.
-        equal: ["alertname", "namespace"]
-
   ingress:
     enabled: false
     annotations:
@@ -94,6 +52,10 @@ alertmanager:
     pathType: Prefix
 
   alertmanagerSpec:
+    # see alertmanagerconfig.yml
+    alertmanagerConfiguration:
+      name: kube-prometheus-stack-alertmanagerconfig
+
     externalUrl: "http://nasbox.fritz.box/alertmanager/"
     #    replicas: 3
     #    podAntiAffinity: "soft"
