@@ -57,6 +57,14 @@ prometheus:
     query:
       lookbackDelta: 30m
 
+    alertingEndpoints:
+    - name: prometheus-kube-prometheus-alertmanager
+      namespace: monitoring # !! absolute namespace !!
+      port: http-web
+      pathPrefix: /
+      apiVersion: v2
+
+
 #    replicas: 2
 #    podAntiAffinity: "hard"
     nodeSelector:
@@ -111,10 +119,10 @@ prometheus:
           - 'pvcontrol:total_charged_energy_wh_total'
           - 'pvcontrol:charged_energy_wh_total'
 
-# Prometheus rules for the polled metrics with adaption to 15m scrape interval
 additionalPrometheusRulesMap:
-  prometheus-lt-node-exporter.rules:
+  prometheus-lt.rules:
     groups:
+    # Prometheus rules for the polled metrics with adaption to 15m scrape interval
     - name: node-exporter.rules
       rules:
       - record: instance:node_num_cpu:sum
@@ -123,6 +131,17 @@ additionalPrometheusRulesMap:
         expr: 1 - avg without(cpu, mode) (rate(node_cpu_seconds_total{job="node-exporter",mode="idle"}[30m]))
       - record: instance:node_load15_per_cpu:ratio
         expr: (node_load15{job="node-exporter"} / instance:node_num_cpu:sum{job="node-exporter"})
+    # alert when scraping results in too few samples, adapt threshold when adding metrics
+    - name: scrape.rules
+      rules:
+      - alert: ScrapeError
+        expr: scrape_samples_scraped{service="prometheus-kube-prometheus-prometheus"} < 75
+        for: 30m
+        labels:
+          severity: critical
+        annotations:
+          summary: Scraping service {{$labels.service}} failed.
+          description: Scraping service {{$labels.service}} resulted in {{$value}} samples.
 
 
 # disable operator, alert manager, grafana
