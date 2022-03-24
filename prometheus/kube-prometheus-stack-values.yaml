@@ -185,12 +185,15 @@ additionalPrometheusRulesMap:
     groups:
       - name: energy-rate.rules
         rules:
-          - record: constant:1
-            expr: 1
           - record: energy_rate_kwh_cents
-            expr: label_replace(26.29*constant:1, "type", "from-grid", "","")
+            expr: vector(26.29)
+            labels:
+              type: from-grid
           - record: energy_rate_kwh_cents
-            expr: label_replace(7.92*constant:1, "type", "to-grid", "","")
+            expr: vector(7.92)
+            labels:
+              type: to-grid
+
   prometheus-node-exporter.rules:
     groups:
       - name: node-exporter-lt.rules
