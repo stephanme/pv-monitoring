@@ -241,6 +241,9 @@ grafana:
       requests:
         cpu: 5m
         memory: 64Mi
+  # pin to nasbox because of https://github.com/grafana/grafana/issues/43002 - __rate_interval is broken on the docker ARM image
+  nodeSelector:
+    kubernetes.io/hostname: nasbox
 
 prometheusOperator:
   nodeSelector:
