@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: prometheus-lt-backup
+spec:
+  schedule: "0 12 * * SUN"
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          nodeSelector:
+            kubernetes.io/hostname: nasbox
+          volumes:
+            - name: prometheus-storage
+              persistentVolumeClaim:
+                claimName: prometheus-prometheus-lt-kube-prometh-prometheus-db-prometheus-prometheus-lt-kube-prometh-prometheus-0
+            - name: backup-storage
+              hostPath:
+                path: /srv/samba-private/backup/prometheus-lt
+                type: Directory
+          containers:
+            - name: hello
+              image: stephanme/toolbox
+              command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                date
+                echo Backup prometheus-lt
+                snapshot=$(curl --silent --fail -XPOST "http://prometheus-lt-kube-prometh-prometheus.monitoring.svc.cluster.local:9090/api/v1/admin/tsdb/snapshot?skip_head=true")
+                echo Prometheus DB snapshot: $snapshot
+                snapshot_name=$(echo "${snapshot}" | jq -r '.data.name')
+                snapshot_dir=/home/prometheus/prometheus-db/snapshots
+                backup_dir=/srv/samba-private/backup/prometheus-lt
+                (set -x; rsync -a --stats --link-dest="${backup_dir}/last/" "${snapshot_dir}/${snapshot_name}/" "${backup_dir}/${snapshot_name}/")
+                ln -nsf "${backup_dir}/${snapshot_name}" "${backup_dir}/last"
+                rm -rf ${snapshot_dir}
+              volumeMounts:
+                - mountPath: "/home/prometheus"
+                  name: prometheus-storage
+                - mountPath: "/srv/samba-private/backup/prometheus-lt"
+                  name: backup-storage
+          restartPolicy: OnFailure

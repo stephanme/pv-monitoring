@@ -52,6 +52,7 @@ prometheus:
     scrapeInterval: 15m
     evaluationInterval: 15m
     retention: 10y
+    enableAdminAPI: true
     externalUrl: "http://nasbox.fritz.box/prometheus-lt/"
 
     query:

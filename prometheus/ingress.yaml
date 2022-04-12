@@ -1,3 +1,4 @@
+# https://doc.traefik.io/traefik/v2.0/routing/providers/kubernetes-crd/
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -22,7 +23,7 @@ spec:
     - web
   routes:
   - kind: Rule
-    match: PathPrefix(`/prometheus`)
+    match: Path(`/prometheus`) || (PathPrefix(`/prometheus/`) && !PathPrefix(`/prometheus/api/v1/admin`))
     middlewares:
     - name: prometheus-stripprefix
     services:
@@ -54,7 +55,7 @@ spec:
     - web
   routes:
   - kind: Rule
-    match: PathPrefix(`/prometheus-lt`)
+    match: Path(`/prometheus-lt`) || (PathPrefix(`/prometheus-lt/`) && ! PathPrefix(`/prometheus-lt/api/v1/admin`))
     middlewares:
     - name: prometheus-stripprefix
     services:
