@@ -21,7 +21,7 @@ spec:
                 type: Directory
           containers:
             - name: hello
-              image: stephanme/toolbox
+              image: stephanme/toolbox:v1
               command:
               - /bin/sh
               - -c
