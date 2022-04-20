@@ -7,6 +7,7 @@ spec:
   concurrencyPolicy: Replace
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 3600
       template:
         spec:
           nodeSelector:
@@ -20,7 +21,7 @@ spec:
                 path: /srv/samba-private/backup/prometheus-lt
                 type: Directory
           containers:
-            - name: hello
+            - name: backup
               image: stephanme/toolbox:v1
               command:
               - /bin/sh
@@ -42,4 +43,4 @@ spec:
                   name: prometheus-storage
                 - mountPath: "/srv/samba-private/backup/prometheus-lt"
                   name: backup-storage
-          restartPolicy: OnFailure
+          restartPolicy: Never
