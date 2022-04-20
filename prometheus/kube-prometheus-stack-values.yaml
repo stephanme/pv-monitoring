@@ -244,6 +244,10 @@ grafana:
   # pin to nasbox because of https://github.com/grafana/grafana/issues/43002 - __rate_interval is broken on the docker ARM image
   nodeSelector:
     kubernetes.io/hostname: nasbox
+  # fix for https://github.com/prometheus-community/helm-charts/issues/1867 - missing release label on grafana service monitor
+  serviceMonitor:
+    labels:
+      release: prometheus
 
 prometheusOperator:
   nodeSelector:
