@@ -45,6 +45,7 @@ spec:
                   "pv_allow_charging_delay": 300
                 },
                 "car": {
+                  "disabled": false,
                   "user": "$(car_user)",
                   "password": "$(car_password)",
                   "vin": "$(car_vin)"
