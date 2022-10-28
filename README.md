@@ -47,7 +47,7 @@ K3S_TOKEN=<join_token> sh -
 
 Automatic k3s updates: https://rancher.com/docs/k3s/latest/en/upgrades/automated/
 ```
-kubectl apply -f https://github.com/rancher/system-upgrade-controller/releases/download/v0.8.1/system-upgrade-controller.yaml
+kubectl apply -f https://github.com/rancher/system-upgrade-controller/releases/download/v0.9.1/system-upgrade-controller.yaml
 ```
 
 Maintain k3s version in upgrade plans: `./k3s-upgrade/k3s-upgrade.yaml`
