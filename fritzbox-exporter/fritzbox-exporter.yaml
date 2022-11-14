@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: fritzbox-exporter
-          image: jaymedh/fritzbox_smarthome_exporter:v0.3.1
+          image: jaymedh/fritzbox_smarthome_exporter:v0.4.3
           ports:
             - containerPort: 9103
           command:
@@ -32,8 +32,6 @@ spec:
                 secretKeyRef:
                   name: fritzbox-exporter
                   key: PASSWORD
-      nodeSelector:
-        kubernetes.io/hostname: nasbox # no arm/v7 image available (only arm64)
 
 ---
 apiVersion: v1
