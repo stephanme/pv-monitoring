@@ -2,14 +2,14 @@
 version: 2
 updates:
   - package-ecosystem: "docker"
-    directory: "fritzbox-exporter"
+    directory: "/fritzbox-exporter"
     schedule:
       interval: "weekly"
   - package-ecosystem: "docker"
-    directory: "modbus-exporter"
+    directory: "/modbus-exporter"
     schedule:
       interval: "weekly"
   - package-ecosystem: "docker"
-    directory: "prometheus"
+    directory: "/prometheus"
     schedule:
       interval: "weekly"
