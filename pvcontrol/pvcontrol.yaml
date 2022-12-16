@@ -106,6 +106,7 @@ spec:
     match: Path(`/pvcontrol`) || PathPrefix(`/pvcontrol/`)
     middlewares:
     - name: pvcontrol-stripprefix
+    - name: pvcontrol-compress
     services:
     - name: pvcontrol-service
       port: 8080
@@ -118,3 +119,17 @@ spec:
   stripPrefix:
     prefixes:
       - /pvcontrol
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: pvcontrol-compress
+spec:
+  compress:
+    minResponseBodyBytes: 2048
+    excludedContentTypes:
+      - font/woff2
+      - font/woff
+      - image/jpeg
+      - image/png
+      - image/vnd.microsoft.icon
