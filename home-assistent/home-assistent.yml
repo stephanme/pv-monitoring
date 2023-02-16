@@ -1,0 +1,126 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant-deployment
+  labels:
+    app: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      containers:
+        - name: homeassistant
+          # https://github.com/home-assistant/core/pkgs/container/home-assistant
+          image: ghcr.io/home-assistant/home-assistant:2023.2.3
+          ports:
+            - containerPort: 8123
+          volumeMounts:
+            - mountPath: "/config"
+              name: homeassistant-persistent-storage
+        # code-server add-on: https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/templates/addons/code-server
+        - name: codeserver
+          image: ghcr.io/coder/code-server:4.9.1
+          securityContext:
+            runAsUser: 0
+          ports:
+            - name: codeserver
+              containerPort: 12321
+              protocol: TCP
+          workingDir: /data/config
+          args:
+            - --auth
+            - none
+            - --user-data-dir
+            - /data/config/.vscode
+            - --port
+            - "12321"
+            - --disable-telemetry
+            - /data/config
+          volumeMounts:
+            - name: homeassistant-persistent-storage
+              mountPath: /data/config
+      nodeSelector:
+        kubernetes.io/hostname: nasbox
+      volumes:
+        - name: homeassistant-persistent-storage
+          persistentVolumeClaim:
+            claimName: homeassistant-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant
+spec:
+  type: ClusterIP
+  selector:
+    app: homeassistant
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8123
+      targetPort: 8123
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant-codeserver
+spec:
+  type: ClusterIP
+  selector:
+    app: homeassistant
+  ports:
+    - name: codeserver
+      protocol: TCP
+      port: 12321
+      targetPort: codeserver
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homeassistant-pv-claim
+  labels:
+    app: homeassistant
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homeassistant
+spec:
+  entryPoints:
+    - web
+  routes:
+  - kind: Rule
+    match: Host(`homeassistant.fritz.box`)
+    services:
+    - name: homeassistant
+      port: 8123
+  - kind: Rule
+    match: Host(`homeassistant.fritz.box`) && PathPrefix(`/codeserver/`) 
+    middlewares:
+    - name: codeserver-stripprefix
+    services:
+    - name: homeassistant-codeserver
+      port: 12321
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: codeserver-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /codeserver/

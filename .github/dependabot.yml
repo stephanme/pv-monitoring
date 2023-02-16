@@ -13,3 +13,7 @@ updates:
     directory: "/prometheus"
     schedule:
       interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/home-assistant"
+    schedule:
+      interval: "weekly"
