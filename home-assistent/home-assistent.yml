@@ -24,6 +24,8 @@ spec:
           volumeMounts:
             - mountPath: "/config"
               name: homeassistant-persistent-storage
+            - mountPath: /srv/samba-private/backup/homeassistant
+              name: backup-storage
         # code-server add-on: https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/templates/addons/code-server
         - name: codeserver
           image: ghcr.io/coder/code-server:4.9.1
@@ -52,6 +54,10 @@ spec:
         - name: homeassistant-persistent-storage
           persistentVolumeClaim:
             claimName: homeassistant-pv-claim
+        - name: backup-storage
+          hostPath:
+            path: /srv/samba-private/backup/homeassistant
+            type: Directory
 ---
 apiVersion: v1
 kind: Service
