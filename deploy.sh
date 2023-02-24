@@ -8,3 +8,4 @@ $scriptdir/modbus-exporter/deploy.sh
 $scriptdir/fritzbox-exporter/deploy.sh
 $scriptdir/pvcontrol/deploy.sh
 $scriptdir/k3s-upgrade/deploy.sh
+$scriptdir/homeassistant/deploy.sh
