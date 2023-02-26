@@ -47,4 +47,4 @@ K3S_TOKEN=<join_token> sh -
 
 Automatic k3s updates: https://rancher.com/docs/k3s/latest/en/upgrades/automated/
 
-Maintain k3s version in upgrade plans: `./k3s-upgrade/k3s-upgrade.yaml`
+Maintain k3s version in upgrade plans: `./k3s/k3s-upgrade.yaml`
