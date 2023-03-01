@@ -171,6 +171,20 @@ prometheus:
     selector:
       matchLabels:
         app: fritzbox-exporter
+  - name: mqtt-exporter
+    endpoints:
+      - path: /metrics
+        port: broker-metrics
+      - path: /metrics
+        port: shelly-metrics
+      - path: /metrics
+        port: shelly25-metrics
+    namespaceSelector:
+      matchNames:
+        - homeassistant
+    selector:
+      matchLabels:
+        app: mqtt-exporter
 
 additionalPrometheusRulesMap:
   pv-control.rules:
