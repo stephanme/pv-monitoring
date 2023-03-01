@@ -28,7 +28,7 @@ spec:
               name: backup-storage
         # code-server add-on: https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/templates/addons/code-server
         - name: codeserver
-          image: ghcr.io/coder/code-server:4.9.1
+          image: ghcr.io/coder/code-server:4.10.0
           securityContext:
             runAsUser: 0
           ports:
