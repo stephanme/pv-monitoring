@@ -7,6 +7,8 @@ metadata:
     app: mosquitto
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: mosquitto
@@ -55,6 +57,8 @@ data:
     persistence true
     persistence_location /mosquitto/data
     autosave_interval 1800
+    upgrade_outgoing_qos true
+    log_timestamp_format %Y-%m-%dT%H:%M:%S
 ---
 apiVersion: v1
 kind: Service
