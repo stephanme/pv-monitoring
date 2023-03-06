@@ -105,33 +105,7 @@ prometheus:
         cpu: 200m
         memory: 1500Mi
 
-    # scrape exporter metrics=external system, not the pods of the exporter -> no pod label etc.
-    # prometheus seems to need a manual restart to pick up changes -> statefulset
-    additionalScrapeConfigs:
-      - job_name: modbus-exporter-kostal
-        metrics_path: /modbus
-        params:
-          target: ["scb.fritz.box:1502"]
-          module: ["kostal-inverter"]
-          sub_target: ["71"] # Modbus unit identifier
-        relabel_configs:
-          - source_labels: [__param_target]
-            target_label: instance
-        static_configs:
-          - targets: ["modbus-exporter.monitoring.svc.cluster.local:9602"]
-      - job_name: modbus-exporter-wallbox
-        metrics_path: /modbus
-        params:
-          target: ["go-echarger.fritz.box:502"]
-          module: ["go-e-wallbox"]
-          sub_target: ["1"] # Modbus unit identifier
-        relabel_configs:
-          - source_labels: [__param_target]
-            target_label: instance
-        static_configs:
-          - targets: ["modbus-exporter.monitoring.svc.cluster.local:9602"]
-
-  # every pod of the service in scraped, metrics get pod label
+  # may want to replace/drop instance/pod labels for external systems
   additionalServiceMonitors:
   - name: prometheus-lt-kube-prometh-prometheus
     selector:
@@ -161,6 +135,28 @@ prometheus:
     endpoints:
       - path: /metrics
         port: tcp
+      - path: /modbus
+        port: tcp
+        params:
+          target: ["scb.fritz.box:1502"]
+          module: ["kostal-inverter"]
+          sub_target: ["71"] # Modbus unit identifier
+        relabelings:
+          - sourceLabels: [__param_target]
+            targetLabel: instance
+          - regex: "pod"
+            action: labeldrop
+      - path: /modbus
+        port: tcp
+        params:
+          target: ["go-echarger.fritz.box:502"]
+          module: ["go-e-wallbox"]
+          sub_target: ["1"] # Modbus unit identifier
+        relabelings:
+          - sourceLabels: [__param_target]
+            targetLabel: instance
+          - regex: "pod"
+            action: labeldrop
     selector:
       matchLabels:
         app: modbus-exporter
