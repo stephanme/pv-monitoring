@@ -175,10 +175,58 @@ prometheus:
     endpoints:
       - path: /metrics
         port: broker-metrics
+        # drop instance and pod from shelly metrics
+        metricRelabelings:
+          - sourceLabels:
+              - __name__
+              - instance
+            regex: "mqtt_\\w*;.*"
+            action: replace
+            replacement: ""
+            targetLabel: instance
+          - sourceLabels:
+              - __name__
+              - pod
+            regex: "mqtt_\\w*;.*"
+            action: replace
+            replacement: ""
+            targetLabel: pod
       - path: /metrics
         port: shelly-metrics
+        # drop instance and pod from shelly metrics
+        metricRelabelings:
+          - sourceLabels:
+              - __name__
+              - instance
+            regex: "shelly_\\w*;.*"
+            action: replace
+            replacement: ""
+            targetLabel: instance
+          - sourceLabels:
+              - __name__
+              - pod
+            regex: "shelly_\\w*;.*"
+            action: replace
+            replacement: ""
+            targetLabel: pod
       - path: /metrics
         port: shelly25-metrics
+        # drop instance and pod from shelly metrics
+        metricRelabelings:
+          - sourceLabels:
+              - __name__
+              - instance
+            regex: "shelly_\\w*;.*"
+            action: replace
+            replacement: ""
+            targetLabel: instance
+          - sourceLabels:
+              - __name__
+              - pod
+            regex: "shelly_\\w*;.*"
+            action: replace
+            replacement: ""
+            targetLabel: pod
     namespaceSelector:
       matchNames:
         - homeassistant
