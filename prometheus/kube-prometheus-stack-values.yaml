@@ -142,6 +142,8 @@ prometheus:
           module: ["kostal-inverter"]
           sub_target: ["71"] # Modbus unit identifier
         relabelings:
+          - replacement: modbus-exporter-kostal-inverter
+            targetLabel: job
           - sourceLabels: [__param_target]
             targetLabel: instance
           - regex: "pod"
@@ -153,6 +155,8 @@ prometheus:
           module: ["go-e-wallbox"]
           sub_target: ["1"] # Modbus unit identifier
         relabelings:
+          - replacement: modbus-exporter-go-e-wallbox
+            targetLabel: job
           - sourceLabels: [__param_target]
             targetLabel: instance
           - regex: "pod"
