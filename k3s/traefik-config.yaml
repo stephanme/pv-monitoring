@@ -1,3 +1,5 @@
+# expose traefik directly without LB
+# deploy as deamon set on every node
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -5,9 +7,46 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
+    deployment:
+      kind: DaemonSet
+    updateStrategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 1
+        maxSurge: 0
+    service:
+      enabled: false
+    securityContext:
+      capabilities:
+        add:
+          - NET_BIND_SERVICE
+      runAsNonRoot: false
+      runAsUser: 0
+      runAsGroup: 0
     ports:
-      mqtt: 
+      web:
+        port: 80
+        expose: true
+        protocol: TCP
+        hostPort: 80
+      websecure:
+        port: 443
+        expose: true
+        protocol: TCP
+        hostPort: 443
+        tls:
+          enable: true
+      mqtt:
         port: 1883
         expose: true
-        exposedPort: 1883
+        hostPort: 1883
         protocol: TCP
+    metrics:
+      prometheus:
+    # needs newer helm chart version >=v20.5.0
+    #     service:
+    #       enabled: true
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: prometheus

@@ -30,8 +30,6 @@ kubectl apply --namespace monitoring -f $scriptdir/secrets.yaml
 kubectl apply --namespace monitoring -f $scriptdir/alertmanagerconfig.yaml
 # ingress
 kubectl apply --namespace monitoring -f $scriptdir/ingress.yaml
-# service for traefik metrics
-kubectl apply --namespace kube-system -f $scriptdir/traefik-monitoring.yaml
 # backup cronjob
 kubectl apply --namespace monitoring -f $scriptdir/backup.yaml
 

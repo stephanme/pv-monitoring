@@ -115,15 +115,6 @@ prometheus:
     endpoints:
       - path: /metrics
         port: http-web
-  - name: traefik
-    endpoints:
-      - port: metrics
-    namespaceSelector:
-      matchNames:
-        - kube-system
-    selector:
-      matchLabels:
-        app: traefik
   - name: pvcontrol
     endpoints:
       - path: /metrics
