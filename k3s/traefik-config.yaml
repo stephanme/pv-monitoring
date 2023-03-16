@@ -4,7 +4,6 @@ apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
   name: traefik
-  namespace: kube-system
 spec:
   valuesContent: |-
     deployment:
@@ -48,5 +47,7 @@ spec:
     #       enabled: true
         serviceMonitor:
           enabled: true
-          additionalLabels:
+          additionalLabels: # k8s labels
             release: prometheus
+          # prom labels
+          honorLabels: true

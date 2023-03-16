@@ -290,6 +290,8 @@ grafana:
       cpu: 25m
       memory: 128Mi
   sidecar:
+    dashboards:
+      searchNamespace: ALL
     resources:
       requests:
         cpu: 5m
