@@ -55,6 +55,50 @@ spec:
   selector:
     app: modbus-exporter
 ---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: prometheus
+  name: modbus-exporter
+spec:
+  endpoints:
+  - path: /metrics
+    port: tcp
+  - path: /modbus
+    port: tcp
+    params:
+      target: ["scb.fritz.box:1502"]
+      module: ["kostal-inverter"]
+      sub_target: ["71"] # Modbus unit identifier
+    relabelings:
+      - action: replace
+        replacement: modbus-exporter-kostal-inverter
+        targetLabel: job
+      - action: replace
+        sourceLabels: [__param_target]
+        targetLabel: instance
+      - action: labeldrop
+        regex: pod
+  - path: /modbus
+    port: tcp
+    params:
+      target: ["go-echarger.fritz.box:502"]
+      module: ["go-e-wallbox"]
+      sub_target: ["1"] # Modbus unit identifier
+    relabelings:
+    - action: replace
+      replacement: modbus-exporter-go-e-wallbox
+      targetLabel: job
+    - action: replace
+      sourceLabels: [__param_target]
+      targetLabel: instance
+    - action: labeldrop
+      regex: pod
+  selector:
+    matchLabels:
+      app: modbus-exporter
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:

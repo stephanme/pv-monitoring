@@ -92,6 +92,72 @@ spec:
       port: 9643
       targetPort: 9643
 ---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: prometheus
+  name: mqtt-exporter
+spec:
+  endpoints:
+    - path: /metrics
+      port: broker-metrics
+      # drop instance and pod from shelly metrics
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "mqtt_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "mqtt_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod
+    - path: /metrics
+      port: shelly-metrics
+      # drop instance and pod from shelly metrics
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod
+    - path: /metrics
+      port: shelly25-metrics
+      # drop instance and pod from shelly metrics
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod
+  selector:
+    matchLabels:
+      app: mqtt-exporter
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:

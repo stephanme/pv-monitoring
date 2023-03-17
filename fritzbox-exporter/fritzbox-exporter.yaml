@@ -47,3 +47,17 @@ spec:
       name: tcp
   selector:
     app: fritzbox-exporter
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: prometheus
+  name: fritzbox-exporter
+spec:
+  endpoints:
+  - path: /metrics
+    port: tcp
+  selector:
+    matchLabels:
+      app: fritzbox-exporter

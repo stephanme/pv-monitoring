@@ -133,3 +133,32 @@ spec:
       - image/jpeg
       - image/png
       - image/vnd.microsoft.icon
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: prometheus
+  name: pvcontrol
+spec:
+  endpoints:
+  - path: /metrics
+    port: tcp
+  selector:
+    matchLabels:
+      app: pvcontrol
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: prometheus
+  name: pvcontrol
+spec:
+  groups:
+  - name: pv-control.rules
+    rules:
+    - expr: max(pvcontrol_controller_total_charged_energy_wh_total) by (job)
+      record: pvcontrol:total_charged_energy_wh_total
+    - expr: max(pvcontrol_controller_charged_energy_wh_total) by (job, source)
+      record: pvcontrol:charged_energy_wh_total
