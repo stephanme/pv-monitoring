@@ -1,0 +1,13 @@
+# https://gitlab.com/purelb/purelb/-/blob/main/build/helm/purelb/values.yaml
+---
+image:
+  pullPolicy: IfNotPresent
+
+serviceGroup:
+  name: "default"
+  create: true
+  spec:
+    local:
+      subnet: '192.168.178.0/24'
+      pool: '192.168.178.200-192.168.178.209'
+      aggregation: default

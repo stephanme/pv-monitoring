@@ -15,16 +15,27 @@ Monitoring of a photovoltaic system
   - charge car by solar power only
   - 1 and 3 phase charging to get a wide control range starting at 1.3 kW up to (theoretical) 11kW
   - UI for controlling charge modes
+- [Home Assistant](https://www.home-assistant.io/) for additional home automation
 
 ## Deploy
+
+Used helm repos:
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add purelb https://gitlab.com/api/v4/projects/20400619/packages/helm/stable
+```
 
 Software versions including helm chart versions are maintained in deploy.sh and yaml files.
 
 ```
-helm list -n monitoring
+helm list --all-namespaces
 helm repo update
+
 helm search repo prometheus-community/kube-prometheus-stack
 # check release notes at https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+
+helm search repo purelb/purelb
+# check release notes at https://gitlab.com/purelb/purelb/-/releases
 
 ./deploy.sh
 ```
@@ -32,7 +43,8 @@ helm search repo prometheus-community/kube-prometheus-stack
 ## k3s Installation
 
 Standard installation as described in https://rancher.com/docs/k3s/latest/en/quick-start/.
-Requires traefik v2.
+All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) which is deployed as daemon set (without extra LB).
+[PureLB](https://purelb.gitlab.io/docs/) is used as LB for special services that need an own IP. E.g. for [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which is used as internal DNS server as the Fritzbox doesn't allow to add additional host names.
 
 Server on nasbox:
 ```
