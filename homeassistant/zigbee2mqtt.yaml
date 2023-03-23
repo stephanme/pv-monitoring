@@ -1,0 +1,182 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: zigbee2mqtt
+  name: zigbee2mqtt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zigbee2mqtt
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: zigbee2mqtt
+    spec:
+      containers:
+        - name: zigbee2mqtt
+          image: koenkk/zigbee2mqtt:1.30.2
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: Europe/Berlin
+            - name: "ZIGBEE2MQTT_DATA"
+              value: "/data"
+          securityContext:
+            privileged: true
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: zigbee2mqtt-data
+              mountPath: /data
+            - name: zigbee2mqtt-config
+              mountPath: /data/configuration.yaml
+              subPath: configuration.yaml
+              # readOnly: true - zigbee2mqtt fails with read-only config
+            - name: zigbee2mqtt-secrets
+              mountPath: /data/secrets.yaml
+              subPath: secrets.yaml
+              readOnly: true
+            - name: zigbee2mqtt-udev
+              mountPath: /run/udev
+            - name: devusb
+              mountPath: /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 0
+            failureThreshold: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
+      nodeSelector:
+        kubernetes.io/hostname: nasbox
+      volumes:
+        - name: zigbee2mqtt-data
+          persistentVolumeClaim:
+            claimName: zigbee2mqtt-data
+        - name: zigbee2mqtt-udev
+          hostPath:
+            path: /run/udev
+        - name: devusb
+          hostPath:
+            path: /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0
+        - name: zigbee2mqtt-config
+          configMap:
+            name: zigbee2mqtt-config
+        - name: zigbee2mqtt-secrets
+          secret:
+            secretName: zigbee2mqtt-secrets
+
+---
+# !!! restart zigbee2mqtt on change !!!
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zigbee2mqtt-config
+  labels:
+    app: zigbee2mqtt
+data:
+  configuration.yaml: |-
+    permit_join: false
+    # Home Assistant integration (MQTT discovery)
+    homeassistant: true
+    mqtt:
+      base_topic: zigbee2mqtt
+      server: mqtt://mosquitto.homeassistant.svc.cluster.local
+      user: '!secrets.yaml mqttuser'
+      password: '!secrets.yaml mqttpassword'
+      version: 5
+      include_device_information: true
+    # Zigbee Adapter path
+    serial:
+      port: /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0
+    # Enable UI
+    frontend:
+      port: 8080
+    advanced:
+      network_key: '!secrets.yaml network_key'
+      pan_id: 0x6e7f
+      ext_pan_id: [47, 231, 231, 232, 84, 28, 16, 76]
+      log_level: info
+      log_output:
+      - console
+      # - file
+
+    ## Map devices to persistent /data directory
+    devices: /data/devices.yaml
+    groups: /data/groups.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: zigbee2mqtt
+  name: zigbee2mqtt
+spec:
+  ports:
+    - name: zigbee2mqtt
+      port: 8080
+      targetPort: http
+      protocol: TCP
+  selector:
+    app: zigbee2mqtt
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: zigbee2mqtt
+  name: zigbee2mqtt-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 10M
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: zigbee2mqtt
+spec:
+  entryPoints:
+    - web
+  routes:
+  - kind: Rule
+    match: Host(`homeassistant.fritz.box`) && PathPrefix(`/zigbee2mqtt/`) 
+    middlewares:
+    - name: zigbee2mqtt-stripprefix
+    services:
+    - name: zigbee2mqtt
+      port: 8080
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: zigbee2mqtt-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /zigbee2mqtt/

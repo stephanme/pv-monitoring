@@ -30,13 +30,13 @@ spec:
             - name: MQTT2PROM_MQTT_USER
               valueFrom:
                 secretKeyRef:
-                  name: mqtt-exporter-secrets
-                  key: MQTT2PROM_MQTT_USER
+                  name: mqtt-secrets
+                  key: user
             - name: MQTT2PROM_MQTT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mqtt-exporter-secrets
-                  key: MQTT2PROM_MQTT_PASSWORD
+                  name: mqtt-secrets
+                  key: password
           ports:
             - containerPort: 9641
           volumeMounts:
