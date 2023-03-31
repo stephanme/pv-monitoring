@@ -2,7 +2,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: zigbee2mqtt
   name: zigbee2mqtt
@@ -22,13 +21,13 @@ spec:
         - name: zigbee2mqtt
           image: koenkk/zigbee2mqtt:1.30.2
           imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
           env:
             - name: TZ
               value: Europe/Berlin
             - name: "ZIGBEE2MQTT_DATA"
               value: "/data"
-          securityContext:
-            privileged: true
           ports:
             - name: http
               containerPort: 8080
@@ -87,7 +86,6 @@ spec:
         - name: zigbee2mqtt-secrets
           secret:
             secretName: zigbee2mqtt-secrets
-
 ---
 # !!! restart zigbee2mqtt on change !!!
 apiVersion: v1
@@ -180,3 +178,53 @@ spec:
   stripPrefix:
     prefixes:
       - /zigbee2mqtt/
+---
+# Only needed for updating the zigbee firmware.
+# https://github.com/git-developer/ti-cc-tool
+#
+# 1. delete any completed zigbee-firmware job
+# 2. update FIRMWARE_URL
+# 3. ./deploy.sh
+# 4. stop zigbee2mqtt by scaling to 0
+# 5. unsuspend this job (edit in k9s)
+# 6. check logs that firmware update was successful
+# 7. ./deploy.sh to start zigbee2mqtt
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: zigbee-firmware
+  name: zigbee-firmware
+spec:
+  suspend: true
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app: zigbee-firmware
+    spec:
+      containers:
+        - name: ti-cc-tool
+          image: ckware/ti-cc-tool
+          securityContext:
+            privileged: true
+          env:
+            - name: FIRMWARE_URL
+              value: https://github.com/Koenkk/Z-Stack-firmware/raw/master/coordinator/Z-Stack_3.x.0/bin/CC1352P2_CC2652P_launchpad_coordinator_20221226.zip
+          command:
+            - /usr/local/bin/run
+            - -ewv
+            - -p
+            - /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0
+            - --bootloader-sonoff-usb
+          volumeMounts:
+            - name: devusb
+              mountPath: /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0
+      nodeSelector:
+        kubernetes.io/hostname: nasbox
+      volumes:
+        - name: devusb
+          hostPath:
+            path: /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0
+      restartPolicy: Never
