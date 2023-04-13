@@ -4,4 +4,9 @@ set -ex
 scriptdir=$(dirname "$0")
 
 kubectl create namespace homeassistant --dry-run=client -o yaml | kubectl apply -f -
+
+kubectl apply -k $scriptdir/fetch-images
+kubectl wait --for=condition=complete --timeout 30m --namespace homeassistant job/fetch-images-nasbox
+
+kubectl apply -k $scriptdir/homeassistant
 kubectl apply --namespace homeassistant -f $scriptdir
