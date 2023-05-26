@@ -4,7 +4,7 @@ set -ex
 scriptdir=$(dirname "$0")
 
 # assumes that helm repo was updated
-kube_prometheus_stack_version=45.7.1
+kube_prometheus_stack_version=46.4.1
 prom_operator_version=$(helm search repo prometheus-community/kube-prometheus-stack --version "${kube_prometheus_stack_version}" -o json | jq -r '.[].app_version')
 if [ -z "${prom_operator_version}" ]
 then
@@ -16,8 +16,10 @@ kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-oper
 kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${prom_operator_version}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
 kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${prom_operator_version}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
 kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${prom_operator_version}/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${prom_operator_version}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusagents.yaml
 kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${prom_operator_version}/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
 kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${prom_operator_version}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${prom_operator_version}/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml
 kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${prom_operator_version}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
 kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${prom_operator_version}/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
 
