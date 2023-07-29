@@ -9,5 +9,5 @@ serviceGroup:
   spec:
     local:
       subnet: '192.168.178.0/24'
-      pool: '192.168.178.200-192.168.178.209'
+      pool: '192.168.178.230-192.168.178.239'
       aggregation: default
