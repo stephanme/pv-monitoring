@@ -17,7 +17,7 @@ done
 
 # purelb
 # assumes that helm repo was updated
-purelb_version=0.7.0
+purelb_version=0.7.1
 helm upgrade --install --namespace kube-system purelb purelb/purelb --version ${purelb_version} --values $scriptdir/purelb-values.yaml
 
 # dnsmasq
