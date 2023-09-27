@@ -3,9 +3,7 @@ set -ex
 
 scriptdir=$(dirname "$0")
 
-$scriptdir/prometheus/deploy.sh
-$scriptdir/modbus-exporter/deploy.sh
-$scriptdir/fritzbox-exporter/deploy.sh
-$scriptdir/pvcontrol/deploy.sh
-$scriptdir/k3s/deploy.sh
+$scriptdir/system-upgrade/deploy.sh
+$scriptdir/kube-system/deploy.sh
+$scriptdir/monitoring/deploy.sh
 $scriptdir/homeassistant/deploy.sh
