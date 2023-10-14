@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
 spec:
   repo: https://gitlab.com/api/v4/projects/20400619/packages/helm/stable
-  chart: purelb/purelb
+  chart: purelb
   version: 0.7.1
   targetNamespace: kube-system
   valuesContent: |-
