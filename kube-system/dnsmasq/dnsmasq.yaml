@@ -6,6 +6,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: dnsmasq
+  namespace: kube-system
 spec:
   selector:
     matchLabels:
@@ -43,6 +44,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: dnsmasq-config
+  namespace: kube-system
 data:
   dnsmasq.conf: |
     # Configuration file for dnsmasq.
@@ -70,6 +72,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: dnsmasq-service
+  namespace: kube-system
   annotations:
     purelb.io/service-group: dnsmasq
 spec:
@@ -93,6 +96,7 @@ apiVersion: purelb.io/v1
 kind: ServiceGroup
 metadata:
   name: dnsmasq
+  namespace: kube-system
 spec:
   local:
     subnet: "192.168.178.0/24"
