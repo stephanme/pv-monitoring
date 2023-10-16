@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/yamllint.json": "file:///Users/D047883/SAPDevelop/git/pv-monitoring/monitoring/prometheus/prometheus.yaml"
+    }
+}
