@@ -4,6 +4,7 @@ metadata:
   name: prometheus-lt
   namespace: monitoring
 spec:
+  # renovate: HelmChart
   repo: https://prometheus-community.github.io/helm-charts
   chart: kube-prometheus-stack
   version: 51.2.0
