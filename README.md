@@ -29,9 +29,6 @@ Important release notes
 - [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
 - [homeassistant](https://www.home-assistant.io/blog/categories/release-notes/)
 
-./deploy.sh
-```
-
 ## k3s Installation
 
 Standard installation as described in https://rancher.com/docs/k3s/latest/en/quick-start/.
