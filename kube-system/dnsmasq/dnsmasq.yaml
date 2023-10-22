@@ -1,5 +1,5 @@
 # dnsmasq as DNS server for local network
-# Exposed on 192.168.178.2:53 via PureLB
+# Exposed on 192.168.178.2:53 via MetalLB
 # Adds a few additional hostnames (homeassistant, k3s) and otherwise forwards to fritzbox.
 # Configuration via config map. Depends on static IPs for hosts used as k8s nodes.
 apiVersion: apps/v1
@@ -74,12 +74,11 @@ metadata:
   name: dnsmasq-service
   namespace: kube-system
   annotations:
-    purelb.io/service-group: dnsmasq
+    metallb.universe.tf/address-pool: dnsmasq-pool
 spec:
   type: LoadBalancer
-  loadBalancerClass: purelb.io/purelb
-  loadBalancerIP: 192.168.178.2
   allocateLoadBalancerNodePorts: false
+  externalTrafficPolicy: Local
   ports:
     - name: udp
       port: 53
@@ -92,13 +91,11 @@ spec:
   selector:
     app: dnsmasq
 ---
-apiVersion: purelb.io/v1
-kind: ServiceGroup
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
 metadata:
-  name: dnsmasq
+  name: dnsmasq-pool
   namespace: kube-system
 spec:
-  local:
-    subnet: "192.168.178.0/24"
-    pool: "192.168.178.2-192.168.178.2"
-    aggregation: default
+  addresses:
+  - 192.168.178.2-192.168.178.2

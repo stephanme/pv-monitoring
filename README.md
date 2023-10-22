@@ -19,23 +19,15 @@ Monitoring of a photovoltaic system
 
 ## Deploy
 
-Used helm repos:
-```
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo add purelb https://gitlab.com/api/v4/projects/20400619/packages/helm/stable
-```
+This repo is structured by namespace and app: `pv-monitoring/<namespace>/<app>`. Every directory contains a `deploy.sh` script which recursively deploys the k8s resources of the directory. 
 
-Software versions including helm chart versions are maintained in deploy.sh and yaml files.
+Software versions including helm chart versions are maintained in deploy.sh and yaml files. Versions are kept up-to-ate by the [renovate bot](https://docs.renovatebot.com/).
 
-```
-helm list --all-namespaces
-helm repo update
-
-helm search repo prometheus-community/kube-prometheus-stack
-# check release notes at https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
-
-helm search repo purelb/purelb
-# check release notes at https://gitlab.com/purelb/purelb/-/releases
+Important release notes
+- [k3s](https://github.com/k3s-io/k3s/releases)
+- [metallb](https://metallb.universe.tf/release-notes/)
+- [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
+- [homeassistant](https://www.home-assistant.io/blog/categories/release-notes/)
 
 ./deploy.sh
 ```
@@ -44,11 +36,11 @@ helm search repo purelb/purelb
 
 Standard installation as described in https://rancher.com/docs/k3s/latest/en/quick-start/.
 All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) which is deployed as daemon set (without extra LB).
-[PureLB](https://purelb.gitlab.io/docs/) is used as LB for special services that need an own IP. E.g. for [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which is used as internal DNS server as the Fritzbox doesn't allow to add additional host names.
+[MetalLB](https://metallb.universe.tf/) is used as LB for special services that need an own IP. E.g. for [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which is used as internal DNS server as the Fritzbox doesn't allow to add additional host names.
 
 Server on nasbox:
 ```
-curl -sfL https://get.k3s.io | sh -
+curl -sfL https://get.k3s.io | sh - --disable servicelb
 ```
 
 Agent on Reaspberry Pi:
