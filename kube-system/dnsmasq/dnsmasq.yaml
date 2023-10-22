@@ -79,6 +79,7 @@ spec:
   type: LoadBalancer
   allocateLoadBalancerNodePorts: false
   externalTrafficPolicy: Local
+  internalTrafficPolicy: Local
   ports:
     - name: udp
       port: 53
