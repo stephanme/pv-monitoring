@@ -75,6 +75,7 @@ metadata:
   namespace: kube-system
   annotations:
     metallb.universe.tf/address-pool: dnsmasq-pool
+    metallb.universe.tf/loadBalancerIPs: 192.168.178.2
 spec:
   type: LoadBalancer
   allocateLoadBalancerNodePorts: false
@@ -99,4 +100,5 @@ metadata:
   namespace: kube-system
 spec:
   addresses:
-  - 192.168.178.2-192.168.178.2
+    - 192.168.178.2-192.168.178.2
+  autoAssign: false
