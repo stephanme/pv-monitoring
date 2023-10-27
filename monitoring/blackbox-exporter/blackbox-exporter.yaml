@@ -1,0 +1,49 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: blackbox-exporter
+  namespace: monitoring
+spec:
+  # renovate: HelmChart
+  repo: https://prometheus-community.github.io/helm-charts
+  chart: prometheus-blackbox-exporter
+  version: 8.4.0
+  targetNamespace: monitoring
+  valuesContent: |-
+    # https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-blackbox-exporter/values.yaml
+    config:
+      modules:
+        dns:
+          prober: dns
+          timeout: 5s
+          dns:
+            transport_protocol: "udp"
+            preferred_ip_protocol: "ip4"
+            query_name: "k3s.fritz.box"
+            query_type: "A"
+            valid_rcodes:
+              - NOERROR          
+    serviceMonitor:
+      enabled: true
+      defaults:
+        labels:
+          release: prometheus
+      targets:
+        - name: pvcontrol
+          url: http://nasbox.fritz.box/pvcontrol/api/pvcontrol
+        - name: dnsmasq
+          url: 192.168.178.2
+          module: dns
+    prometheusRule:
+      enabled: true
+      additionalLabels:
+        release: prometheus
+      namespace: monitoring
+      rules:
+        - alert: EndpointDown
+          expr: probe_success == 0
+          for: 3m
+          labels:
+            severity: "critical"
+          annotations:
+            summary: "{{ $labels.target }}: endpoint {{ $labels.instance }} down"
