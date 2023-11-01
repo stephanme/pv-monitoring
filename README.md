@@ -9,7 +9,7 @@ Monitoring of a photovoltaic system
   - long-term Prometheus instance with infinite data data retention and 15min scrape interval connected to the first instance using federation
   - inverter and wall box connected using [modbus_exporter](https://github.com/RichiH/modbus_exporter)
 - [k3s](https://k3s.io) lightweight Kubernetes cluster
-  - k3s server (using sqlite) running on a nasbox: Celeron G3900 (2 core), 32G RAM, 128G SSD, 3T raid1 disks
+  - k3s server (using sqlite) running on a nasbox: Celeron G3900 (2 core), 32G RAM, 128G SSD, 4T raid1 disks
   - k3s agent running on Raspberry 4 8G RAM
 - [pv-control](https://github.com/stephanme/pv-control) for controlling electric car charger
   - charge car by solar power only
@@ -26,13 +26,16 @@ Software versions including helm chart versions are maintained in deploy.sh and 
 Important release notes
 - [k3s](https://github.com/k3s-io/k3s/releases)
 - [metallb](https://metallb.universe.tf/release-notes/)
+- [longhorn](https://github.com/longhorn/longhorn/tree/master/CHANGELOG)
 - [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
 - [homeassistant](https://www.home-assistant.io/blog/categories/release-notes/)
 
 ## k3s Installation
 
 Standard installation as described in https://rancher.com/docs/k3s/latest/en/quick-start/.
+
 All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) which is deployed as daemon set (without extra LB).
+
 [MetalLB](https://metallb.universe.tf/) is used as LB for special services that need an own IP. E.g. for [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which is used as internal DNS server as the Fritzbox doesn't allow to add additional host names.
 
 Server on nasbox:
@@ -40,8 +43,13 @@ Server on nasbox:
 curl -sfL https://get.k3s.io | sh - --disable servicelb
 ```
 
-Agent on Reaspberry Pi:
+Agent on Raspberry Pi:
 ```
+# enable cgroups, see https://docs.k3s.io/advanced#raspberry-pi
+
+# needed for longhorn
+sudo apt install open-iscsi
+
 curl -sfL http://get.k3s.io | K3S_URL=https://192.168.178.10:6443 \
 K3S_TOKEN=<join_token> sh -
 ```

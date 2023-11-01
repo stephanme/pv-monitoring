@@ -1,0 +1,62 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: longhorn
+  namespace: longhorn-system
+spec:
+  # renovate: HelmChart
+  repo: https://charts.longhorn.io
+  chart: longhorn
+  version: 1.5.1
+  targetNamespace: longhorn-system
+  valuesContent: |-
+    # https://github.com/longhorn/longhorn/blob/master/chart/values.yaml
+    persistence:
+      defaultClassReplicaCount: 2
+    defaultSettings:
+      defaultReplicaCount: 2
+      nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+      backupTarget: cifs://nasbox.fritz.box/backup/longhorn
+      backupTargetCredentialSecret: cifs-backup-target-secret
+      upgradeChecker: false
+      backupstorePollInterval: 0
+    helmPreUpgradeCheckerJob:
+      enabled: false
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: longhorn-auth
+  namespace: longhorn-system
+spec:
+  basicAuth:
+    secret: longhorn-ui-basic-auth
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: rewrite-longhorn-dashboard
+  namespace: longhorn-system
+spec:
+  replacePathRegex:
+    regex: ^/longhorn(/|$)(.*)
+    replacement: /$2
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: longhorn-ingress
+  namespace: longhorn-system
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host("k3s.fritz.box") && PathPrefix("/longhorn")
+      kind: Rule
+      services:
+        - name: longhorn-frontend
+          namespace: longhorn-system
+          port: 80
+      middlewares:
+        - name: longhorn-auth
+        - name: rewrite-longhorn-dashboard
