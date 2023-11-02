@@ -22,6 +22,12 @@ spec:
       backupstorePollInterval: 0
     helmPreUpgradeCheckerJob:
       enabled: false
+    csi:
+      # default is 3 - makes no sense on 2 nodes
+      attacherReplicaCount: 2
+      provisionerReplicaCount: 2
+      resizerReplicaCount: 2
+      snapshotterReplicaCount: 2
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
