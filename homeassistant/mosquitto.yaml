@@ -32,8 +32,6 @@ spec:
             - name: secrets
               mountPath: /mosquitto/secrets/
               readOnly: true
-      nodeSelector:
-        kubernetes.io/hostname: nasbox
       volumes:
         - name: config
           configMap:
@@ -43,7 +41,7 @@ spec:
             secretName: mosquitto-secrets
         - name: mosquitto-data
           persistentVolumeClaim:
-            claimName: mosquitto-pv-claim
+            claimName: mosquitto-pvc
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -77,13 +75,15 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mosquitto-pv-claim
+  name: mosquitto-pvc
   labels:
     app: mosquitto
+    recurring-job.longhorn.io/source: enabled
+    recurring-job-group.longhorn.io/no-backup: enabled
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: longhorn
   resources:
     requests:
       storage: 10M
