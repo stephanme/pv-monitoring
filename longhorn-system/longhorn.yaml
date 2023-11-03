@@ -7,7 +7,7 @@ spec:
   # renovate: HelmChart
   repo: https://charts.longhorn.io
   chart: longhorn
-  version: 1.5.1
+  version: 1.5.2
   targetNamespace: longhorn-system
   valuesContent: |-
     # https://github.com/longhorn/longhorn/blob/master/chart/values.yaml
