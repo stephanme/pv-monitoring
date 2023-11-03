@@ -73,7 +73,7 @@ spec:
       volumes:
         - name: zigbee2mqtt-data
           persistentVolumeClaim:
-            claimName: zigbee2mqtt-data
+            claimName: zigbee2mqtt-pvc
         - name: zigbee2mqtt-udev
           hostPath:
             path: /run/udev
@@ -145,11 +145,11 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app: zigbee2mqtt
-  name: zigbee2mqtt-data
+  name: zigbee2mqtt-pvc
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: longhorn
   resources:
     requests:
       storage: 10M
