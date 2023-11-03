@@ -1,5 +1,5 @@
-# expose traefik directly without LB
-# deploy as deamon set on every node
+# deploy as daemonset on every node
+# expose via MetalLB on VIP and via hostPorts on every node
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -15,7 +15,13 @@ spec:
         maxUnavailable: 1
         maxSurge: 0
     service:
-      enabled: false
+      enabled: true
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: 192.168.178.230
+      spec:
+        allocateLoadBalancerNodePorts: false
+        externalTrafficPolicy: Local
+        internalTrafficPolicy: Local
     securityContext:
       capabilities:
         add:
@@ -43,9 +49,8 @@ spec:
         protocol: TCP
     metrics:
       prometheus:
-    # needs newer helm chart version >=v20.5.0
-    #     service:
-    #       enabled: true
+        service:
+          enabled: true
         serviceMonitor:
           enabled: true
           additionalLabels: # k8s labels

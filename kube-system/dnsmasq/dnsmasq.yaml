@@ -63,9 +63,10 @@ data:
     # forward to fritzbox DNS
     server=192.168.178.1
 
-    address=/homeassistant.fritz.box/192.168.178.10
-    address=/k3s.fritz.box/192.168.178.10
-    address=/k3s.fritz.box/192.168.178.11
+    address=/homeassistant.fritz.box/192.168.178.230
+    address=/k3s.fritz.box/192.168.178.230 # traefik via MetalLB
+    address=/k3s2.fritz.box/192.168.178.10 # traefik via node ports
+    address=/k3s2.fritz.box/192.168.178.11
 ---
 # Note: need to recreate LB when ports/protocols are changed
 apiVersion: v1
