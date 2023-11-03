@@ -55,33 +55,26 @@ spec:
       - 192.168.178.10
 
     alertmanager:
-      ingress:
-        enabled: false
-        annotations:
-          traefik.ingress.kubernetes.io/router.middlewares: prometheus-stripprefix@kubernetescrd
-        hosts:
-          - nasbox.fritz.box
-        paths:
-          - /alertmanager
-        pathType: Prefix
-
       alertmanagerSpec:
         # see alertmanagerconfig.yml
         alertmanagerConfiguration:
           name: kube-prometheus-stack-alertmanagerconfig
 
-        externalUrl: "http://nasbox.fritz.box/alertmanager/"
+        externalUrl: "http://k3s.fritz.box/alertmanager/"
         #    replicas: 3
         #    podAntiAffinity: "soft"
-        nodeSelector:
-          kubernetes.io/hostname: nasbox
         storage:
           volumeClaimTemplate:
+            metadata:
+              labels:
+                recurring-job.longhorn.io/source: enabled
+                recurring-job-group.longhorn.io/no-backup: enabled
             spec:
               accessModes: ["ReadWriteOnce"]
+              storageClassName: longhorn
               resources:
                 requests:
-                  storage: 1Gi
+                  storage: 10Mi
         resources:
           requests:
             cpu: 25m
