@@ -8,6 +8,8 @@ spec:
   repo: https://prometheus-community.github.io/helm-charts
   chart: prometheus-blackbox-exporter
   version: 8.4.0
+  timeout: 10m
+  failurePolicy: abort
   targetNamespace: monitoring
   valuesContent: |-
     # https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-blackbox-exporter/values.yaml

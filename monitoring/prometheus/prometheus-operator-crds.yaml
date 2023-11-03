@@ -9,3 +9,5 @@ spec:
   chart: prometheus-operator-crds
   version: 6.0.0
   targetNamespace: monitoring
+  timeout: 10m
+  failurePolicy: abort

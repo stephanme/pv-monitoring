@@ -9,6 +9,8 @@ spec:
   chart: metallb
   version: 0.13.12
   targetNamespace: kube-system
+  timeout: 10m
+  failurePolicy: abort
   valuesContent: |-
     # https://github.com/metallb/metallb/blob/main/charts/metallb/values.yaml
     prometheus:

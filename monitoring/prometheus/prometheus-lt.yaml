@@ -9,6 +9,8 @@ spec:
   chart: kube-prometheus-stack
   version: 52.1.0
   targetNamespace: monitoring
+  timeout: 10m
+  failurePolicy: abort
   valuesContent: |-
     # Long term storage prometheus
     # 15 min scrape interval, basically no retention

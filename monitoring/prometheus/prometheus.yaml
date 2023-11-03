@@ -9,6 +9,8 @@ spec:
   chart: kube-prometheus-stack
   version: 52.1.0
   targetNamespace: monitoring
+  timeout: 10m
+  failurePolicy: abort
   valuesContent: |-
     # copied from https://github.com/cablespaghetti/k3s-monitoring
     # helm upgrade --install prometheus prometheus-community/kube-prometheus-stack --values kube-prometheus-stack-values.yaml
