@@ -9,6 +9,8 @@ spec:
   chart: longhorn
   version: 1.5.2
   targetNamespace: longhorn-system
+  timeout: 1h
+  failurePolicy: abort
   valuesContent: |-
     # https://github.com/longhorn/longhorn/blob/master/chart/values.yaml
     persistence:
@@ -20,6 +22,7 @@ spec:
       backupTargetCredentialSecret: cifs-backup-target-secret
       upgradeChecker: false
       backupstorePollInterval: 0
+      concurrentAutomaticEngineUpgradePerNodeLimit: 2
     helmPreUpgradeCheckerJob:
       enabled: false
     csi:
