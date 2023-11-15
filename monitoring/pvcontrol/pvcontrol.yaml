@@ -41,6 +41,7 @@ spec:
                 },
                 "controller": {
                   "enable_phase_switching": true,
+                  "enable_phase_switching_on_host_only": "pi1",
                   "enable_auto_phase_switching": false,
                   "pv_allow_charging_delay": 300
                 },
@@ -51,6 +52,8 @@ spec:
                   "vin": "$(car_vin)"
                 }
               }
+            - --hostname
+            - $(node_name)
           env:
             - name: car_user
               valueFrom:
@@ -67,6 +70,10 @@ spec:
                 secretKeyRef:
                   name: pvcontrol
                   key: car_vin
+            - name: node_name
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName              
           ports:
             - containerPort: 8080
           securityContext:
@@ -76,8 +83,19 @@ spec:
               exec:
                 # SIGINT needed for flask dev server, kill is a bash built-in
                 command: ["bash", "-c", "kill -s SIGINT 1"]
+      # enforce pi1 - node affinity is not considered when pi1 restarts after downtime
       nodeSelector:
         kubernetes.io/hostname: pi1
+      affinity:
+        nodeAffinity:      
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - pi1
 
 ---
 apiVersion: v1
