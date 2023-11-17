@@ -86,19 +86,19 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.middlewares: prometheus-stripprefix@kubernetescrd
         hosts:
-          - nasbox.fritz.box
+          - k3s.fritz.box
         paths:
           - /prometheus
         pathType: Prefix
 
       prometheusSpec:
         retention: 7d
-        externalUrl: "http://nasbox.fritz.box/prometheus/"
+        externalUrl: "http://k3s.fritz.box/prometheus/"
 
         #    replicas: 2
         #    podAntiAffinity: "hard"
-        nodeSelector:
-          kubernetes.io/hostname: nasbox
+        # nodeSelector:
+        #   kubernetes.io/hostname: nasbox
         storageSpec:
           volumeClaimTemplate:
             metadata:
@@ -159,7 +159,7 @@ spec:
         - flant-statusmap-panel
       grafana.ini:
         server:
-          domain: nasbox.fritz.box
+          domain: k3s.fritz.box
           root_url: "%(protocol)s://%(domain)s/grafana"
           serve_from_sub_path: true
         auth.anonymous:
@@ -169,7 +169,7 @@ spec:
       ingress:
         enabled: false
         hosts:
-          - nasbox.fritz.box
+          - k3s.fritz.box
         path: /grafana
 
       additionalDataSources:
@@ -197,8 +197,6 @@ spec:
           release: prometheus
 
     prometheusOperator:
-      nodeSelector:
-        kubernetes.io/hostname: nasbox
       resources:
         requests:
           cpu: 50m
@@ -211,8 +209,6 @@ spec:
           memory: 16Mi
 
     kube-state-metrics:
-      nodeSelector:
-        kubernetes.io/hostname: nasbox
       resources:
         requests:
           cpu: 5m

@@ -57,7 +57,7 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.middlewares: prometheus-stripprefix@kubernetescrd
         hosts:
-          - nasbox.fritz.box
+          - k3s.fritz.box
         paths:
           - /prometheus-lt
         pathType: Prefix
@@ -67,7 +67,7 @@ spec:
         evaluationInterval: 15m
         retention: 10y
         enableAdminAPI: true
-        externalUrl: "http://nasbox.fritz.box/prometheus-lt/"
+        externalUrl: "http://k3s.fritz.box/prometheus-lt/"
 
         query:
           lookbackDelta: 30m
@@ -82,8 +82,8 @@ spec:
 
     #    replicas: 2
     #    podAntiAffinity: "hard"
-        nodeSelector:
-          kubernetes.io/hostname: nasbox
+        # nodeSelector:
+        #   kubernetes.io/hostname: nasbox
         storageSpec:
           volumeClaimTemplate:
             spec:
