@@ -5,6 +5,7 @@ metadata:
 spec:
   schedule: "0 12 * * SUN"
   concurrencyPolicy: Replace
+  suspend: true
   jobTemplate:
     spec:
       activeDeadlineSeconds: 3600

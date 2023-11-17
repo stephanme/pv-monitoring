@@ -101,8 +101,13 @@ spec:
           kubernetes.io/hostname: nasbox
         storageSpec:
           volumeClaimTemplate:
+            metadata:
+              labels:
+                recurring-job.longhorn.io/source: enabled
+                recurring-job-group.longhorn.io/no-backup: enabled
             spec:
               accessModes: ["ReadWriteOnce"]
+              storageClassName: longhorn
               resources:
                 requests:
                   storage: 10Gi
