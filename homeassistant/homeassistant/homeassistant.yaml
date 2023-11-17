@@ -26,8 +26,6 @@ spec:
           volumeMounts:
             - mountPath: "/config"
               name: homeassistant-persistent-storage
-            - mountPath: /srv/samba-private/backup/homeassistant
-              name: backup-storage
         # code-server add-on: https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/templates/addons/code-server
         - name: codeserver
           image: ghcr.io/coder/code-server
@@ -50,16 +48,12 @@ spec:
           volumeMounts:
             - name: homeassistant-persistent-storage
               mountPath: /data/config
-      nodeSelector:
-        kubernetes.io/hostname: nasbox
+      # nodeSelector:
+      #   kubernetes.io/hostname: nasbox
       volumes:
         - name: homeassistant-persistent-storage
           persistentVolumeClaim:
-            claimName: homeassistant-pv-claim
-        - name: backup-storage
-          hostPath:
-            path: /srv/samba-private/backup/homeassistant
-            type: Directory
+            claimName: homeassistant-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -92,16 +86,16 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: homeassistant-pv-claim
+  name: homeassistant-pvc
   labels:
     app: homeassistant
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: longhorn
   resources:
     requests:
-      storage: 1Gi
+      storage: 300Mi
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
