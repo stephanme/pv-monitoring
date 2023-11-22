@@ -25,6 +25,8 @@ spec:
             - KostalMeter
             - --wallbox
             - GoeWallbox
+            - --relay
+            - RaspiPhaseRelay
             - --car
             - VolkswagenIDCar
             - --config
@@ -36,12 +38,14 @@ spec:
                   "unit_id": 71
                 },
                 "wallbox": {
-                  "url": "http://go-echarger.fritz.box",
+                  "url": "http://go-echarger.fritz.box"
+                },
+                "relay": {
+                  "enable_phase_switching": true,
+                  "installed_on_host": "pi1",
                   "phase_relay_type": "NO"
                 },
                 "controller": {
-                  "enable_phase_switching": true,
-                  "enable_phase_switching_on_host_only": "pi1",
                   "enable_auto_phase_switching": false,
                   "pv_allow_charging_delay": 300
                 },
