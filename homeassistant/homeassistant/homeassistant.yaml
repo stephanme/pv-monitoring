@@ -95,7 +95,7 @@ spec:
   storageClassName: longhorn
   resources:
     requests:
-      storage: 300Mi
+      storage: 400Mi
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
