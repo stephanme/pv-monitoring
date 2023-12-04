@@ -32,7 +32,7 @@ spec:
           release: prometheus
       targets:
         - name: pvcontrol
-          url: http://nasbox.fritz.box/pvcontrol/api/pvcontrol
+          url: http://k3s.fritz.box/pvcontrol/api/pvcontrol
         - name: dnsmasq
           url: 192.168.178.2
           module: dns
