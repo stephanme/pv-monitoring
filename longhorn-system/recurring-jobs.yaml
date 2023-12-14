@@ -2,6 +2,21 @@
 apiVersion: longhorn.io/v1beta1
 kind: RecurringJob
 metadata:
+  name: trim-before-backup
+  namespace: longhorn-system
+spec:
+  cron: "50 11 * * SUN"
+  task: "filesystem-trim"
+  groups:
+  - default
+  retain: 0
+  concurrency: 2
+  labels:
+    schedule: 'weekly'
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
   name: backup-weekly
   namespace: longhorn-system
 spec:
@@ -13,6 +28,22 @@ spec:
   concurrency: 2
   labels:
     schedule: 'weekly'
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: trim-daily
+  namespace: longhorn-system
+spec:
+  cron: "50 23 * * *"
+  task: "filesystem-trim"
+  groups:
+  - default
+  - no-backup
+  retain: 0
+  concurrency: 2
+  labels:
+    schedule: 'daily'
 ---
 apiVersion: longhorn.io/v1beta1
 kind: RecurringJob
