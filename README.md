@@ -10,7 +10,7 @@ Monitoring of a photovoltaic system
   - inverter and wall box connected using [modbus_exporter](https://github.com/RichiH/modbus_exporter)
 - [k3s](https://k3s.io) lightweight Kubernetes cluster
   - k3s server (using sqlite) running on a nasbox: Celeron G3900 (2 core), 32G RAM, 128G SSD, 4T raid1 disks
-  - k3s agent running on Raspberry 4 8G RAM
+  - k3s agent running on Raspberry 4, 8G RAM, 512G SSD
 - [pv-control](https://github.com/stephanme/pv-control) for controlling electric car charger
   - charge car by solar power only
   - 1 and 3 phase charging to get a wide control range starting at 1.3 kW up to (theoretical) 11kW
@@ -34,14 +34,35 @@ Important release notes
 
 Standard installation as described in https://rancher.com/docs/k3s/latest/en/quick-start/.
 
-All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) which is deployed as daemon set (without extra LB).
+All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) which is deployed as daemon set on all nodes:
+- k3s.fritz.box - via MetalLB
+- nasbox.fritz.box, pi1.fritz.box - via node ports
+- additional DNS names like homeassistant.fritz.box - translated to node IPs or MetalLB IP via dnsmasq 
 
 [MetalLB](https://metallb.universe.tf/) is used as LB for special services that need an own IP. E.g. for [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which is used as internal DNS server as the Fritzbox doesn't allow to add additional host names.
 
-Server on nasbox:
+### k3s Server on nasbox
 ```
 curl -sfL https://get.k3s.io | sh - --disable servicelb
 ```
+
+Config file `/etc/rancher/k3s/config.yaml`
+```
+disable: servicelb
+
+# https://github.com/k3s-io/k3s/issues/3619#issuecomment-993977516
+kube-controller-manager-arg:
+- "bind-address=0.0.0.0"
+kube-proxy-arg:
+- "metrics-bind-address=0.0.0.0"
+kube-scheduler-arg:
+- "bind-address=0.0.0.0"
+```
+
+Others:
+- Disable multipath for `sd[a-z0-9]+` devices as described in [Troubleshooting: `MountVolume.SetUp failed for volume` due to multipathd on the node](https://longhorn.io/kb/troubleshooting-volume-with-multipath/)
+
+### k3s Agent on pi1
 
 Agent on Raspberry Pi:
 ```
@@ -53,6 +74,8 @@ sudo apt install open-iscsi
 curl -sfL http://get.k3s.io | K3S_URL=https://192.168.178.10:6443 \
 K3S_TOKEN=<join_token> sh -
 ```
+
+## k3s Updates
 
 Automatic k3s updates: https://rancher.com/docs/k3s/latest/en/upgrades/automated/
 
