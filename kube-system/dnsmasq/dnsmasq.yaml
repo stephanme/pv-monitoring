@@ -24,7 +24,8 @@ spec:
             - /bin/dnsmasq
             - --keep-in-foreground
             # - --no-daemon
-            # - --log-queries
+            - --log-facility=- # log to stderr
+            - --log-queries
             - --conf-file=/config/dnsmasq.conf
           ports:
             - containerPort: 1053

@@ -71,7 +71,7 @@ data:
           fallthrough
         }
         prometheus :9153
-        forward . /etc/resolv.conf
+        forward . {$DNSMASQ_SERVICE_SERVICE_HOST}
         cache 30
         loop
         reload
@@ -84,7 +84,7 @@ data:
     192.168.178.11 pi1
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: coredns
   namespace: kube-system
@@ -93,7 +93,7 @@ metadata:
     kubernetes.io/name: "CoreDNS"
 spec:
   revisionHistoryLimit: 0
-  strategy:
+  updateStrategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
@@ -118,13 +118,6 @@ spec:
           effect: "NoSchedule"
       nodeSelector:
         kubernetes.io/os: linux
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              k8s-app: kube-dns
       containers:
       - name: coredns
         image: rancher/mirrored-coredns-coredns:1.10.1
@@ -213,6 +206,7 @@ spec:
     k8s-app: kube-dns
   clusterIP: 10.43.0.10
   clusterIPs: [10.43.0.10]
+  internalTrafficPolicy: Local
   ports:
   - name: dns
     port: 53
