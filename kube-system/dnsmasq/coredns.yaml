@@ -1,3 +1,7 @@
+# Copied from https://github.com/k3s-io/k3s/blob/master/manifests/coredns.yaml
+# Changes:
+# - replaced template vars by (default) k3s server configuration values
+# - manually configured NodeHosts file in coredns config map
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -57,7 +61,7 @@ data:
         errors
         health
         ready
-        kubernetes %{CLUSTER_DOMAIN}% in-addr.arpa ip6.arpa {
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
           pods insecure
           fallthrough in-addr.arpa ip6.arpa
         }
@@ -75,6 +79,9 @@ data:
         import /etc/coredns/custom/*.override
     }
     import /etc/coredns/custom/*.server
+  NodeHosts: |
+    192.168.178.10 nasbox
+    192.168.178.11 pi1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -120,7 +127,7 @@ spec:
               k8s-app: kube-dns
       containers:
       - name: coredns
-        image: %{SYSTEM_DEFAULT_REGISTRY}%rancher/mirrored-coredns-coredns:1.10.1
+        image: rancher/mirrored-coredns-coredns:1.10.1
         imagePullPolicy: IfNotPresent
         resources:
           limits:
@@ -204,8 +211,8 @@ metadata:
 spec:
   selector:
     k8s-app: kube-dns
-  clusterIP: %{CLUSTER_DNS}%
-  clusterIPs: %{CLUSTER_DNS_LIST}%
+  clusterIP: 10.43.0.10
+  clusterIPs: [10.43.0.10]
   ports:
   - name: dns
     port: 53
@@ -216,4 +223,4 @@ spec:
   - name: metrics
     port: 9153
     protocol: TCP
-  ipFamilyPolicy: %{CLUSTER_DNS_IPFAMILYPOLICY}%
+  ipFamilyPolicy: SingleStack
