@@ -37,18 +37,18 @@ Standard installation as described in https://rancher.com/docs/k3s/latest/en/qui
 All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) which is deployed as daemon set on all nodes:
 - k3s.fritz.box - via MetalLB
 - nasbox.fritz.box, pi1.fritz.box - via node ports
-- additional DNS names like homeassistant.fritz.box - translated to node IPs or MetalLB IP via dnsmasq 
+- additional DNS names like homeassistant.fritz.box - translated to node IPs or MetalLB IP via dnsmasq + customized coredns
 
 [MetalLB](https://metallb.universe.tf/) is used as LB for special services that need an own IP. E.g. for [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which is used as internal DNS server as the Fritzbox doesn't allow to add additional host names.
 
 ### k3s Server on nasbox
 ```
-curl -sfL https://get.k3s.io | sh - --disable servicelb
+curl -sfL https://get.k3s.io | sh - --disable coredns,servicelb
 ```
 
 Config file `/etc/rancher/k3s/config.yaml`
 ```
-disable: servicelb
+disable: coredns,servicelb
 
 # https://github.com/k3s-io/k3s/issues/3619#issuecomment-993977516
 kube-controller-manager-arg:
