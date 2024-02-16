@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: dnsmasq
-          image: ricardbejarano/dnsmasq:2.89
+          image: ricardbejarano/dnsmasq:2.90
           imagePullPolicy: IfNotPresent
           command:
             - /bin/dnsmasq
