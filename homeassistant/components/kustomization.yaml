@@ -9,4 +9,4 @@ images:
   newTag: 2024.2.1
 # https://github.com/coder/code-server/pkgs/container/code-server
 - name: ghcr.io/coder/code-server
-  newTag: 4.21.1
+  newTag: 4.22.0
