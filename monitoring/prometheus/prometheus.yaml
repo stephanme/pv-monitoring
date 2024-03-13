@@ -117,6 +117,14 @@ spec:
             cpu: 200m
             memory: 1500Mi
 
+        # targets running outside of k3s
+        additionalScrapeConfigs:
+          - job_name: nibegw
+            static_configs:
+              - targets:
+                - nibegw.fritz.box
+                labels:
+
       # may want to replace/drop instance/pod labels for external systems
       additionalServiceMonitors:
       - name: prometheus-lt-kube-prometh-prometheus
