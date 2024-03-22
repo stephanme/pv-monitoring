@@ -134,6 +134,8 @@ spec:
               - 'goe_energy_wh_total'
               - 'pvcontrol:total_charged_energy_wh_total'
               - 'pvcontrol:charged_energy_wh_total'
+              - 'nibe_energy_meter_wh_total'
+              - 'nibe_heat_meter_wh'
 
     additionalPrometheusRulesMap:
       prometheus-lt.rules:

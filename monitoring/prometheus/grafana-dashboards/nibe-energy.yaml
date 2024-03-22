@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: kostal-energy-dashboard
+  name: nibe-energy-dashboard
   labels:
      grafana_dashboard: "1"
 data:
-  kostal-energy-dashboard.json: |-
+  nibe-energy-dashboard.json: |-
     {
       "annotations": {
         "list": [
@@ -32,367 +32,10 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
+      "id": 35,
       "links": [],
       "liveNow": false,
       "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "dark-yellow",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "watth",
-              "unitScale": true
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 0,
-            "y": 0
-          },
-          "id": 20,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "diff"
-              ],
-              "fields": "",
-              "values": true
-            },
-            "showPercentChange": false,
-            "text": {},
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.3.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "increase(kpc_ac_energy_yield_wh_total[$__range])",
-              "instant": true,
-              "interval": "",
-              "intervalFactor": 10,
-              "legendFormat": "",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "PV",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "watth",
-              "unitScale": true
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 3,
-            "y": 0
-          },
-          "id": 6,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "diff"
-              ],
-              "fields": "",
-              "values": true
-            },
-            "showPercentChange": false,
-            "text": {},
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.3.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "increase(kpc_ac_energy_to_grid_wh_total[$__range])",
-              "instant": true,
-              "interval": "",
-              "intervalFactor": 10,
-              "legendFormat": "",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "Energy to Grid",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "dark-orange",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "watth",
-              "unitScale": true
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 6,
-            "y": 0
-          },
-          "id": 10,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "diff"
-              ],
-              "fields": "",
-              "values": true
-            },
-            "showPercentChange": false,
-            "text": {},
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.3.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "increase(kpc_home_power_consumption_total_wh_total[$__range])",
-              "instant": true,
-              "interval": "",
-              "intervalFactor": 10,
-              "legendFormat": "",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "Home Consumption",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "dark-yellow",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "watth",
-              "unitScale": true
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 9,
-            "y": 0
-          },
-          "id": 12,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": [
-                "diff"
-              ],
-              "fields": "",
-              "values": true
-            },
-            "showPercentChange": false,
-            "text": {},
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.3.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "increase(kpc_home_power_consumption_wh_total{source=\"pv\"}[$__range])",
-              "instant": true,
-              "interval": "",
-              "intervalFactor": 10,
-              "legendFormat": "PV",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "... from PV",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "semi-dark-red",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "watth",
-              "unitScale": true
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 12,
-            "y": 0
-          },
-          "id": 14,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "diff"
-              ],
-              "fields": "",
-              "values": true
-            },
-            "showPercentChange": false,
-            "text": {},
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.3.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "increase(kpc_home_power_consumption_wh_total{source=\"grid\"}[$__range])",
-              "instant": true,
-              "interval": "",
-              "intervalFactor": 10,
-              "legendFormat": "",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "... from Grid",
-          "type": "stat"
-        },
         {
           "datasource": {
             "type": "prometheus",
@@ -427,7 +70,7 @@ data:
           "gridPos": {
             "h": 4,
             "w": 3,
-            "x": 15,
+            "x": 0,
             "y": 0
           },
           "id": 24,
@@ -463,7 +106,364 @@ data:
               "refId": "A"
             }
           ],
-          "title": "... to Nibe",
+          "title": "Electric Energy",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-orange",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "watth",
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
+            "x": 3,
+            "y": 0
+          },
+          "id": 10,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "diff"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "showPercentChange": false,
+            "text": {},
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "10.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(nibe_heat_meter_wh{sensor=\"EP14 heating cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh{sensor=\"EP14 hotwater cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh{sensor=\"EP14 cooling cpr\"}[$__range])",
+              "instant": true,
+              "interval": "",
+              "intervalFactor": 10,
+              "legendFormat": "",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Heat Meter Overall",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-yellow",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none",
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
+            "x": 6,
+            "y": 0
+          },
+          "id": 20,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "diff"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "showPercentChange": false,
+            "text": {},
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "10.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "(increase(nibe_heat_meter_wh{sensor=\"EP14 heating cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh{sensor=\"EP14 hotwater cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh{sensor=\"EP14 cooling cpr\"}[$__range])) / on (job) increase(nibe_energy_meter_wh_total[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "B"
+            }
+          ],
+          "title": "COP",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-red",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "watth",
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
+            "x": 9,
+            "y": 0
+          },
+          "id": 25,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "diff"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "showPercentChange": false,
+            "text": {},
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "10.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "round(increase(nibe_heat_meter_wh{sensor=\"EP14 heating cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh{sensor=\"EP14 hotwater cpr+add\"}[$__range]) - on (job) increase(nibe_heat_meter_wh{sensor=\"EP14 heating cpr\"}[$__range]) - on (job) increase(nibe_heat_meter_wh{sensor=\"EP14 hotwater cpr\"}[$__range]), 1)",
+              "instant": true,
+              "interval": "",
+              "intervalFactor": 10,
+              "legendFormat": "",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Additional Heat",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "semi-dark-red",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "watth",
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
+            "x": 15,
+            "y": 0
+          },
+          "id": 14,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "diff"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "showPercentChange": false,
+            "text": {},
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "10.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(nibe_heat_meter_wh{sensor=\"EP14 heating cpr+add\"}[$__range])",
+              "instant": true,
+              "interval": "",
+              "intervalFactor": 10,
+              "legendFormat": "",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Heating",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "watth",
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
+            "x": 18,
+            "y": 0
+          },
+          "id": 6,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "diff"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "showPercentChange": false,
+            "text": {},
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "10.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(nibe_heat_meter_wh{sensor=\"EP14 hotwater cpr+add\"}[$__range])",
+              "instant": true,
+              "interval": "",
+              "intervalFactor": 10,
+              "legendFormat": "",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Hot Water",
           "type": "stat"
         },
         {
@@ -495,7 +495,7 @@ data:
           "gridPos": {
             "h": 4,
             "w": 3,
-            "x": 18,
+            "x": 21,
             "y": 0
           },
           "id": 18,
@@ -525,7 +525,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(goe_energy_wh_total[$__range])",
+              "expr": "increase(nibe_heat_meter_wh{sensor=\"EP14 cooling cpr\"}[$__range])",
               "instant": true,
               "interval": "",
               "legendFormat": "",
@@ -533,7 +533,7 @@ data:
               "refId": "A"
             }
           ],
-          "title": "... to Car",
+          "title": "Cooling",
           "type": "stat"
         },
         {
@@ -541,111 +541,7 @@ data:
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "blue",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "watth",
-              "unitScale": true
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 21,
-            "y": 0
-          },
-          "id": 22,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "text": {
-              "titleSize": 24,
-              "valueSize": 24
-            },
-            "textMode": "auto",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.3.3",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "increase(pvcontrol:total_charged_energy_wh_total[$__range])",
-              "instant": true,
-              "interval": "",
-              "intervalFactor": 10,
-              "legendFormat": "Total",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "increase(pvcontrol:charged_energy_wh_total{source=\"pv\"}[$__range])",
-              "hide": false,
-              "instant": true,
-              "interval": "",
-              "legendFormat": "... PV",
-              "refId": "C"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "increase(pvcontrol:charged_energy_wh_total{source=\"grid\"}[$__range])",
-              "hide": false,
-              "instant": true,
-              "interval": "",
-              "legendFormat": "... Grid",
-              "refId": "B"
-            }
-          ],
-          "title": "... to Car",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
+          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -705,29 +601,7 @@ data:
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Total"
-                },
-                "properties": [
-                  {
-                    "id": "custom.stacking",
-                    "value": {
-                      "group": false,
-                      "mode": "normal"
-                    }
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "semi-dark-orange",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "grid"
+                  "options": "Heating"
                 },
                 "properties": [
                   {
@@ -742,13 +616,28 @@ data:
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "pv"
+                  "options": "Cooling"
                 },
                 "properties": [
                   {
                     "id": "color",
                     "value": {
-                      "fixedColor": "dark-yellow",
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Hot Water"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "green",
                       "mode": "fixed"
                     }
                   }
@@ -782,11 +671,13 @@ data:
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "max(kpc_home_power_consumption_total_wh_total) - max(kpc_home_power_consumption_total_wh_total offset $resolution)",
+              "expr": "max(nibe_heat_meter_wh{sensor=\"EP14 heating cpr+add\"}) - max(nibe_heat_meter_wh{sensor=\"EP14 heating cpr+add\"} offset $resolution)",
               "hide": false,
               "interval": "$resolution",
-              "legendFormat": "Total",
+              "legendFormat": "Heating",
+              "range": true,
               "refId": "B"
             },
             {
@@ -794,296 +685,30 @@ data:
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "max by (source)(kpc_home_power_consumption_wh_total{source!=\"battery\"}) - max by (source)(kpc_home_power_consumption_wh_total{source!=\"battery\"} offset $resolution)",
+              "expr": "max(nibe_heat_meter_wh{sensor=\"EP14 cooling cpr\"}) - max(nibe_heat_meter_wh{sensor=\"EP14 cooling cpr\"} offset $resolution)",
               "interval": "$resolution",
-              "legendFormat": "{{source}}",
+              "legendFormat": "Cooling",
+              "range": true,
               "refId": "A"
-            }
-          ],
-          "title": "Home Consumption",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": -1,
-                "drawStyle": "bars",
-                "fillOpacity": 100,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "watth",
-              "unitScale": true
             },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "PV"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "dark-yellow",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "To Grid"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "semi-dark-green",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 24,
-            "x": 0,
-            "y": 13
-          },
-          "id": 4,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.0.1",
-          "targets": [
             {
               "datasource": {
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
+              "editorMode": "code",
               "exemplar": true,
-              "expr": "max(kpc_ac_energy_yield_wh_total) - max(kpc_ac_energy_yield_wh_total offset $resolution)",
+              "expr": "max(nibe_heat_meter_wh{sensor=\"EP14 hotwater cpr+add\"}) - max(nibe_heat_meter_wh{sensor=\"EP14 hotwater cpr+add\"} offset $resolution)",
               "hide": false,
               "interval": "$resolution",
-              "legendFormat": "PV",
-              "refId": "B"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "exemplar": true,
-              "expr": "max(kpc_ac_energy_to_grid_wh_total) - max(kpc_ac_energy_to_grid_wh_total offset $resolution)",
-              "interval": "$resolution",
-              "legendFormat": "To Grid",
-              "refId": "A"
+              "legendFormat": "Hot Water",
+              "range": true,
+              "refId": "C"
             }
           ],
-          "title": "PV",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": -1,
-                "drawStyle": "bars",
-                "fillOpacity": 100,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "watth",
-              "unitScale": true
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Car"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "blue",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Grid"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "semi-dark-red",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 24,
-            "x": 0,
-            "y": 20
-          },
-          "id": 16,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.0.1",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "exemplar": true,
-              "expr": "increase(max(pvcontrol:total_charged_energy_wh_total)[$resolution:])",
-              "interval": "$resolution",
-              "legendFormat": "Car",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "exemplar": true,
-              "expr": "increase(max(pvcontrol:charged_energy_wh_total{source=\"grid\"})[$resolution:])",
-              "hide": false,
-              "interval": "$resolution",
-              "legendFormat": "Grid",
-              "refId": "B"
-            }
-          ],
-          "title": "Car Charging",
+          "title": "Heat Meter",
           "type": "timeseries"
         },
         {
@@ -1168,7 +793,7 @@ data:
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 27
+            "y": 13
           },
           "id": 23,
           "options": {
@@ -1199,11 +824,11 @@ data:
               "refId": "A"
             }
           ],
-          "title": "Nibe Heatpump",
+          "title": "Electric Energy",
           "type": "timeseries"
         }
       ],
-      "refresh": "",
+      "refresh": false,
       "schemaVersion": 39,
       "tags": [],
       "templating": {
@@ -1255,9 +880,9 @@ data:
           },
           {
             "current": {
-              "selected": false,
-              "text": "default",
-              "value": "default"
+              "selected": true,
+              "text": "Prometheus",
+              "value": "prometheus"
             },
             "hide": 0,
             "includeAll": false,
@@ -1279,8 +904,8 @@ data:
       },
       "timepicker": {},
       "timezone": "",
-      "title": "Kostal Energy",
-      "uid": "bGXzWbiRz",
-      "version": 3,
+      "title": "Nibe Energy",
+      "uid": "a91033b7-cf2b-42f7-aaa4-03ec94df4055",
+      "version": 8,
       "weekStart": ""
     }

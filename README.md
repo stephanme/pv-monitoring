@@ -1,9 +1,10 @@
 # pv-monitoring
-Monitoring of a photovoltaic system
+Monitoring of a photovoltaic system, car charging and heat pump
 
 - 7 kW peak solar power system
 - [KOSTAL PLENTICORE plus](https://www.kostal-solar-electric.com/en-gb/products/hybrid-inverter/plenticore-plus) inverter
 - [go-eCharger HOMEfix 11kW](https://go-e.co/products/go-echarger-home/?lang=en) wallbox
+- [Nibe VVM310 + S2125-8 heat pump](https://www.nibe.eu/en-eu/products/heat-pumps/air-water-heat-pumps/vvm-310)
 - Monitoring with [Prometheus](https://prometheus.io) running on a [k3s](https://k3s.io) Kubernetes cluster
   - standard Prometheus instance with 7d data retention and 30s scrape interval
   - long-term Prometheus instance with infinite data data retention and 15min scrape interval connected to the first instance using federation
