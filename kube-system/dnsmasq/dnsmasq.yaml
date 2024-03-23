@@ -70,6 +70,7 @@ data:
     address=/fritz.box.fritz.box/
 
     address=/homeassistant.fritz.box/192.168.178.230
+    address=/mosquitto.fritz.box/192.168.178.230
     address=/k3s.fritz.box/192.168.178.230 # traefik via MetalLB
     address=/k3s2.fritz.box/192.168.178.10 # traefik via node ports
     address=/k3s2.fritz.box/192.168.178.11
