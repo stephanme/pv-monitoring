@@ -26,7 +26,6 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "id": 37,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -85,8 +84,7 @@ data:
                     "value": 80
                   }
                 ]
-              },
-              "unitScale": true
+              }
             },
             "overrides": []
           },
@@ -183,8 +181,7 @@ data:
                   }
                 ]
               },
-              "unit": "celsius",
-              "unitScale": true
+              "unit": "celsius"
             },
             "overrides": [
               {
@@ -253,7 +250,7 @@ data:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "single",
+              "mode": "multi",
               "sort": "none"
             }
           },
@@ -331,8 +328,7 @@ data:
                   }
                 ]
               },
-              "unit": "celsius",
-              "unitScale": true
+              "unit": "celsius"
             },
             "overrides": [
               {
@@ -401,7 +397,7 @@ data:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "single",
+              "mode": "multi",
               "sort": "none"
             }
           },
@@ -479,8 +475,7 @@ data:
                   }
                 ]
               },
-              "unit": "rothz",
-              "unitScale": true
+              "unit": "rothz"
             },
             "overrides": [
               {
@@ -548,7 +543,7 @@ data:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "single",
+              "mode": "multi",
               "sort": "none"
             }
           },
@@ -627,8 +622,7 @@ data:
                   }
                 ]
               },
-              "unit": "percent",
-              "unitScale": true
+              "unit": "percent"
             },
             "overrides": [
               {
@@ -761,8 +755,7 @@ data:
                   }
                 ]
               },
-              "unit": "watt",
-              "unitScale": true
+              "unit": "watt"
             },
             "overrides": [
               {
@@ -800,7 +793,7 @@ data:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "single",
+              "mode": "multi",
               "sort": "none"
             }
           },
@@ -851,6 +844,6 @@ data:
       "timezone": "",
       "title": "Nibe Heating",
       "uid": "f052ca95-a6b0-40cb-9071-b6f529697f7a",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }

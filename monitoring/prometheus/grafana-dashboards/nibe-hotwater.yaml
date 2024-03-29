@@ -26,7 +26,6 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "id": 36,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -87,8 +86,7 @@ data:
                   }
                 ]
               },
-              "unit": "celsius",
-              "unitScale": true
+              "unit": "celsius"
             },
             "overrides": []
           },
@@ -107,7 +105,7 @@ data:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "single",
+              "mode": "multi",
               "sort": "none"
             }
           },
@@ -185,8 +183,7 @@ data:
                   }
                 ]
               },
-              "unit": "watt",
-              "unitScale": true
+              "unit": "watt"
             },
             "overrides": [
               {
@@ -224,7 +221,7 @@ data:
               "showLegend": true
             },
             "tooltip": {
-              "mode": "single",
+              "mode": "multi",
               "sort": "none"
             }
           },
@@ -316,8 +313,7 @@ data:
                   }
                 ]
               },
-              "unit": "watt",
-              "unitScale": true
+              "unit": "watt"
             },
             "overrides": []
           },
@@ -378,6 +374,6 @@ data:
       "timezone": "",
       "title": "Nibe Hot Water",
       "uid": "e0864723-a3f2-495d-a495-68b205d66829",
-      "version": 3,
+      "version": 1,
       "weekStart": ""
     }
