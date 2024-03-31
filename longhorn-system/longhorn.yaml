@@ -52,6 +52,17 @@ spec:
     replacement: /$2
 ---
 apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-longhorn-noslash
+  namespace: longhorn-system
+spec:
+  redirectRegex:
+    regex: "^http://([^/]*)/longhorn$"
+    replacement: "/longhorn/"
+    permanent: false
+---
+apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: longhorn-ingress
@@ -60,7 +71,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host("k3s.fritz.box") && PathPrefix("/longhorn")
+    - match: PathPrefix("/longhorn")
       kind: Rule
       services:
         - name: longhorn-frontend
@@ -68,4 +79,5 @@ spec:
           port: 80
       middlewares:
         - name: longhorn-auth
+        - name: redirect-longhorn-noslash
         - name: rewrite-longhorn-dashboard
