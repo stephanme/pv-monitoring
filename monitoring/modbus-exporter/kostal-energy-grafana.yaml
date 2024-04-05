@@ -429,7 +429,7 @@ data:
             "colorMode": "value",
             "graphMode": "none",
             "justifyMode": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "diff"
@@ -438,6 +438,10 @@ data:
               "values": true
             },
             "showPercentChange": false,
+            "text": {
+              "titleSize": 24,
+              "valueSize": 24
+            },
             "textMode": "auto",
             "wideLayout": true
           },
@@ -452,9 +456,37 @@ data:
               "exemplar": false,
               "expr": "increase(nibe_energy_meter_wh_total[$__range])",
               "instant": true,
-              "legendFormat": "__auto",
+              "legendFormat": "Total",
               "range": false,
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(source:nibe_energy_meter_wh_total{source=\"pv\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "... PV",
+              "range": false,
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(source:nibe_energy_meter_wh_total{source=\"grid\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "... Grid",
+              "range": false,
+              "refId": "C"
             }
           ],
           "title": "... to Nibe",
@@ -1149,6 +1181,21 @@ data:
                     }
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Grid"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -1185,6 +1232,20 @@ data:
               "legendFormat": "Nibe",
               "range": true,
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "increase(max(source:nibe_energy_meter_wh_total{source=\"grid\"})[$resolution:])",
+              "hide": false,
+              "instant": false,
+              "interval": "$resolution",
+              "legendFormat": "Grid",
+              "range": true,
+              "refId": "B"
             }
           ],
           "title": "Nibe Heatpump",
@@ -1201,7 +1262,7 @@ data:
             "auto_count": 30,
             "auto_min": "10s",
             "current": {
-              "selected": true,
+              "selected": false,
               "text": "1h",
               "value": "1h"
             },
@@ -1243,7 +1304,7 @@ data:
           },
           {
             "current": {
-              "selected": true,
+              "selected": false,
               "text": "default",
               "value": "default"
             },
@@ -1269,6 +1330,6 @@ data:
       "timezone": "",
       "title": "Kostal Energy",
       "uid": "bGXzWbiRz",
-      "version": 1,
+      "version": 2,
       "weekStart": ""
     }

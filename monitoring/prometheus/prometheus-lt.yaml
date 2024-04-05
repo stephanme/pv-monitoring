@@ -139,6 +139,9 @@ spec:
               - 'nibe_compressor_operating_time_seconds_total'
               - 'nibe_compressor_starts_total'
               - 'nibe_outdoor_temperature_celsius'
+              - 'nibe_compressor_starts_total'
+              - 'nibe_compressor_operating_time_seconds_total'
+              - 'source:nibe_energy_meter_wh_total'
 
     additionalPrometheusRulesMap:
       prometheus-lt.rules:
@@ -156,7 +159,7 @@ spec:
         - name: scrape.rules
           rules:
           - alert: ScrapeError
-            expr: scrape_samples_scraped{service="prometheus-kube-prometheus-prometheus"} < 90
+            expr: scrape_samples_scraped{service="prometheus-kube-prometheus-prometheus"} < 95
             for: 30m
             labels:
               severity: critical

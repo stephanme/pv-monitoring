@@ -160,6 +160,28 @@ spec:
             rules:
               - record: instance:node_memory_MemAvailable_bytes:avg15m
                 expr: avg_over_time(node_memory_MemAvailable_bytes[15m])
+      
+      nibe.rules:
+        groups:
+          - name: nibe-energy.rules
+            interval: 30s
+            rules:
+              # nibe_pv = pv - home | truncated to [0, min(nibe,pv)]
+              # car_pv = pv - home - nibe | truncated to [0, car]  # implemented in pv-control where home includes nibe
+              # home=home_total - nibe - car
+              #
+              # nibe_pv = pv - (home_total - nibe - car) = pv - home_total + nibe + car | truncated to [0, min(nibe,pv)]
+              # nibe_grid = nibe - nibe_pv
+              - record: source:nibe_energy_meter_wh:rate
+                expr: clamp(max(rate(kpc_home_power_consumption_wh_total{source="pv"}[5m])) - max(rate(kpc_home_power_consumption_total_wh_total[5m])) + max(rate(nibe_energy_meter_wh_total[5m])) + max(rate(goe_energy_wh_total[5m])), 0, scalar(min(rate(nibe_energy_meter_wh_total[5m]) or rate(kpc_home_power_consumption_wh_total{source="pv"}[5m]))))
+                labels:
+                  source: pv
+              - record: source:nibe_energy_meter_wh:rate
+                expr: max(rate(nibe_energy_meter_wh_total[5m])) - max(source:nibe_energy_meter_wh:rate{source="pv"})
+                labels:
+                  source: grid
+              - record: source:nibe_energy_meter_wh_total
+                expr: (source:nibe_energy_meter_wh_total >= 0 or clamp_max(source:nibe_energy_meter_wh:rate, 0)) + source:nibe_energy_meter_wh:rate * 30
 
     grafana:
       plugins:

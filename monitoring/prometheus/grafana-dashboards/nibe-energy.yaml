@@ -32,7 +32,6 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "id": 35,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -62,8 +61,7 @@ data:
                   }
                 ]
               },
-              "unit": "watth",
-              "unitScale": true
+              "unit": "watth"
             },
             "overrides": []
           },
@@ -78,7 +76,7 @@ data:
             "colorMode": "value",
             "graphMode": "none",
             "justifyMode": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "diff"
@@ -87,10 +85,14 @@ data:
               "values": true
             },
             "showPercentChange": false,
+            "text": {
+              "titleSize": 24,
+              "valueSize": 24
+            },
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "10.3.3",
+          "pluginVersion": "10.4.0",
           "targets": [
             {
               "datasource": {
@@ -101,9 +103,37 @@ data:
               "exemplar": false,
               "expr": "increase(nibe_energy_meter_wh_total[$__range])",
               "instant": true,
-              "legendFormat": "__auto",
+              "legendFormat": "Total",
               "range": false,
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(source:nibe_energy_meter_wh_total{source=\"pv\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "... from PV",
+              "range": false,
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(source:nibe_energy_meter_wh_total{source=\"grid\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "... from Grid",
+              "range": false,
+              "refId": "C"
             }
           ],
           "title": "Electric Energy",
@@ -130,8 +160,7 @@ data:
                   }
                 ]
               },
-              "unit": "watth",
-              "unitScale": true
+              "unit": "watth"
             },
             "overrides": []
           },
@@ -159,7 +188,7 @@ data:
             "textMode": "value",
             "wideLayout": true
           },
-          "pluginVersion": "10.3.3",
+          "pluginVersion": "10.4.0",
           "targets": [
             {
               "datasource": {
@@ -205,8 +234,7 @@ data:
                   }
                 ]
               },
-              "unit": "none",
-              "unitScale": true
+              "unit": "none"
             },
             "overrides": []
           },
@@ -234,7 +262,7 @@ data:
             "textMode": "value",
             "wideLayout": true
           },
-          "pluginVersion": "10.3.3",
+          "pluginVersion": "10.4.0",
           "targets": [
             {
               "datasource": {
@@ -275,8 +303,7 @@ data:
                   }
                 ]
               },
-              "unit": "watth",
-              "unitScale": true
+              "unit": "watth"
             },
             "overrides": []
           },
@@ -304,7 +331,7 @@ data:
             "textMode": "value",
             "wideLayout": true
           },
-          "pluginVersion": "10.3.3",
+          "pluginVersion": "10.4.0",
           "targets": [
             {
               "datasource": {
@@ -346,8 +373,7 @@ data:
                   }
                 ]
               },
-              "unit": "watth",
-              "unitScale": true
+              "unit": "watth"
             },
             "overrides": []
           },
@@ -375,7 +401,7 @@ data:
             "textMode": "value",
             "wideLayout": true
           },
-          "pluginVersion": "10.3.3",
+          "pluginVersion": "10.4.0",
           "targets": [
             {
               "datasource": {
@@ -416,8 +442,7 @@ data:
                   }
                 ]
               },
-              "unit": "watth",
-              "unitScale": true
+              "unit": "watth"
             },
             "overrides": []
           },
@@ -445,7 +470,7 @@ data:
             "textMode": "value",
             "wideLayout": true
           },
-          "pluginVersion": "10.3.3",
+          "pluginVersion": "10.4.0",
           "targets": [
             {
               "datasource": {
@@ -487,8 +512,7 @@ data:
                   }
                 ]
               },
-              "unit": "watth",
-              "unitScale": true
+              "unit": "watth"
             },
             "overrides": []
           },
@@ -516,7 +540,7 @@ data:
             "textMode": "value",
             "wideLayout": true
           },
-          "pluginVersion": "10.3.3",
+          "pluginVersion": "10.4.0",
           "targets": [
             {
               "datasource": {
@@ -594,8 +618,7 @@ data:
                   }
                 ]
               },
-              "unit": "watth",
-              "unitScale": true
+              "unit": "watth"
             },
             "overrides": [
               {
@@ -768,8 +791,7 @@ data:
                   }
                 ]
               },
-              "unit": "watth",
-              "unitScale": true
+              "unit": "watth"
             },
             "overrides": [
               {
@@ -782,6 +804,21 @@ data:
                     "id": "color",
                     "value": {
                       "fixedColor": "semi-dark-purple",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Grid"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-red",
                       "mode": "fixed"
                     }
                   }
@@ -822,6 +859,20 @@ data:
               "legendFormat": "Nibe",
               "range": true,
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "increase(max(source:nibe_energy_meter_wh_total{source=\"grid\"})[$resolution:])",
+              "hide": false,
+              "instant": false,
+              "interval": "$resolution",
+              "legendFormat": "Grid",
+              "range": true,
+              "refId": "B"
             }
           ],
           "title": "Electric Energy",
@@ -882,7 +933,7 @@ data:
           },
           {
             "current": {
-              "selected": true,
+              "selected": false,
               "text": "Prometheus",
               "value": "prometheus"
             },
@@ -908,6 +959,6 @@ data:
       "timezone": "",
       "title": "Nibe Energy",
       "uid": "a91033b7-cf2b-42f7-aaa4-03ec94df4055",
-      "version": 8,
+      "version": 1,
       "weekStart": ""
     }
