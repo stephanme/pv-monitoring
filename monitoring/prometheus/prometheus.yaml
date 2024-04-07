@@ -173,7 +173,7 @@ spec:
               # nibe_pv = pv - (home_total - nibe - car) = pv - home_total + nibe + car | truncated to [0, min(nibe,pv)]
               # nibe_grid = nibe - nibe_pv
               - record: source:nibe_energy_meter_wh:rate
-                expr: clamp(max(rate(kpc_home_power_consumption_wh_total{source="pv"}[5m])) - max(rate(kpc_home_power_consumption_total_wh_total[5m])) + max(rate(nibe_energy_meter_wh_total[5m])) + max(rate(goe_energy_wh_total[5m])), 0, scalar(min(rate(nibe_energy_meter_wh_total[5m]) or rate(kpc_home_power_consumption_wh_total{source="pv"}[5m]))))
+                expr: clamp(max(rate(kpc_home_power_consumption_wh_total{source="pv"}[5m])) - max(rate(kpc_home_power_consumption_total_wh_total[5m])) + max(rate(nibe_energy_meter_wh_total[5m])) + max(rate(pvcontrol:total_charged_energy_wh_total[5m])), 0, scalar(min(rate(nibe_energy_meter_wh_total[5m]) or rate(kpc_home_power_consumption_wh_total{source="pv"}[5m]))))
                 labels:
                   source: pv
               - record: source:nibe_energy_meter_wh:rate
