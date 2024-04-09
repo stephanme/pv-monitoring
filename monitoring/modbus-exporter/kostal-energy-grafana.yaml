@@ -166,7 +166,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(kpc_ac_energy_to_grid_wh_total[$__range])",
+              "expr": "kpc_ac_energy_to_grid_wh_total@${__to:date:seconds} - kpc_ac_energy_to_grid_wh_total@${__from:date:seconds}",
               "instant": true,
               "interval": "",
               "intervalFactor": 10,
@@ -1330,6 +1330,6 @@ data:
       "timezone": "",
       "title": "Kostal Energy",
       "uid": "bGXzWbiRz",
-      "version": 2,
+      "version": 3,
       "weekStart": ""
     }
