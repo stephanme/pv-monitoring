@@ -94,6 +94,7 @@ spec:
       prometheusSpec:
         retention: 7d
         externalUrl: "http://k3s.fritz.box/prometheus/"
+        enableAdminAPI: true
 
         #    replicas: 2
         #    podAntiAffinity: "hard"
