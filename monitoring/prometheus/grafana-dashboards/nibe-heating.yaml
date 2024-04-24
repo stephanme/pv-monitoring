@@ -258,6 +258,32 @@ data:
                     }
                   }
                 ]
+              },
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "BT2 supply",
+                      "BT3 return",
+                      "calculated"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -597,8 +623,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -730,8 +755,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -828,6 +852,6 @@ data:
       "timezone": "",
       "title": "Nibe Heating",
       "uid": "f052ca95-a6b0-40cb-9071-b6f529697f7a",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }

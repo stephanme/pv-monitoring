@@ -26,7 +26,6 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "id": 38,
       "links": [],
       "panels": [
         {
@@ -549,7 +548,7 @@ data:
                 {
                   "options": {
                     "0": {
-                      "color": "text",
+                      "color": "transparent",
                       "index": 0,
                       "text": "Off"
                     },
@@ -639,6 +638,6 @@ data:
       "timezone": "browser",
       "title": "Nibe Power",
       "uid": "adhqnr0onlzwga",
-      "version": 3,
+      "version": 1,
       "weekStart": ""
     }
