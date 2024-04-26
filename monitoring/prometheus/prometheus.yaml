@@ -183,6 +183,15 @@ spec:
                   source: grid
               - record: source:nibe_energy_meter_wh_total
                 expr: (source:nibe_energy_meter_wh_total >= 0 or clamp_max(source:nibe_energy_meter_wh:rate, 0)) + source:nibe_energy_meter_wh:rate * 30
+              # use temporarily for correcting values in case of trouble, delete broken time-range
+              # - record: source:nibe_energy_meter_wh_total
+              #   expr: "19900"
+              #   labels:
+              #     source: pv
+              # - record: source:nibe_energy_meter_wh_total
+              #   expr: "35003"
+              #   labels:
+              #     source: grid
 
     grafana:
       plugins:
