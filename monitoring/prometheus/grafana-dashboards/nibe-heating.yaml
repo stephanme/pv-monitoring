@@ -266,8 +266,8 @@ data:
                   "options": {
                     "mode": "exclude",
                     "names": [
-                      "BT2 supply",
                       "BT3 return",
+                      "BT2 supply",
                       "calculated"
                     ],
                     "prefix": "All except:",
@@ -623,7 +623,8 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -686,7 +687,7 @@ data:
               "expr": "nibe_heat_medium_pump_speed_percent",
               "hide": false,
               "interval": "",
-              "legendFormat": "Pump Speed",
+              "legendFormat": "Pump Speed {{sensor}}",
               "range": true,
               "refId": "C"
             },
@@ -755,7 +756,8 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -852,6 +854,6 @@ data:
       "timezone": "",
       "title": "Nibe Heating",
       "uid": "f052ca95-a6b0-40cb-9071-b6f529697f7a",
-      "version": 1,
+      "version": 2,
       "weekStart": ""
     }
