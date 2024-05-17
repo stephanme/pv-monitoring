@@ -6,7 +6,7 @@ namespace: homeassistant
 images:
 # https://github.com/home-assistant/core/pkgs/container/home-assistant
 - name: ghcr.io/home-assistant/home-assistant
-  newTag: 2024.5.0
+  newTag: 2024.5.4
 # https://github.com/coder/code-server/pkgs/container/code-server
 - name: ghcr.io/coder/code-server
   newTag: 4.23.1
