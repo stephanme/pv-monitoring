@@ -1,0 +1,15 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: csi-driver-smb
+  namespace: smb-csi-system
+spec:
+  # renovate: HelmChart
+  repo: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
+  chart: csi-driver-smb
+  version: 1.14.0
+  targetNamespace: smb-csi-system
+  timeout: 1h
+  failurePolicy: abort
+  valuesContent: |-
+    # https://github.com/kubernetes-csi/csi-driver-smb/blob/master/charts/latest/csi-driver-smb/values.yaml

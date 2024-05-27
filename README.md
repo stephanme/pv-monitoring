@@ -17,6 +17,7 @@ Monitoring of a photovoltaic system, car charging and heat pump
   - 1 and 3 phase charging to get a wide control range starting at 1.3 kW up to (theoretical) 11kW
   - UI for controlling charge modes
 - [Home Assistant](https://www.home-assistant.io/) for additional home automation
+- [Paperless-ngx](https://docs.paperless-ngx.com/) for taming the bureaucracy
 
 ## Deploy
 
@@ -28,8 +29,10 @@ Important release notes
 - [k3s](https://github.com/k3s-io/k3s/releases)
 - [metallb](https://metallb.universe.tf/release-notes/)
 - [longhorn](https://github.com/longhorn/longhorn/tree/master/CHANGELOG)
+- [csi-driver-smb](https://github.com/kubernetes-csi/csi-driver-smb/releases)
 - [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
 - [homeassistant](https://www.home-assistant.io/blog/categories/release-notes/)
+- [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx/releases)
 
 ## k3s Installation
 
