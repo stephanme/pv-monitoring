@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tika
+  namespace: paperless
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/app: tika
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/app: tika
+    spec:
+      containers:
+        - name: tika
+          image: docker.io/apache/tika:2.9.2.1
+          ports:
+            - name: http
+              containerPort: 9998
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
+            timeoutSeconds: 30
+            failureThreshold: 20
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
+            timeoutSeconds: 30
+            failureThreshold: 20
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tika
+  namespace: paperless
+  labels:
+    app.kubernetes.io/app: tika
+spec:
+  ports:
+    - port: 9998
+      targetPort: http
+      name: http
+  selector:
+    app.kubernetes.io/app: tika
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gotenberg
+  namespace: paperless
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/app: gotenberg
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/app: gotenberg
+    spec:
+      containers:
+        - name: gotenberg
+          image: docker.io/gotenberg/gotenberg:7.10
+          securityContext:
+            privileged: false
+            runAsUser: 1001
+          command:
+            - "gotenberg"
+            - "--chromium-disable-javascript=true"
+            - "--chromium-allow-list=file:///tmp/.*"
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gotenberg
+  namespace: paperless
+  labels:
+    app.kubernetes.io/app: gotenberg
+spec:
+  ports:
+    - port: 3000
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/app: gotenberg
