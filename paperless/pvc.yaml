@@ -1,0 +1,81 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/name: paperless-ngx
+  name: paperless-ngx-data
+  namespace: paperless
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/name: paperless-ngx
+  name: paperless-ngx-media
+  namespace: paperless
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: longhorn
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
+  name: pv-smb-consume
+  namespace: paperless
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: smb
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=1001
+    - gid=1001
+    - noperm
+    - mfsymlinks
+    - cache=strict
+    - noserverino  # required to prevent data corruption
+  csi:
+    driver: smb.csi.k8s.io
+    # volumeHandle format: {smb-server-address}#{sub-dir-name}#{share-name}
+    # make sure this value is unique for every share in the cluster
+    volumeHandle: nasbox.fritz.box/public#paperless#
+    volumeAttributes:
+      source: //nasbox.fritz.box/public
+      subDir: paperless
+    nodeStageSecretRef:
+      name: smb-public-creds
+      namespace: smb-csi-system
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name:  pvc-smb-consume
+  namespace: paperless
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName:  pv-smb-consume
+  storageClassName: smb

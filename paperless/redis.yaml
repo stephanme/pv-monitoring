@@ -1,0 +1,21 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: paperless-ngx-redis
+  namespace: paperless
+spec:
+  # renovate: HelmChart
+  repo: https://charts.bitnami.com/bitnami
+  chart: redis
+  version: 18.6.4
+  targetNamespace: paperless
+  timeout: 1h
+  failurePolicy: abort
+  valuesContent: |-
+    auth:
+      enabled: true
+    master:
+      persistence:
+        enabled: false
+    replica:
+      replicaCount: 0

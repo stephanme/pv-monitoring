@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/name: paperless-ngx
+  name: paperless-ngx
+  namespace: paperless
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: paperless-ngx
+      app.kubernetes.io/name: paperless-ngx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: paperless-ngx
+        app.kubernetes.io/name: paperless-ngx
+    spec:
+      containers:
+      - name: paperless-ngx
+        image: ghcr.io/paperless-ngx/paperless-ngx:2.8.6
+
+        env:
+        - name: TZ
+          value: Europe/Berlin
+        - name: PAPERLESS_TIME_ZONE
+          value: Europe/Berlin
+        - name: PAPERLESS_OCR_LANGUAGE
+          value: deu+eng
+        - name: PAPERLESS_OCR_SKIP_ARCHIVE_FILE
+          value: always
+        - name: PAPERLESS_CONSUMER_POLLING  # inotify seems not working with samba
+          value: "10"
+        # more technical config
+        - name: PAPERLESS_URL
+          value: http://paperless.fritz.box
+        - name: PAPERLESS_PORT
+          value: "8000"
+        - name: PAPERLESS_TIKA_ENABLED
+          value: "1"
+        - name: PAPERLESS_TIKA_ENDPOINT
+          value: http://tika.paperless.svc.cluster.local:9998
+        - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
+          value: http://gotenberg.paperless.svc.cluster.local:3000
+        - name: A_REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: paperless-ngx-redis
+              key: redis-password
+        - name: PAPERLESS_REDIS
+          value: redis://:$(A_REDIS_PASSWORD)@paperless-ngx-redis-master.paperless.svc.cluster.local
+        - name: PAPERLESS_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: paperless-secrets
+              key: PAPERLESS_ADMIN_USER
+        - name: PAPERLESS_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: paperless-secrets
+              key: PAPERLESS_ADMIN_PASSWORD
+        - name: PAPERLESS_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: paperless-secrets
+              key: PAPERLESS_SECRET_KEY
+
+        livenessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8000
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8000
+          timeoutSeconds: 1
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: 8000
+          timeoutSeconds: 1
+
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+
+        volumeMounts:
+        - mountPath: /usr/src/paperless/consume
+          name: consume
+        - mountPath: /usr/src/paperless/data
+          name: data
+        - mountPath: /usr/src/paperless/media
+          name: media
+
+      volumes:
+      - name: consume
+        persistentVolumeClaim:
+          claimName: pvc-smb-consume
+      - name: data
+        persistentVolumeClaim:
+          claimName: paperless-ngx-data
+      - name: media
+        persistentVolumeClaim:
+          claimName: paperless-ngx-media
+
+      automountServiceAccountToken: true
+      serviceAccount: default
+      serviceAccountName: default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/name: paperless-ngx
+  name: paperless-ngx
+  namespace: paperless
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: tcp
+  selector:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/name: paperless-ngx
