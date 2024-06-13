@@ -22,7 +22,7 @@ spec:
     skipWaitForDeleteTimeout: 60 # set this to prevent upgrades from hanging on small clusters since k8s v1.18
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.29.4+k3s1
+  version: v1.30.1+k3s1
 ---
 # Agent plan
 apiVersion: upgrade.cattle.io/v1
@@ -49,4 +49,4 @@ spec:
     skipWaitForDeleteTimeout: 60 # set this to prevent upgrades from hanging on small clusters since k8s v1.18
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.29.4+k3s1
+  version: v1.30.1+k3s1
