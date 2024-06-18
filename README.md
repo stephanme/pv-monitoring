@@ -61,6 +61,20 @@ kube-proxy-arg:
 - "metrics-bind-address=0.0.0.0"
 kube-scheduler-arg:
 - "bind-address=0.0.0.0"
+
+# https://github.com/k3s-io/k3s/discussions/10125
+kubelet-arg:
+- "config=/etc/rancher/k3s/kubelet-config.yaml"
+```
+
+Kubelet config file `/etc/rancher/k3s/kubelet-config.yaml`
+```
+# https://github.com/k3s-io/k3s/discussions/10125
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+imageMaximumGCAge: 1008h # 6 weeks
+featureGates:
+  ImageMaximumGCAge: true
 ```
 
 Others:
@@ -78,6 +92,16 @@ sudo apt install open-iscsi
 curl -sfL http://get.k3s.io | K3S_URL=https://192.168.178.10:6443 \
 K3S_TOKEN=<join_token> sh -
 ```
+
+Config file `/etc/rancher/k3s/config.yaml`
+```
+# https://github.com/k3s-io/k3s/discussions/10125
+kubelet-arg:
+- "config=/etc/rancher/k3s/kubelet-config.yaml"
+```
+
+Kubelet config file `/etc/rancher/k3s/kubelet-config.yaml`: same as for server.
+
 
 ## k3s Updates
 
