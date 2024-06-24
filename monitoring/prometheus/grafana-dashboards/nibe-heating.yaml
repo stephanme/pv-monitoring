@@ -115,9 +115,9 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "nibe_degree_minutes{sensor=\"heating\"}",
+              "expr": "nibe_degree_minutes",
               "instant": false,
-              "legendFormat": "Heating",
+              "legendFormat": "Degree Minutes",
               "range": true,
               "refId": "A"
             }
@@ -627,8 +627,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -761,8 +760,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",

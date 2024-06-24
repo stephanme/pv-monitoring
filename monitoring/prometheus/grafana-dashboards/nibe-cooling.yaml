@@ -26,7 +26,6 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "id": 39,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -116,9 +115,9 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "nibe_degree_minutes{sensor=\"cooling\"}",
+              "expr": "nibe_degree_minutes",
               "instant": false,
-              "legendFormat": "Cooling",
+              "legendFormat": "Degree Minutes",
               "range": true,
               "refId": "A"
             }
@@ -877,6 +876,6 @@ data:
       "timezone": "",
       "title": "Nibe Cooling",
       "uid": "adp68nt5qcwzkf",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }
