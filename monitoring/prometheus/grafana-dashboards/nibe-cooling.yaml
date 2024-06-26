@@ -239,7 +239,7 @@ data:
                   {
                     "id": "color",
                     "value": {
-                      "fixedColor": "dark-red",
+                      "fixedColor": "semi-dark-blue",
                       "mode": "fixed"
                     }
                   }
@@ -254,7 +254,7 @@ data:
                   {
                     "id": "color",
                     "value": {
-                      "fixedColor": "semi-dark-blue",
+                      "fixedColor": "dark-red",
                       "mode": "fixed"
                     }
                   }
@@ -403,53 +403,7 @@ data:
               },
               "unit": "celsius"
             },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "BT2 supply"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "red",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "BT3 return"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "blue",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "calculated"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "yellow",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
             "h": 8,
@@ -876,6 +830,6 @@ data:
       "timezone": "",
       "title": "Nibe Cooling",
       "uid": "adp68nt5qcwzkf",
-      "version": 1,
+      "version": 2,
       "weekStart": ""
     }

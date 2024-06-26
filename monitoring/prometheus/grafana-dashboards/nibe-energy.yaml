@@ -67,11 +67,11 @@ data:
           },
           "gridPos": {
             "h": 4,
-            "w": 3,
+            "w": 4,
             "x": 0,
             "y": 0
           },
-          "id": 24,
+          "id": 28,
           "options": {
             "colorMode": "value",
             "graphMode": "none",
@@ -86,13 +86,13 @@ data:
             },
             "showPercentChange": false,
             "text": {
-              "titleSize": 24,
+              "titleSize": 18,
               "valueSize": 24
             },
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "10.4.1",
+          "pluginVersion": "11.0.0",
           "targets": [
             {
               "datasource": {
@@ -144,10 +144,11 @@ data:
             "type": "prometheus",
             "uid": "${datasource}"
           },
+          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
-                "fixedColor": "dark-orange",
+                "fixedColor": "red",
                 "mode": "fixed"
               },
               "mappings": [],
@@ -157,25 +158,74 @@ data:
                   {
                     "color": "green",
                     "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
                   }
                 ]
               },
               "unit": "watth"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Hot Water"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "green",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Cooling"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Off"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 4,
-            "w": 3,
-            "x": 3,
+            "w": 4,
+            "x": 4,
             "y": 0
           },
-          "id": 10,
+          "id": 24,
           "options": {
             "colorMode": "value",
             "graphMode": "none",
             "justifyMode": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "diff"
@@ -184,11 +234,14 @@ data:
               "values": true
             },
             "showPercentChange": false,
-            "text": {},
-            "textMode": "value",
+            "text": {
+              "titleSize": 18,
+              "valueSize": 24
+            },
+            "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "10.4.1",
+          "pluginVersion": "11.0.0",
           "targets": [
             {
               "datasource": {
@@ -197,16 +250,56 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range])",
+              "expr": "increase(nibe_energy_consumption_wh_total{mode=\"heating\"}[$__range])",
               "instant": true,
-              "interval": "",
-              "intervalFactor": 10,
-              "legendFormat": "",
+              "legendFormat": "Heating",
               "range": false,
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(nibe_energy_consumption_wh_total{mode=\"hotwater\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "Hot Water",
+              "range": false,
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(nibe_energy_consumption_wh_total{mode=\"cooling\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "Cooling",
+              "range": false,
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(nibe_energy_consumption_wh_total{mode=\"off\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "Off",
+              "range": false,
+              "refId": "D"
             }
           ],
-          "title": "Heat Meter Overall",
+          "title": "Electric Energy",
           "type": "stat"
         },
         {
@@ -241,7 +334,7 @@ data:
           "gridPos": {
             "h": 4,
             "w": 3,
-            "x": 6,
+            "x": 9,
             "y": 0
           },
           "id": 20,
@@ -262,7 +355,7 @@ data:
             "textMode": "value",
             "wideLayout": true
           },
-          "pluginVersion": "10.4.1",
+          "pluginVersion": "11.0.0",
           "targets": [
             {
               "datasource": {
@@ -290,7 +383,142 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": {
-                "fixedColor": "dark-red",
+                "fixedColor": "red",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Hot Water"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "green",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Cooling"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
+            "x": 12,
+            "y": 0
+          },
+          "id": 27,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "diff"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "showPercentChange": false,
+            "text": {
+              "titleSize": 18,
+              "valueSize": 24
+            },
+            "textMode": "value_and_name",
+            "wideLayout": true
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range]) / on (job) increase(nibe_energy_consumption_wh_total{mode=\"heating\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "Heating",
+              "range": false,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range]) / on (job) increase(nibe_energy_consumption_wh_total{mode=\"hotwater\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "Hot Water",
+              "range": false,
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range]) / on (job) increase(nibe_energy_consumption_wh_total{mode=\"cooling\"}[$__range])",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "Cooling",
+              "range": false,
+              "refId": "C"
+            }
+          ],
+          "title": "COP",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-orange",
                 "mode": "fixed"
               },
               "mappings": [],
@@ -305,20 +533,36 @@ data:
               },
               "unit": "watth"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Add.Heat"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 4,
-            "w": 3,
-            "x": 9,
+            "w": 4,
+            "x": 16,
             "y": 0
           },
-          "id": 25,
+          "id": 10,
           "options": {
             "colorMode": "value",
             "graphMode": "none",
             "justifyMode": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "diff"
@@ -327,11 +571,14 @@ data:
               "values": true
             },
             "showPercentChange": false,
-            "text": {},
-            "textMode": "value",
+            "text": {
+              "titleSize": 18,
+              "valueSize": 24
+            },
+            "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "10.4.1",
+          "pluginVersion": "11.0.0",
           "targets": [
             {
               "datasource": {
@@ -340,16 +587,30 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "round(increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range]) - on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr\"}[$__range]) - on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr\"}[$__range]), 1)",
+              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range])",
               "instant": true,
               "interval": "",
               "intervalFactor": 10,
-              "legendFormat": "",
+              "legendFormat": "Overall",
               "range": false,
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "round(increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range]) - on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr\"}[$__range]) - on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr\"}[$__range]), 1)",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "Add.Heat",
+              "range": false,
+              "refId": "B"
             }
           ],
-          "title": "Additional Heat",
+          "title": "Heat Meter",
           "type": "stat"
         },
         {
@@ -375,12 +636,43 @@ data:
               },
               "unit": "watth"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Hot Water"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "green",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Cooling"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 4,
-            "w": 3,
-            "x": 15,
+            "w": 4,
+            "x": 20,
             "y": 0
           },
           "id": 14,
@@ -388,7 +680,7 @@ data:
             "colorMode": "value",
             "graphMode": "none",
             "justifyMode": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": [
                 "diff"
@@ -397,11 +689,14 @@ data:
               "values": true
             },
             "showPercentChange": false,
-            "text": {},
-            "textMode": "value",
+            "text": {
+              "titleSize": 18,
+              "valueSize": 24
+            },
+            "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "10.4.1",
+          "pluginVersion": "11.0.0",
           "targets": [
             {
               "datasource": {
@@ -414,64 +709,10 @@ data:
               "instant": true,
               "interval": "",
               "intervalFactor": 10,
-              "legendFormat": "",
+              "legendFormat": "Heating",
               "range": false,
               "refId": "A"
-            }
-          ],
-          "title": "Heating",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "watth"
             },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 18,
-            "y": 0
-          },
-          "id": 6,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "diff"
-              ],
-              "fields": "",
-              "values": true
-            },
-            "showPercentChange": false,
-            "text": {},
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.4.1",
-          "targets": [
             {
               "datasource": {
                 "type": "prometheus",
@@ -480,68 +721,12 @@ data:
               "editorMode": "code",
               "exemplar": false,
               "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range])",
+              "hide": false,
               "instant": true,
-              "interval": "",
-              "intervalFactor": 10,
-              "legendFormat": "",
+              "legendFormat": "Hot Water",
               "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "Hot Water",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "blue",
-                "mode": "fixed"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              },
-              "unit": "watth"
+              "refId": "B"
             },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 21,
-            "y": 0
-          },
-          "id": 18,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "diff"
-              ],
-              "fields": "",
-              "values": true
-            },
-            "showPercentChange": false,
-            "text": {},
-            "textMode": "value",
-            "wideLayout": true
-          },
-          "pluginVersion": "10.4.1",
-          "targets": [
             {
               "datasource": {
                 "type": "prometheus",
@@ -550,14 +735,14 @@ data:
               "editorMode": "code",
               "exemplar": false,
               "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range])",
+              "hide": false,
               "instant": true,
-              "interval": "",
-              "legendFormat": "",
+              "legendFormat": "Cooling",
               "range": false,
-              "refId": "A"
+              "refId": "C"
             }
           ],
-          "title": "Cooling",
+          "title": "Heat Meter",
           "type": "stat"
         },
         {
@@ -683,6 +868,7 @@ data:
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -841,6 +1027,7 @@ data:
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -1004,6 +1191,7 @@ data:
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -1080,7 +1268,7 @@ data:
           },
           {
             "current": {
-              "selected": true,
+              "selected": false,
               "text": "default",
               "value": "default"
             },
@@ -1102,6 +1290,7 @@ data:
         "from": "now-24h",
         "to": "now"
       },
+      "timeRangeUpdatedDuringEditOrView": false,
       "timepicker": {},
       "timezone": "",
       "title": "Nibe Energy",
