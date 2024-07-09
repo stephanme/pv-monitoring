@@ -63,6 +63,16 @@ spec:
             - /config/config-shelly25.yaml
           ports:
             - containerPort: 9643
+        - <<: *mqtt-container
+          name: zigbee2mqtt-exporter
+          command:
+            - /mqtt2prometheus
+            - -listen-port
+            - "9644"
+            - -config
+            - /config/config-zigbee2mqtt.yaml
+          ports:
+            - containerPort: 9644
       volumes:
         - name: config
           configMap:
@@ -91,6 +101,10 @@ spec:
       protocol: TCP
       port: 9643
       targetPort: 9643
+    - name: zigbee2mqtt-metrics
+      protocol: TCP
+      port: 9644
+      targetPort: 9644
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -102,7 +116,7 @@ spec:
   endpoints:
     - path: /metrics
       port: broker-metrics
-      # drop instance and pod from shelly metrics
+      # drop instance and pod from mqtt metrics (but not from other metrics)
       metricRelabelings:
         - sourceLabels:
             - __name__
@@ -151,6 +165,24 @@ spec:
             - __name__
             - pod
           regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod
+    - path: /metrics
+      port: zigbee2mqtt-metrics
+      # drop instance and pod from zigbee2mqtt metrics
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "z2m_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "z2m_\\w*;.*"
           action: replace
           replacement: ""
           targetLabel: pod
@@ -394,4 +426,31 @@ data:
         type: gauge
       - prom_name: shelly_power
         mqtt_name: power
+        type: gauge
+
+  config-zigbee2mqtt.yaml: |-
+    mqtt:
+      # The MQTT broker to connect to, credentials go via env vars
+      server: tcp://mosquitto.homeassistant.svc.cluster.local:1883
+      client_id: zigbee2mqtt-exporter
+      # subscribe to zigbee2mqtt device topics
+      topic_path: zigbee2mqtt/+
+      # The MQTT QoS level
+      qos: 0
+    cache:
+      # Timeout. Each received metric will be presented for this time if no update is send via MQTT.
+      # Set the timeout to -1 to disable the deletion of metrics from the cache. The exporter presents the ingest timestamp
+      # to prometheus.
+      timeout: -1
+    # This is a list of valid metrics. Only metrics listed here will be exported
+    metrics:
+      - prom_name: z2m_temperature_celsius
+        mqtt_name: temperature
+        sensor_name_filter: "^thermometer_.*$"
+        omit_timestamp: true
+        type: gauge
+      - prom_name: z2m_humidity_percent
+        mqtt_name: humidity
+        sensor_name_filter: "^thermometer_.*$"
+        omit_timestamp: true
         type: gauge
