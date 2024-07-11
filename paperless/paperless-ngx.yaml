@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: paperless-ngx
-        image: ghcr.io/paperless-ngx/paperless-ngx:2.10.2
+        image: ghcr.io/paperless-ngx/paperless-ngx:2.11.0
 
         env:
         - name: TZ
