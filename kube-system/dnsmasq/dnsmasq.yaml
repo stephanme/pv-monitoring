@@ -41,6 +41,7 @@ spec:
           configMap:
             name: dnsmasq-config
 ---
+# Note: must restart dnsmask daemonset when config changes
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -69,6 +70,7 @@ data:
     # see also https://github.com/k3s-io/k3s/issues/9286
     address=/fritz.box.fritz.box/
 
+    address=/pvcontrol.fritz.box/192.168.178.230
     address=/homeassistant.fritz.box/192.168.178.230
     address=/mosquitto.fritz.box/192.168.178.230
     address=/paperless.fritz.box/192.168.178.230

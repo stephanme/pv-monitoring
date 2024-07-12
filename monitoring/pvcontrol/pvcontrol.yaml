@@ -125,6 +125,14 @@ spec:
     - web
   routes:
   - kind: Rule
+    match: Host(`pvcontrol.fritz.box`)
+    middlewares:
+    - name: pvcontrol-compress
+    services:
+    - name: pvcontrol-service
+      port: 8080
+  # deprecated
+  - kind: Rule
     match: Path(`/pvcontrol`) || PathPrefix(`/pvcontrol/`)
     middlewares:
     - name: pvcontrol-stripprefix
