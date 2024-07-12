@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: pvcontrol
-          image: stephanme/pv-control:latest
+          image: ghcr.io/stephanme/pv-control:latest
           command:
             - python
             - -m
