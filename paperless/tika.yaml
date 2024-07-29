@@ -68,7 +68,7 @@ spec:
     spec:
       containers:
         - name: gotenberg
-          image: docker.io/gotenberg/gotenberg:8.8
+          image: docker.io/gotenberg/gotenberg:8.9
           securityContext:
             privileged: false
             runAsUser: 1001
