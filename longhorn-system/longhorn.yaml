@@ -18,7 +18,7 @@ spec:
     defaultSettings:
       defaultReplicaCount: 2
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-      backupTarget: cifs://nasbox.fritz.box/backup/longhorn
+      backupTarget: cifs://nasbox.fritz.box/backup-md0/longhorn
       backupTargetCredentialSecret: cifs-backup-target-secret
       upgradeChecker: false
       backupstorePollInterval: 0
