@@ -32,6 +32,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
+      "id": 5,
       "links": [],
       "liveNow": false,
       "panels": [
@@ -93,7 +94,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.0",
+          "pluginVersion": "11.2.0",
           "targets": [
             {
               "datasource": {
@@ -243,7 +244,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.0",
+          "pluginVersion": "11.2.0",
           "targets": [
             {
               "datasource": {
@@ -358,7 +359,7 @@ data:
             "textMode": "value",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.0",
+          "pluginVersion": "11.2.0",
           "targets": [
             {
               "datasource": {
@@ -466,7 +467,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.0",
+          "pluginVersion": "11.2.0",
           "targets": [
             {
               "datasource": {
@@ -583,7 +584,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.0",
+          "pluginVersion": "11.2.0",
           "targets": [
             {
               "datasource": {
@@ -702,7 +703,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.1.0",
+          "pluginVersion": "11.2.0",
           "targets": [
             {
               "datasource": {
@@ -769,6 +770,7 @@ data:
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": -1,
+                "barWidthFactor": 0.6,
                 "drawStyle": "bars",
                 "fillOpacity": 100,
                 "gradientMode": "none",
@@ -943,6 +945,7 @@ data:
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": -1,
+                "barWidthFactor": 0.6,
                 "drawStyle": "bars",
                 "fillOpacity": 100,
                 "gradientMode": "none",
@@ -1089,6 +1092,7 @@ data:
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "none",
@@ -1274,9 +1278,9 @@ data:
           },
           {
             "current": {
-              "selected": false,
-              "text": "prometheus-lt",
-              "value": "P270891A959F0A5E2"
+              "selected": true,
+              "text": "default",
+              "value": "default"
             },
             "hide": 0,
             "includeAll": false,
@@ -1293,7 +1297,7 @@ data:
         ]
       },
       "time": {
-        "from": "now-30d",
+        "from": "now-24h",
         "to": "now"
       },
       "timepicker": {},
