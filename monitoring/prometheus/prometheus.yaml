@@ -143,11 +143,11 @@ spec:
           - name: energy-rate.rules
             rules:
               - record: energy_rate_kwh_cents
-                expr: vector(33.55) and vector(time()) < 1700262000 # 2023-11-18
+                expr: vector(26.99) and vector(time()) < 1731884400 # 2024-11-18
                 labels:
                   type: from-grid
               - record: energy_rate_kwh_cents
-                expr: vector(26.99) and vector(time()) >= 1700262000 # 2023-11-18
+                expr: vector(28.01) and vector(time()) >= 1731884400 # 2024-11-18
                 labels:
                   type: from-grid
               - record: energy_rate_kwh_cents
