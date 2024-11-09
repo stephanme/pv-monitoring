@@ -65,7 +65,7 @@ spec:
       prometheusSpec:
         scrapeInterval: 15m
         evaluationInterval: 15m
-        retention: 10y
+        retention: 100y
         enableAdminAPI: true
         externalUrl: "http://k3s.fritz.box/prometheus-lt/"
 
@@ -142,6 +142,13 @@ spec:
               - 'source:nibe_energy_meter_wh_total'
               - 'nibe_operation_mode'
               - 'nibe_energy_consumption_wh_total'
+              - 'nibe_compressor_frequency_hertz'
+              - 'nibe_heat_medium_temperature_celsius'
+              - 'nibe_hotwater_temperature_celsius'
+              - 'nibe_heat_medium_pump_speed_percent'
+              - 'nibe_heat_medium_flow_liter_per_min'
+              - 'nibe_degree_minutes'
+              - 'nibegw_relay_state'
 
     additionalPrometheusRulesMap:
       prometheus-lt.rules:
@@ -159,7 +166,7 @@ spec:
         - name: scrape.rules
           rules:
           - alert: ScrapeError
-            expr: scrape_samples_scraped{service="prometheus-kube-prometheus-prometheus"} < 98
+            expr: scrape_samples_scraped{service="prometheus-kube-prometheus-prometheus"} < 115
             for: 30m
             labels:
               severity: critical
