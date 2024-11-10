@@ -99,6 +99,7 @@ data:
     permit_join: false
     # Home Assistant integration (MQTT discovery)
     homeassistant: true
+    availability: true
     mqtt:
       base_topic: zigbee2mqtt
       server: mqtt://mosquitto.homeassistant.svc.cluster.local
