@@ -149,6 +149,8 @@ spec:
               - 'nibe_heat_medium_flow_liter_per_min'
               - 'nibe_degree_minutes'
               - 'nibegw_relay_state'
+              - 'z2m_temperature_celsius'
+              - 'z2m_humidity_percent'
 
     additionalPrometheusRulesMap:
       prometheus-lt.rules:
@@ -166,7 +168,7 @@ spec:
         - name: scrape.rules
           rules:
           - alert: ScrapeError
-            expr: scrape_samples_scraped{service="prometheus-kube-prometheus-prometheus"} < 115
+            expr: scrape_samples_scraped{service="prometheus-kube-prometheus-prometheus"} < 125
             for: 30m
             labels:
               severity: critical
