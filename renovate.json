@@ -4,11 +4,16 @@
     "config:recommended"
   ],
   "kubernetes": {
-    "fileMatch": ["\\.yaml$"]
+    "fileMatch": [
+      "\\.yaml$"
+    ]
   },
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["\\.yaml$"],
+      "customType": "regex",
+      "fileMatch": [
+        "\\.yaml$"
+      ],
       "matchStrings": [
         "# renovate: HelmChart\\s+repo:\\s+\\\"?(?<registryUrl>[^\\s\"]*)\\\"?\\s+chart:\\s+\\\"?(?<depName>[^\\s\"]*)\\\"?\\s+version:\\s+\\\"?(?<currentValue>[^\\s\"]*)\\\"?"
       ],
