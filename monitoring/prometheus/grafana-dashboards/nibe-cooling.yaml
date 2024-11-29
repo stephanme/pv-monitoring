@@ -26,8 +26,8 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
+      "id": 5,
       "links": [],
-      "liveNow": false,
       "panels": [
         {
           "datasource": {
@@ -48,6 +48,7 @@ data:
                 "axisSoftMax": 0,
                 "axisSoftMin": 0,
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "none",
@@ -99,8 +100,12 @@ data:
           "id": 4,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "min",
+                "max",
+                "lastNotNull"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
             },
@@ -110,6 +115,7 @@ data:
               "sort": "none"
             }
           },
+          "pluginVersion": "11.3.0",
           "targets": [
             {
               "datasource": {
@@ -147,6 +153,7 @@ data:
                 "axisSoftMax": 0,
                 "axisSoftMin": 0,
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "none",
@@ -331,6 +338,7 @@ data:
               "sort": "none"
             }
           },
+          "pluginVersion": "11.3.0",
           "targets": [
             {
               "datasource": {
@@ -368,6 +376,7 @@ data:
                 "axisSoftMax": 0,
                 "axisSoftMin": 0,
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "none",
@@ -435,6 +444,7 @@ data:
               "sort": "none"
             }
           },
+          "pluginVersion": "11.3.0",
           "targets": [
             {
               "datasource": {
@@ -471,6 +481,7 @@ data:
                 "axisPlacement": "auto",
                 "axisSoftMin": 0,
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "none",
@@ -537,6 +548,7 @@ data:
               "sort": "none"
             }
           },
+          "pluginVersion": "11.3.0",
           "targets": [
             {
               "datasource": {
@@ -573,6 +585,7 @@ data:
                 "axisPlacement": "auto",
                 "axisSoftMin": 0,
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "none",
@@ -644,8 +657,8 @@ data:
           "options": {
             "legend": {
               "calcs": [
-                "lastNotNull",
-                "max"
+                "max",
+                "lastNotNull"
               ],
               "displayMode": "table",
               "placement": "bottom",
@@ -657,7 +670,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "10.3.3",
+          "pluginVersion": "11.3.0",
           "targets": [
             {
               "datasource": {
@@ -708,6 +721,7 @@ data:
                 "axisPlacement": "auto",
                 "axisSoftMin": 0,
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "none",
@@ -778,8 +792,8 @@ data:
           "options": {
             "legend": {
               "calcs": [
-                "lastNotNull",
-                "max"
+                "max",
+                "lastNotNull"
               ],
               "displayMode": "table",
               "placement": "bottom",
@@ -791,6 +805,7 @@ data:
               "sort": "none"
             }
           },
+          "pluginVersion": "11.3.0",
           "targets": [
             {
               "datasource": {
@@ -822,8 +837,9 @@ data:
           "type": "timeseries"
         }
       ],
+      "preload": false,
       "refresh": "",
-      "schemaVersion": 39,
+      "schemaVersion": 40,
       "tags": [
         "nibe"
       ],

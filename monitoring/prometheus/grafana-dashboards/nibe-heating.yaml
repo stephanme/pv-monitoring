@@ -111,8 +111,12 @@ data:
           "id": 4,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "min",
+                "max",
+                "lastNotNull"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
             },
@@ -756,8 +760,8 @@ data:
           "options": {
             "legend": {
               "calcs": [
-                "lastNotNull",
-                "max"
+                "max",
+                "lastNotNull"
               ],
               "displayMode": "table",
               "placement": "bottom",
@@ -1006,8 +1010,8 @@ data:
           "options": {
             "legend": {
               "calcs": [
-                "lastNotNull",
-                "max"
+                "max",
+                "lastNotNull"
               ],
               "displayMode": "table",
               "placement": "bottom",
@@ -1068,6 +1072,6 @@ data:
       "timezone": "",
       "title": "Nibe Heating",
       "uid": "f052ca95-a6b0-40cb-9071-b6f529697f7a",
-      "version": 1,
+      "version": 3,
       "weekStart": ""
     }

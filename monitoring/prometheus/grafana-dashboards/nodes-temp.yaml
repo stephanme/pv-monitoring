@@ -26,6 +26,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
+      "id": 11,
       "links": [],
       "panels": [
         {
@@ -83,7 +84,7 @@ data:
             "sizing": "auto",
             "text": {}
           },
-          "pluginVersion": "10.4.0",
+          "pluginVersion": "11.3.0",
           "targets": [
             {
               "datasource": {
@@ -98,6 +99,7 @@ data:
               "refId": "A"
             }
           ],
+          "title": "",
           "type": "gauge"
         },
         {
@@ -117,6 +119,7 @@ data:
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "none",
@@ -170,8 +173,12 @@ data:
           "id": 2,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "min",
+                "max",
+                "lastNotNull"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
             },
@@ -180,7 +187,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "10.4.0",
+          "pluginVersion": "11.3.0",
           "targets": [
             {
               "datasource": {
@@ -199,7 +206,8 @@ data:
           "type": "timeseries"
         }
       ],
-      "schemaVersion": 39,
+      "preload": false,
+      "schemaVersion": 40,
       "tags": [],
       "templating": {
         "list": []

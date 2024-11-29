@@ -177,8 +177,8 @@ data:
           "options": {
             "legend": {
               "calcs": [
-                "lastNotNull",
-                "max"
+                "max",
+                "lastNotNull"
               ],
               "displayMode": "table",
               "placement": "bottom",
@@ -352,8 +352,8 @@ data:
           "options": {
             "legend": {
               "calcs": [
-                "lastNotNull",
-                "max"
+                "max",
+                "lastNotNull"
               ],
               "displayMode": "table",
               "placement": "bottom",
@@ -600,8 +600,8 @@ data:
           "options": {
             "legend": {
               "calcs": [
-                "lastNotNull",
-                "max"
+                "max",
+                "lastNotNull"
               ],
               "displayMode": "table",
               "placement": "bottom",
@@ -748,6 +748,6 @@ data:
       "timezone": "browser",
       "title": "Nibe Power",
       "uid": "adhqnr0onlzwga",
-      "version": 1,
+      "version": 2,
       "weekStart": ""
     }

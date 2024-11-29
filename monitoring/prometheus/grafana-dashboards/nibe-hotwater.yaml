@@ -100,8 +100,12 @@ data:
           "id": 1,
           "options": {
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "min",
+                "max",
+                "lastNotNull"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
             },
@@ -319,8 +323,8 @@ data:
           "options": {
             "legend": {
               "calcs": [
-                "lastNotNull",
-                "max"
+                "max",
+                "lastNotNull"
               ],
               "displayMode": "table",
               "placement": "bottom",
@@ -510,8 +514,8 @@ data:
           "options": {
             "legend": {
               "calcs": [
-                "lastNotNull",
-                "max"
+                "max",
+                "lastNotNull"
               ],
               "displayMode": "table",
               "placement": "bottom",
@@ -585,6 +589,6 @@ data:
       "timezone": "",
       "title": "Nibe Hot Water",
       "uid": "e0864723-a3f2-495d-a495-68b205d66829",
-      "version": 1,
+      "version": 2,
       "weekStart": ""
     }
