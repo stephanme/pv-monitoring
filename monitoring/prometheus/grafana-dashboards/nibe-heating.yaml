@@ -26,7 +26,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "id": 4,
+      "id": 7,
       "links": [],
       "panels": [
         {
@@ -45,7 +45,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${datasource}"
           },
           "fieldConfig": {
             "defaults": {
@@ -131,7 +131,7 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "prometheus"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "expr": "nibe_degree_minutes",
@@ -160,7 +160,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -248,7 +248,7 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "prometheus"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "expr": "nibe_outdoor_temperature_celsius",
@@ -264,7 +264,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -438,7 +438,7 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "prometheus"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "expr": "z2m_temperature_celsius",
@@ -467,7 +467,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -657,7 +657,7 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "prometheus"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "expr": "nibe_heat_medium_temperature_celsius",
@@ -673,7 +673,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${datasource}"
           },
           "fieldConfig": {
             "defaults": {
@@ -704,7 +704,7 @@ data:
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "never",
+                "showPoints": "auto",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -778,7 +778,7 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "prometheus"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -792,7 +792,7 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "prometheus"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "expr": "nibe_heat_medium_flow_liter_per_min",
@@ -822,7 +822,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -909,7 +909,7 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "prometheus"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "expr": "nibe_compressor_frequency_hertz",
@@ -925,7 +925,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "${datasource}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1007,6 +1007,7 @@ data:
             "y": 55
           },
           "id": 2,
+          "interval": "6m",
           "options": {
             "legend": {
               "calcs": [
@@ -1028,11 +1029,12 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "prometheus"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "rate(nibe_energy_meter_wh_total[10m])*3600",
+              "expr": "rate(nibe_energy_meter_wh_total[$__rate_interval])*3600",
               "instant": false,
+              "interval": "",
               "legendFormat": "Heatpump Electric Power",
               "range": true,
               "refId": "A"
@@ -1040,12 +1042,13 @@ data:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "prometheus"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "rate(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[10m])*3600",
+              "expr": "rate(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__rate_interval])*3600",
               "hide": false,
               "instant": false,
+              "interval": "",
               "legendFormat": "Heat Meter",
               "range": true,
               "refId": "B"
@@ -1062,7 +1065,20 @@ data:
         "nibe"
       ],
       "templating": {
-        "list": []
+        "list": [
+          {
+            "current": {
+              "text": "Prometheus",
+              "value": "prometheus"
+            },
+            "name": "datasource",
+            "options": [],
+            "query": "prometheus",
+            "refresh": 1,
+            "regex": "",
+            "type": "datasource"
+          }
+        ]
       },
       "time": {
         "from": "now-24h",
@@ -1072,6 +1088,6 @@ data:
       "timezone": "",
       "title": "Nibe Heating",
       "uid": "f052ca95-a6b0-40cb-9071-b6f529697f7a",
-      "version": 3,
+      "version": 2,
       "weekStart": ""
     }
