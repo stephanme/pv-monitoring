@@ -32,9 +32,8 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "id": 5,
+      "id": 6,
       "links": [],
-      "liveNow": false,
       "panels": [
         {
           "datasource": {
@@ -94,7 +93,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.2.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -103,7 +102,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_energy_meter_wh_total[$__range])",
+              "expr": "sum(increase(nibe_energy_meter_wh_total[$__range])) without (instance)",
               "instant": true,
               "legendFormat": "Total",
               "range": false,
@@ -244,7 +243,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.2.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -253,7 +252,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_energy_consumption_wh_total{mode=\"heating\"}[$__range])",
+              "expr": "sum(increase(nibe_energy_consumption_wh_total{mode=\"heating\"}[$__range])) without (instance)",
               "instant": true,
               "legendFormat": "Heating",
               "range": false,
@@ -266,7 +265,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_energy_consumption_wh_total{mode=\"hotwater\"}[$__range])",
+              "expr": "sum(increase(nibe_energy_consumption_wh_total{mode=\"hotwater\"}[$__range])) without (instance)",
               "hide": false,
               "instant": true,
               "legendFormat": "Hot Water",
@@ -280,7 +279,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_energy_consumption_wh_total{mode=\"cooling\"}[$__range])",
+              "expr": "sum(increase(nibe_energy_consumption_wh_total{mode=\"cooling\"}[$__range])) without (instance)",
               "hide": false,
               "instant": true,
               "legendFormat": "Cooling",
@@ -294,7 +293,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_energy_consumption_wh_total{mode=\"off\"}[$__range])",
+              "expr": "sum(increase(nibe_energy_consumption_wh_total{mode=\"off\"}[$__range])) without (instance)",
               "hide": false,
               "instant": true,
               "legendFormat": "Off",
@@ -359,7 +358,7 @@ data:
             "textMode": "value",
             "wideLayout": true
           },
-          "pluginVersion": "11.2.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -368,7 +367,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "(increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range])) / on (job) increase(nibe_energy_meter_wh_total[$__range])",
+              "expr": "(sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range])) without (instance) + on (job) sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range])) without (instance) + on (job) sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range])) without (instance)) / on (job) sum(increase(nibe_energy_meter_wh_total[$__range])) without (instance)",
               "hide": false,
               "instant": true,
               "legendFormat": "__auto",
@@ -467,7 +466,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.2.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -476,7 +475,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range]) / on (job) increase(nibe_energy_consumption_wh_total{mode=\"heating\"}[$__range])",
+              "expr": "sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range])) without (instance) / on (job) sum(increase(nibe_energy_consumption_wh_total{mode=\"heating\"}[$__range])) without (instance)",
               "hide": false,
               "instant": true,
               "legendFormat": "Heating",
@@ -490,7 +489,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range]) / on (job) increase(nibe_energy_consumption_wh_total{mode=\"hotwater\"}[$__range])",
+              "expr": "sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range])) without (instance) / on (job) sum(increase(nibe_energy_consumption_wh_total{mode=\"hotwater\"}[$__range])) without (instance)",
               "hide": false,
               "instant": true,
               "legendFormat": "Hot Water",
@@ -504,7 +503,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range]) / on (job) increase(nibe_energy_consumption_wh_total{mode=\"cooling\"}[$__range])",
+              "expr": "sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range])) without (instance) / on (job) sum(increase(nibe_energy_consumption_wh_total{mode=\"cooling\"}[$__range])) without (instance)",
               "hide": false,
               "instant": true,
               "legendFormat": "Cooling",
@@ -584,7 +583,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.2.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -593,7 +592,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range])",
+              "expr": "sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range])) without (instance) + on (job) sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range])) without (instance) + on (job) sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range])) without (instance)",
               "instant": true,
               "interval": "",
               "intervalFactor": 10,
@@ -608,7 +607,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "round(increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range]) + on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range]) - on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr\"}[$__range]) - on (job) increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr\"}[$__range]), 1)",
+              "expr": "round(sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range])) without (instance) + on (job) sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range])) without (instance) - on (job) sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr\"}[$__range])) without (instance) - on (job) sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr\"}[$__range])) without (instance), 1)",
               "hide": false,
               "instant": true,
               "legendFormat": "Add.Heat",
@@ -703,7 +702,7 @@ data:
             "textMode": "value_and_name",
             "wideLayout": true
           },
-          "pluginVersion": "11.2.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -712,7 +711,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range])",
+              "expr": "sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__range])) without (instance)",
               "instant": true,
               "interval": "",
               "intervalFactor": 10,
@@ -727,7 +726,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range])",
+              "expr": "sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[$__range])) without (instance)",
               "hide": false,
               "instant": true,
               "legendFormat": "Hot Water",
@@ -741,7 +740,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range])",
+              "expr": "sum(increase(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[$__range])) without (instance)",
               "hide": false,
               "instant": true,
               "legendFormat": "Cooling",
@@ -881,7 +880,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "8.0.1",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -1041,6 +1040,7 @@ data:
               "sort": "none"
             }
           },
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -1206,6 +1206,7 @@ data:
               "sort": "none"
             }
           },
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -1213,7 +1214,7 @@ data:
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "nibe_outdoor_temperature_celsius",
+              "expr": "sum(nibe_outdoor_temperature_celsius) without (instance)",
               "instant": false,
               "legendFormat": "{{sensor}}",
               "range": true,
@@ -1224,8 +1225,9 @@ data:
           "type": "timeseries"
         }
       ],
+      "preload": false,
       "refresh": false,
-      "schemaVersion": 39,
+      "schemaVersion": 40,
       "tags": [
         "nibe"
       ],
@@ -1236,11 +1238,9 @@ data:
             "auto_count": 30,
             "auto_min": "10s",
             "current": {
-              "selected": false,
               "text": "1h",
               "value": "1h"
             },
-            "hide": 0,
             "label": "Resolution",
             "name": "resolution",
             "options": [
@@ -1271,27 +1271,20 @@ data:
               }
             ],
             "query": "5m,1h,1d,1w,1M",
-            "queryValue": "",
             "refresh": 2,
-            "skipUrlSync": false,
             "type": "interval"
           },
           {
             "current": {
-              "selected": true,
               "text": "default",
               "value": "default"
             },
-            "hide": 0,
             "includeAll": false,
-            "multi": false,
             "name": "datasource",
             "options": [],
             "query": "prometheus",
-            "queryValue": "",
             "refresh": 1,
             "regex": "",
-            "skipUrlSync": false,
             "type": "datasource"
           }
         ]

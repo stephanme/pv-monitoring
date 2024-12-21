@@ -126,7 +126,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -134,7 +134,7 @@ data:
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "nibe_degree_minutes",
+              "expr": "sum(nibe_degree_minutes) without (instance)",
               "instant": false,
               "legendFormat": "Degree Minutes",
               "range": true,
@@ -243,7 +243,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -251,7 +251,7 @@ data:
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "nibe_outdoor_temperature_celsius",
+              "expr": "sum(nibe_outdoor_temperature_celsius) without (instance)",
               "instant": false,
               "legendFormat": "{{sensor}}",
               "range": true,
@@ -433,7 +433,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -652,7 +652,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -660,7 +660,7 @@ data:
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "nibe_heat_medium_temperature_celsius",
+              "expr": "sum(nibe_heat_medium_temperature_celsius) without (instance)",
               "instant": false,
               "legendFormat": "{{sensor}}",
               "range": true,
@@ -773,7 +773,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -782,7 +782,7 @@ data:
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "nibe_heat_medium_pump_speed_percent",
+              "expr": "sum(nibe_heat_medium_pump_speed_percent) without (instance)",
               "hide": false,
               "interval": "",
               "legendFormat": "Pump Speed {{sensor}}",
@@ -795,7 +795,7 @@ data:
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "nibe_heat_medium_flow_liter_per_min",
+              "expr": "sum(nibe_heat_medium_flow_liter_per_min) without (instance)",
               "hide": false,
               "instant": false,
               "legendFormat": "Flow",
@@ -904,7 +904,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -912,7 +912,7 @@ data:
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "nibe_compressor_frequency_hertz",
+              "expr": "sum(nibe_compressor_frequency_hertz) without (instance)",
               "instant": false,
               "legendFormat": "{{sensor}}",
               "range": true,
@@ -1024,7 +1024,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -1032,7 +1032,7 @@ data:
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "rate(nibe_energy_meter_wh_total[$__rate_interval])*3600",
+              "expr": "sum(rate(nibe_energy_meter_wh_total[$__rate_interval])*3600) without (instance)",
               "instant": false,
               "interval": "",
               "legendFormat": "Heatpump Electric Power",
@@ -1045,7 +1045,7 @@ data:
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "rate(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__rate_interval])*3600",
+              "expr": "sum(rate(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[$__rate_interval])*3600) without (instance)",
               "hide": false,
               "instant": false,
               "interval": "",
@@ -1088,6 +1088,6 @@ data:
       "timezone": "",
       "title": "Nibe Heating",
       "uid": "f052ca95-a6b0-40cb-9071-b6f529697f7a",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }

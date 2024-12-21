@@ -26,7 +26,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "id": 1,
+      "id": 9,
       "links": [],
       "panels": [
         {
@@ -189,7 +189,7 @@ data:
               "sort": "asc"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -197,7 +197,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "rate(nibe_energy_meter_wh_total[5m])*3600",
+              "expr": "sum(rate(nibe_energy_meter_wh_total[5m])*3600) without (instance)",
               "hide": false,
               "instant": false,
               "legendFormat": "Total",
@@ -364,7 +364,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -372,7 +372,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "rate(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[10m])*3600",
+              "expr": "sum(rate(nibe_heat_meter_wh_total{sensor=\"EP14 heating cpr+add\"}[10m])*3600) without (instance)",
               "hide": false,
               "instant": false,
               "legendFormat": "Heating",
@@ -385,7 +385,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "rate(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[10m])*3600",
+              "expr": "sum(rate(nibe_heat_meter_wh_total{sensor=\"EP14 hotwater cpr+add\"}[10m])*3600) without (instance)",
               "hide": false,
               "instant": false,
               "legendFormat": "Hot Water",
@@ -398,7 +398,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "rate(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[10m])*3600",
+              "expr": "sum(rate(nibe_heat_meter_wh_total{sensor=\"EP14 cooling cpr\"}[10m])*3600) without (instance)",
               "hide": false,
               "instant": false,
               "legendFormat": "Cooling",
@@ -494,7 +494,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -502,7 +502,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "nibe_compressor_frequency_hertz",
+              "expr": "sum(nibe_compressor_frequency_hertz) without (instance)",
               "instant": false,
               "legendFormat": "{{sensor}}",
               "range": true,
@@ -612,7 +612,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -713,7 +713,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.4.0",
           "targets": [
             {
               "datasource": {
@@ -721,7 +721,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "nibe_defrosting",
+              "expr": "max(nibe_defrosting) without (instance)",
               "interval": "",
               "legendFormat": " ",
               "range": true,
@@ -748,6 +748,6 @@ data:
       "timezone": "browser",
       "title": "Nibe Power",
       "uid": "adhqnr0onlzwga",
-      "version": 2,
+      "version": 1,
       "weekStart": ""
     }
