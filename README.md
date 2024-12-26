@@ -48,12 +48,13 @@ All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) whi
 
 ### k3s Server on nasbox
 ```
-curl -sfL https://get.k3s.io | sh - --disable coredns,servicelb
+curl -sfL https://get.k3s.io | sh - --disable coredns,servicelb --embedded-registry
 ```
 
 Config file `/etc/rancher/k3s/config.yaml`
 ```
 disable: coredns,servicelb
+embedded-registry: true
 
 # https://github.com/k3s-io/k3s/issues/3619#issuecomment-993977516
 kube-controller-manager-arg:
@@ -76,6 +77,12 @@ kind: KubeletConfiguration
 imageMaximumGCAge: 1008h # 6 weeks
 featureGates:
   ImageMaximumGCAge: true
+```
+
+Enable registry mirroring for all image registries in file `/etc/rancher/k3s/registries.yaml`:
+```
+mirrors:
+  "*":
 ```
 
 Others:
