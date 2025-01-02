@@ -26,7 +26,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
-      "id": 7,
+      "id": 5,
       "links": [],
       "panels": [
         {
@@ -404,6 +404,18 @@ data:
                       "tooltip": false,
                       "viz": true
                     }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "thermometer_bad"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Bad"
                   }
                 ]
               }
