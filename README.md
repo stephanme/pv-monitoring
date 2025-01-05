@@ -13,6 +13,7 @@ Monitoring of a photovoltaic system, car charging and heat pump
 - [k3s](https://k3s.io) lightweight Kubernetes cluster
   - k3s server (using sqlite) running on a nasbox: Celeron G3900 (2 core), 32G RAM, 128G SSD, 4T raid1 disks
   - k3s agent running on Raspberry 4, 8G RAM, 512G SSD
+  - k3s agent running on Orange Pi 5 Max, 16G RAM, 1T SSD
 - [pv-control](https://github.com/stephanme/pv-control) for controlling electric car charger
   - charge car by solar power only
   - 1 and 3 phase charging to get a wide control range starting at 1.3 kW up to (theoretical) 11kW
@@ -41,7 +42,7 @@ Standard installation as described in https://rancher.com/docs/k3s/latest/en/qui
 
 All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) which is deployed as daemon set on all nodes:
 - k3s.fritz.box - via MetalLB
-- nasbox.fritz.box, pi1.fritz.box - via node ports
+- nasbox.fritz.box, pi1.fritz.box, pi2.fritz.box - via node ports
 - additional DNS names like homeassistant.fritz.box - translated to node IPs or MetalLB IP via dnsmasq + customized coredns
 
 [MetalLB](https://metallb.universe.tf/) is used as LB for special services that need an own IP. E.g. for [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which is used as internal DNS server as the Fritzbox doesn't allow to add additional host names.
@@ -74,7 +75,7 @@ Kubelet config file `/etc/rancher/k3s/kubelet-config.yaml`
 # https://github.com/k3s-io/k3s/discussions/10125
 apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
-imageMaximumGCAge: 1008h # 6 weeks
+imageMaximumGCAge: 672h # 4 weeks
 featureGates:
   ImageMaximumGCAge: true
 ```
@@ -88,11 +89,11 @@ mirrors:
 Others:
 - Disable multipath for `sd[a-z0-9]+` devices as described in [Troubleshooting: `MountVolume.SetUp failed for volume` due to multipathd on the node](https://longhorn.io/kb/troubleshooting-volume-with-multipath/)
 
-### k3s Agent on pi1
+### k3s Agent
 
-Agent on Raspberry Pi:
+Agent on Raspberry/Orange Pi:
 ```
-# enable cgroups, see https://docs.k3s.io/advanced#raspberry-pi
+# enable cgroups, see https://docs.k3s.io/advanced#raspberry-pi (seems obsolete with Bookworm)
 
 # needed for longhorn
 sudo apt install open-iscsi
