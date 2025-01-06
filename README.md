@@ -93,7 +93,7 @@ Others:
 
 Agent on Raspberry/Orange Pi:
 ```
-# enable cgroups, see https://docs.k3s.io/advanced#raspberry-pi (seems obsolete with Bookworm)
+# enable cgroups, see https://docs.k3s.io/installation/requirements?os=pi (not needed for Armbian)
 
 # needed for longhorn
 sudo apt install open-iscsi
@@ -111,6 +111,11 @@ kubelet-arg:
 
 Kubelet config file `/etc/rancher/k3s/kubelet-config.yaml`: same as for server.
 
+Enable registry mirroring for all image registries in file `/etc/rancher/k3s/registries.yaml`:
+```
+mirrors:
+  "*":
+```
 
 ## k3s Updates
 
