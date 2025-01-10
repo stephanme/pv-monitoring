@@ -1,0 +1,67 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: descheduler
+  namespace: kube-system
+spec:
+  # renovate: HelmChart
+  repo: https://kubernetes-sigs.github.io/descheduler/
+  chart: descheduler
+  version: 0.32.1
+  targetNamespace: kube-system
+  timeout: 10m
+  failurePolicy: abort
+  valuesContent: |-
+    # https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/values.yaml
+    # https://github.com/kubernetes-sigs/descheduler?tab=readme-ov-file
+    kind: Deployment
+    deschedulingInterval: 1m
+    service:
+      enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: prometheus
+    deschedulerPolicy:
+      # TODO: use metrics server?
+      profiles:
+        - name: default
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                evictLocalStoragePods: true
+                nodeFit: true
+            - name: RemoveDuplicates
+            - name: RemovePodsHavingTooManyRestarts
+              args:
+                podRestartThreshold: 100
+                includingInitContainers: true
+            - name: RemovePodsViolatingNodeAffinity
+              args:
+                nodeAffinityType:
+                - requiredDuringSchedulingIgnoredDuringExecution
+            - name: RemovePodsViolatingNodeTaints
+            - name: RemovePodsViolatingInterPodAntiAffinity
+            - name: RemovePodsViolatingTopologySpreadConstraint
+            - name: LowNodeUtilization
+              args:
+                thresholds:
+                  cpu: 20
+                  memory: 20
+                  pods: 20
+                targetThresholds:
+                  cpu: 50
+                  memory: 50
+                  pods: 50
+          plugins:
+            balance:
+              enabled:
+                - RemoveDuplicates
+                - RemovePodsViolatingTopologySpreadConstraint
+                # TODO: - LowNodeUtilization
+            deschedule:
+              enabled:
+                - RemovePodsHavingTooManyRestarts
+                - RemovePodsViolatingNodeTaints
+                - RemovePodsViolatingNodeAffinity
+                - RemovePodsViolatingInterPodAntiAffinity

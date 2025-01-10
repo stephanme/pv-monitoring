@@ -1,0 +1,20 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: node-feature-discovery
+  namespace: kube-system
+spec:
+  # renovate: HelmChart
+  repo: https://kubernetes-sigs.github.io/node-feature-discovery/charts
+  chart: node-feature-discovery
+  version: 0.17.0
+  targetNamespace: kube-system
+  timeout: 10m
+  failurePolicy: abort
+  valuesContent: |-
+    # https://github.com/kubernetes-sigs/node-feature-discovery/blob/master/deployment/helm/node-feature-discovery/values.yaml
+    prometheus:
+      enable: true
+      scrapeInterval: 30s
+      labels:
+        release: prometheus

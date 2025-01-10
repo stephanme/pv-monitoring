@@ -46,7 +46,7 @@ spec:
             - name: zigbee2mqtt-udev
               mountPath: /run/udev
             - name: devusb
-              mountPath: /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0
+              mountPath: /dev/serial/by-id
           livenessProbe:
             tcpSocket:
               port: 8080
@@ -68,8 +68,15 @@ spec:
             failureThreshold: 30
             timeoutSeconds: 1
             periodSeconds: 5
-      nodeSelector:
-        kubernetes.io/hostname: nasbox
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: feature.node.kubernetes.io/custom-zigbee
+                    operator: In
+                    values:
+                      - "true"
       volumes:
         - name: zigbee2mqtt-data
           persistentVolumeClaim:
@@ -79,7 +86,7 @@ spec:
             path: /run/udev
         - name: devusb
           hostPath:
-            path: /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0
+            path: /dev/serial/by-id
         - name: zigbee2mqtt-config
           configMap:
             name: zigbee2mqtt-config
