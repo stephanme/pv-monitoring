@@ -49,13 +49,16 @@ All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) whi
 
 ### k3s Server on nasbox
 ```
-curl -sfL https://get.k3s.io | sh - --disable coredns,servicelb --embedded-registry
+curl -sfL https://get.k3s.io | sh - --disable coredns,servicelb --embedded-registry --cluster-init
 ```
 
 Config file `/etc/rancher/k3s/config.yaml`
 ```
 disable: coredns,servicelb
 embedded-registry: true
+
+cluster-init: true
+etcd-expose-metrics: true
 
 # https://github.com/k3s-io/k3s/issues/3619#issuecomment-993977516
 kube-controller-manager-arg:

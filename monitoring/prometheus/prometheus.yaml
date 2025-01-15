@@ -18,9 +18,15 @@ spec:
     # references
     # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
 
-    # Disable etcd monitoring. See https://github.com/cablespaghetti/k3s-monitoring/issues/4
+    # etcd monitoring. See https://github.com/cablespaghetti/k3s-monitoring/issues/4
     kubeEtcd:
-      enabled: false
+      enabled: true
+      endpoints:
+      - 192.168.178.10
+      service:
+        enabled: true
+        port: 2381
+        targetPort: 2381      
 
     # Need special config for controller, scheduler and proxy for k3s
     # https://github.com/k3s-io/k3s/issues/3619#issuecomment-973188304
