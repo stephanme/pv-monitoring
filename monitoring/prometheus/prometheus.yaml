@@ -23,6 +23,8 @@ spec:
       enabled: true
       endpoints:
       - 192.168.178.10
+      - 192.168.178.11
+      - 192.168.178.12
       service:
         enabled: true
         port: 2381
@@ -35,6 +37,8 @@ spec:
       enabled: true
       endpoints:
       - 192.168.178.10
+      - 192.168.178.11
+      - 192.168.178.12
       service:
         enabled: true
         port: 10257
@@ -47,6 +51,8 @@ spec:
       enabled: true
       endpoints:
       - 192.168.178.10
+      - 192.168.178.11
+      - 192.168.178.12
       service:
         enabled: true
         port: 10259
@@ -59,6 +65,8 @@ spec:
       enabled: true
       endpoints:
       - 192.168.178.10
+      - 192.168.178.11
+      - 192.168.178.12
 
     alertmanager:
       alertmanagerSpec:

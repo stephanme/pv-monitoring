@@ -11,9 +11,10 @@ Monitoring of a photovoltaic system, car charging and heat pump
   - long-term Prometheus instance with infinite data data retention and 15min scrape interval connected to the first instance using federation
   - inverter and wall box connected using [modbus_exporter](https://github.com/RichiH/modbus_exporter)
 - [k3s](https://k3s.io) lightweight Kubernetes cluster
-  - k3s server (using sqlite) running on a nasbox: Celeron G3900 (2 core), 32G RAM, 128G SSD, 4T raid1 disks
-  - k3s agent running on Raspberry 4, 8G RAM, 512G SSD
-  - k3s agent running on Orange Pi 5 Max, 16G RAM, 1T SSD
+  - 3 k3s servers using embedded etcd
+  - nasbox: Celeron G3900 (2 core), 32G RAM, 1T SSD, 4T raid1 disks
+  - pi1: Raspberry Pi 4, 8G RAM, 512G SSD
+  - pi2: Orange Pi 5 Max, 16G RAM, 1T SSD
 - [pv-control](https://github.com/stephanme/pv-control) for controlling electric car charger
   - charge car by solar power only
   - 1 and 3 phase charging to get a wide control range starting at 1.3 kW up to (theoretical) 11kW
@@ -47,9 +48,14 @@ All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) whi
 
 [MetalLB](https://metallb.universe.tf/) is used as LB for special services that need an own IP. E.g. for [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which is used as internal DNS server as the Fritzbox doesn't allow to add additional host names.
 
-### k3s Server on nasbox
+### k3s Server
 ```
+# first server (nasbox)
 curl -sfL https://get.k3s.io | sh - --disable coredns,servicelb --embedded-registry --cluster-init
+
+# other servers (pi1, pi2)
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.178.10:6443 \
+K3S_TOKEN=<join_token>  sh - --disable coredns,servicelb --embedded-registry --cluster-init
 ```
 
 Config file `/etc/rancher/k3s/config.yaml`
@@ -57,7 +63,6 @@ Config file `/etc/rancher/k3s/config.yaml`
 disable: coredns,servicelb
 embedded-registry: true
 
-cluster-init: true
 etcd-expose-metrics: true
 
 # https://github.com/k3s-io/k3s/issues/3619#issuecomment-993977516
@@ -90,11 +95,12 @@ mirrors:
 ```
 
 Others:
-- Disable multipath for `sd[a-z0-9]+` devices as described in [Troubleshooting: `MountVolume.SetUp failed for volume` due to multipathd on the node](https://longhorn.io/kb/troubleshooting-volume-with-multipath/)
+- nasbox: Disable multipath for `sd[a-z0-9]+` devices as described in [Troubleshooting: `MountVolume.SetUp failed for volume` due to multipathd on the node](https://longhorn.io/kb/troubleshooting-volume-with-multipath/)
 
 ### k3s Agent
 
-Agent on Raspberry/Orange Pi:
+(currently no agents)
+
 ```
 # enable cgroups, see https://docs.k3s.io/installation/requirements?os=pi (not needed for Armbian)
 
