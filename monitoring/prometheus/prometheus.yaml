@@ -130,7 +130,7 @@ spec:
         resources:
           requests:
             cpu: 200m
-            memory: 1500Mi
+            memory: 2Gi
 
         # targets running outside of k3s
         additionalScrapeConfigs:
@@ -237,7 +237,7 @@ spec:
       resources:
         requests:
           cpu: 25m
-          memory: 128Mi
+          memory: 400Mi
       sidecar:
         dashboards:
           searchNamespace: ALL

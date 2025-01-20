@@ -93,6 +93,11 @@ spec:
             port: 8000
           timeoutSeconds: 1
 
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+
         ports:
         - containerPort: 8000
           name: http
