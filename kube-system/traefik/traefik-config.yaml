@@ -50,6 +50,12 @@ spec:
           default: true
         hostPort: 1883
         protocol: TCP
+      # see kube-api-ingress.yaml, no hostPort=only via MetalLB
+      kubeapi:
+        port: 6443
+        expose:
+          default: true
+        protocol: TCP
     metrics:
       prometheus:
         service:

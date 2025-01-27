@@ -48,6 +48,10 @@ All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) whi
 
 [MetalLB](https://metallb.universe.tf/) is used as LB for special services that need an own IP. E.g. for [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which is used as internal DNS server as the Fritzbox doesn't allow to add additional host names.
 
+k8s API is available via:
+- k3s.fritz.box:6443, MetalLB as Cluster Load Balancer -> Traefik -> kubernetes service in default namespace
+- port 6443 on every node
+
 ### k3s Server
 ```
 # first server (nasbox)
@@ -62,6 +66,10 @@ Config file `/etc/rancher/k3s/config.yaml`
 ```
 disable: coredns,servicelb
 embedded-registry: true
+
+tls-san:
+- "192.168.178.230"
+- k3s.fritz.box
 
 etcd-expose-metrics: true
 

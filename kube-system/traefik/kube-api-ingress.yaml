@@ -1,0 +1,16 @@
+# https://kubernetes.io/docs/tasks/run-application/access-api-from-pod/
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: kube-api
+spec:
+  entryPoints:
+    - kubeapi
+  routes:
+  - match: HostSNI(`*`)
+    services:
+    - name: kubernetes
+      namespace: default
+      port: 443
+  tls:
+    passthrough: true
