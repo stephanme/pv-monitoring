@@ -80,12 +80,17 @@ kubelet-arg:
 
 Kubelet config file `/etc/rancher/k3s/kubelet-config.yaml`
 ```
-# https://github.com/k3s-io/k3s/discussions/10125
 apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
+
+# https://github.com/k3s-io/k3s/discussions/10125
 imageMaximumGCAge: 672h # 4 weeks
 featureGates:
   ImageMaximumGCAge: true
+
+# https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/
+shutdownGracePeriod: 30s
+shutdownGracePeriodCriticalPods: 10s
 ```
 
 Enable registry mirroring for all image registries in file `/etc/rancher/k3s/registries.yaml`:
