@@ -19,10 +19,10 @@ spec:
   serviceAccountName: system-upgrade
   drain:
     force: true
-    skipWaitForDeleteTimeout: 60 # set this to prevent upgrades from hanging on small clusters since k8s v1.18
+    skipWaitForDeleteTimeout: 60 # 1.18+ (honor pod disruption budgets up to 60 seconds per pod then moves on)
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.31.4+k3s1
+  version: v1.32.1+k3s1
 ---
 # Agent plan
 apiVersion: upgrade.cattle.io/v1
@@ -46,7 +46,7 @@ spec:
   serviceAccountName: system-upgrade
   drain:
     force: true
-    skipWaitForDeleteTimeout: 60 # set this to prevent upgrades from hanging on small clusters since k8s v1.18
+    skipWaitForDeleteTimeout: 60 # 1.18+ (honor pod disruption budgets up to 60 seconds per pod then moves on)
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.31.4+k3s1
+  version: v1.32.1+k3s1
