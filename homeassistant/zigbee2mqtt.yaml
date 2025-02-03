@@ -102,11 +102,15 @@ metadata:
   labels:
     app: zigbee2mqtt
 data:
+  # https://github.com/Koenkk/zigbee2mqtt/blob/master/data/configuration.example.yaml
   configuration.yaml: |-
+    version: 4
     permit_join: false
     # Home Assistant integration (MQTT discovery)
-    homeassistant: true
-    availability: true
+    homeassistant: 
+      enabled: true
+    availability: 
+      enabled: true
     mqtt:
       base_topic: zigbee2mqtt
       server: mqtt://mosquitto.homeassistant.svc.cluster.local
@@ -116,9 +120,11 @@ data:
       include_device_information: true
     # Zigbee Adapter path
     serial:
+      adapter: zstack
       port: /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0
     # Enable UI
     frontend:
+      enabled: true
       port: 8080
     advanced:
       network_key: '!secrets.yaml network_key'
