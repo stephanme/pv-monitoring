@@ -7,7 +7,7 @@ spec:
   # renovate: HelmChart
   repo: https://kubernetes-sigs.github.io/descheduler/
   chart: descheduler
-  version: 0.32.1
+  version: 0.32.2
   targetNamespace: kube-system
   timeout: 10m
   failurePolicy: abort
