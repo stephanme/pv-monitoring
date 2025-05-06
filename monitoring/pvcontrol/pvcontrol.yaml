@@ -116,7 +116,7 @@ spec:
   selector:
     app: pvcontrol
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: pvcontrol-ingress
@@ -141,7 +141,7 @@ spec:
     - name: pvcontrol-service
       port: 8080
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: pvcontrol-stripprefix
@@ -150,7 +150,7 @@ spec:
     prefixes:
       - /pvcontrol
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: pvcontrol-compress
