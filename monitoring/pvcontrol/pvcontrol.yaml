@@ -28,7 +28,7 @@ spec:
             - --relay
             - RaspiPhaseRelay
             - --car
-            - VolkswagenIDCar
+            - NoCar
             - --config
             - |-
               {
@@ -48,12 +48,6 @@ spec:
                 "controller": {
                   "enable_auto_phase_switching": false,
                   "pv_allow_charging_delay": 300
-                },
-                "car": {
-                  "disabled": false,
-                  "user": "$(car_user)",
-                  "password": "$(car_password)",
-                  "vin": "$(car_vin)"
                 }
               }
             - --hostname
