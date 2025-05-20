@@ -7,7 +7,7 @@ spec:
   # renovate: HelmChart
   repo: https://charts.bitnami.com/bitnami
   chart: redis
-  version: 20.13.4
+  version: 21.1.4
   targetNamespace: paperless
   timeout: 1h
   failurePolicy: abort
