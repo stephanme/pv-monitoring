@@ -22,7 +22,7 @@ spec:
     skipWaitForDeleteTimeout: 60 # 1.18+ (honor pod disruption budgets up to 60 seconds per pod then moves on)
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.32.4+k3s1
+  version: v1.33.1+k3s1
 ---
 # Agent plan
 apiVersion: upgrade.cattle.io/v1
@@ -49,4 +49,4 @@ spec:
     skipWaitForDeleteTimeout: 60 # 1.18+ (honor pod disruption budgets up to 60 seconds per pod then moves on)
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.32.4+k3s1
+  version: v1.33.1+k3s1
