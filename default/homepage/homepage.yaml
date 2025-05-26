@@ -21,6 +21,7 @@ data:
         <li><a href="http://k3s.fritz.box/prometheus">Prometheus</a></li>
         <li><a href="http://k3s.fritz.box/prometheus-lt">Prometheus Long-Term</a></li>
         <li><a href="http://k3s.fritz.box/longhorn">Longhorn</a></li>
+        <li><a href="http://k3s.fritz.box/alertmanager">Alert Manager</a></li>
         <li><a href="http://homeassistant.fritz.box/zigbee2mqtt/">Zigbee2Mqtt</a></li>
       </ul>
       <h2>More Info</h2>
