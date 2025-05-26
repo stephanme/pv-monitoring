@@ -1,0 +1,60 @@
+# nginx deployment for homepage
+# exposed via Traefik
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homepage
+  template:
+    metadata:
+      labels:
+        app: homepage
+    spec:
+      containers:
+      - image: nginx:1.28.0
+        imagePullPolicy: IfNotPresent
+        name: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        volumeMounts:
+        - name: homepage-static-pages
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: homepage-static-pages
+        configMap:
+          name: homepage-static-pages
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homepage
+  namespace: default
+spec:
+  ports:
+  - name: tcp
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: homepage
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homepage
+  namespace: default
+spec:
+  entryPoints:
+  - web
+  routes:
+  - kind: Rule
+    match: Host(`k3s.fritz.box`) && Path(`/`)
+    services:
+    - name: homepage
+      port: 80

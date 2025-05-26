@@ -10,3 +10,4 @@ $scriptdir/longhorn-system/deploy.sh
 $scriptdir/monitoring/deploy.sh
 $scriptdir/homeassistant/deploy.sh
 $scriptdir/paperless/deploy.sh
+$scriptdir/default/deploy.sh

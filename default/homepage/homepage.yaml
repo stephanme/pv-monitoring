@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-static-pages
+  namespace: default
+data:
+  index.html: |
+    <html>
+    <head><title>k3s.fritz.box</title></head>
+    <body>
+      <h1>k3s.fritz.box</h1>
+      <h2>Applications</h2>
+      <ul>
+        <li><a href="http://homeassistant.fritz.box">Home Assistant</a></li>
+        <li><a href="http://pvcontrol.fritz.box">PV Control</a></li>
+        <li><a href="http://paperless.fritz.box">Paperless</a></li>
+      </ul>
+      <h2>Monitoring</h2>
+      <ul>
+        <li><a href="http://k3s.fritz.box/grafana">Grafana</a></li>
+        <li><a href="http://k3s.fritz.box/prometheus">Prometheus</a></li>
+        <li><a href="http://k3s.fritz.box/prometheus-lt">Prometheus Long-Term</a></li>
+        <li><a href="http://k3s.fritz.box/longhorn">Longhorn</a></li>
+        <li><a href="http://homeassistant.fritz.box/zigbee2mqtt/">Zigbee2Mqtt</a></li>
+      </ul>
+      <h2>More Info</h2>
+      <ul>
+        <li><a href="https://github.com/stephanme/pv-monitoring/blob/main/README.md">Github: pv-monitoring</a></li>
+      </ul>
+    </body>
+    </html>
