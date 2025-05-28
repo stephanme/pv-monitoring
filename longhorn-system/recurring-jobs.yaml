@@ -1,5 +1,5 @@
 ---
-apiVersion: longhorn.io/v1beta1
+apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
   name: trim-before-backup
@@ -14,7 +14,7 @@ spec:
   labels:
     schedule: 'weekly'
 ---
-apiVersion: longhorn.io/v1beta1
+apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
   name: backup-weekly
@@ -29,7 +29,7 @@ spec:
   labels:
     schedule: 'weekly'
 ---
-apiVersion: longhorn.io/v1beta1
+apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
   name: trim-daily
@@ -45,7 +45,7 @@ spec:
   labels:
     schedule: 'daily'
 ---
-apiVersion: longhorn.io/v1beta1
+apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
   name: snapshot-daily

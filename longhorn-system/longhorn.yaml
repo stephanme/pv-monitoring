@@ -27,7 +27,8 @@ spec:
       backupstorePollInterval: 0
       concurrentAutomaticEngineUpgradePerNodeLimit: 2
       allowCollectingLonghornUsageMetrics: false
-      orphanAutoDeletion: true
+      orphanResourceAutoDeletion: replica-data;instance
+      offlineRelicaRebuilding: true
     helmPreUpgradeCheckerJob:
       enabled: false
     csi:
