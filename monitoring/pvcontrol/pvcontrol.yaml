@@ -129,12 +129,11 @@ spec:
     services:
     - name: pvcontrol-service
       port: 8080
-  # deprecated
+  # deprecated -> redirect
   - kind: Rule
     match: Path(`/pvcontrol`) || PathPrefix(`/pvcontrol/`)
     middlewares:
-    - name: pvcontrol-stripprefix
-    - name: pvcontrol-compress
+    - name: pvcontrol-redirect
     services:
     - name: pvcontrol-service
       port: 8080
@@ -142,11 +141,12 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: pvcontrol-stripprefix
+  name: pvcontrol-redirect
 spec:
-  stripPrefix:
-    prefixes:
-      - /pvcontrol
+  redirectRegex:
+    regex: .*
+    replacement: http://pvcontrol.fritz.box
+    permanent: true
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
