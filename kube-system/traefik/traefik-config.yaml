@@ -56,6 +56,13 @@ spec:
         expose:
           default: true
         protocol: TCP
+    ingressRoute:
+      dashboard:
+        enabled: true
+        entryPoints: ["web"]
+        matchRule: PathPrefix(`/traefik/dashboard`) || PathPrefix(`/traefik/api`)
+    additionalArguments:
+      - --api.basepath=/traefik
     metrics:
       prometheus:
         service:
