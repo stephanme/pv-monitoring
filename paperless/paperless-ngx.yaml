@@ -37,6 +37,8 @@ spec:
           value: always
         - name: PAPERLESS_CONSUMER_POLLING  # inotify seems not working with samba
           value: "10"
+        - name: PAPERLESS_CONSUMER_ENABLE_ASN_BARCODE
+          value: "1"
         # more technical config
         - name: PAPERLESS_URL
           value: http://paperless.fritz.box
