@@ -65,7 +65,7 @@ K3S_TOKEN=<join_token>  sh - --disable coredns,servicelb --embedded-registry --c
 Config file `/etc/rancher/k3s/config.yaml`
 ```
 disable: coredns,servicelb
-embedded-registry: true
+embedded-registry: false
 
 tls-san:
 - "192.168.178.230"
@@ -93,8 +93,6 @@ kind: KubeletConfiguration
 
 # https://github.com/k3s-io/k3s/discussions/10125
 imageMaximumGCAge: 672h # 4 weeks
-featureGates:
-  ImageMaximumGCAge: true
 
 # https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/
 shutdownGracePeriod: 30s
@@ -103,8 +101,8 @@ shutdownGracePeriodCriticalPods: 10s
 
 Enable registry mirroring for all image registries in file `/etc/rancher/k3s/registries.yaml`:
 ```
-mirrors:
-  "*":
+mirrors: {}
+#  "*":
 ```
 
 Others:
