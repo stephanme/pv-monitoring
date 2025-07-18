@@ -16,7 +16,7 @@ spec:
         app: homepage
     spec:
       containers:
-      - image: nginx:1.29.0
+      - image: nginx:1.29.0-alpine-slim
         imagePullPolicy: IfNotPresent
         name: nginx
         ports:
