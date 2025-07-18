@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: zot
-          image: ghcr.io/project-zot/zot:v2.1.5
+          image: ghcr.io/project-zot/zot
           ports:
             - name: zot
               containerPort: 5000
