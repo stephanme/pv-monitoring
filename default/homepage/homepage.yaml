@@ -24,6 +24,7 @@ data:
         <li><a href="http://k3s.fritz.box/traefik/dashboard/">Traefik</a></li>
         <li><a href="http://k3s.fritz.box/longhorn">Longhorn</a></li>
         <li><a href="http://homeassistant.fritz.box/zigbee2mqtt/">Zigbee2Mqtt</a></li>
+        <li><a href="http://registry.fritz.box">Zot OCI Registry</a></li>
       </ul>
       <h2>More Info</h2>
       <ul>

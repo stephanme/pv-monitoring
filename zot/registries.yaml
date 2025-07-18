@@ -1,0 +1,15 @@
+# /etc/rancher/k3s/registries.yaml on all k3s nodes
+# !! /v2/ is required, see https://github.com/project-zot/zot/discussions/1306 !!
+mirrors:
+  docker.io:
+    endpoint:
+      - http://registry.fritz.box/v2/docker.io
+  ghcr.io:
+    endpoint:
+      - http://registry.fritz.box/v2/ghcr.io
+  registry.k8s.io:
+    endpoint:
+      - http://registry.fritz.box/v2/registry.k8s.io
+  quay.io:
+    endpoint:
+      - http://registry.fritz.box/v2/quay.io

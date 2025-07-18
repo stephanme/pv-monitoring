@@ -36,6 +36,7 @@ Important release notes
 - [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
 - [homeassistant](https://www.home-assistant.io/blog/categories/release-notes/)
 - [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx/releases)
+- [zot](https://github.com/project-zot/zot/releases)
 
 ## k3s Installation
 
@@ -49,8 +50,11 @@ All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) whi
 [MetalLB](https://metallb.universe.tf/) is used as LB for special services that need an own IP. E.g. for [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which is used as internal DNS server as the Fritzbox doesn't allow to add additional host names.
 
 k8s API is available via:
-- k3s.fritz.box:6443, MetalLB as Cluster Load Balancer -> Traefik -> kubernetes service in default namespace
+- k3s.fritz.box:6443, MetalLB as Cluster Load Balancer -> Traefik -> `kubernetes` service in default namespace
 - port 6443 on every node
+
+WIP: OCI image registry: [zot](https://zotregistry.dev/)
+- mirror for docker.io, ghcr.io etc. to avoid slow image downloads on e.g. node 
 
 ### k3s Server
 ```
@@ -99,11 +103,13 @@ shutdownGracePeriod: 30s
 shutdownGracePeriodCriticalPods: 10s
 ```
 
-Enable registry mirroring for all image registries in file `/etc/rancher/k3s/registries.yaml`:
+Configure registry mirroring in file `/etc/rancher/k3s/registries.yaml`:
 ```
 mirrors: {}
-#  "*":
+# see ./zot/registries.yaml for using oci registry mirror (zot)
+#  "*": needed for spegel
 ```
+
 
 Others:
 - nasbox: Disable multipath for `sd[a-z0-9]+` devices as described in [Troubleshooting: `MountVolume.SetUp failed for volume` due to multipathd on the node](https://longhorn.io/kb/troubleshooting-volume-with-multipath/)
@@ -131,11 +137,7 @@ kubelet-arg:
 
 Kubelet config file `/etc/rancher/k3s/kubelet-config.yaml`: same as for server.
 
-Enable registry mirroring for all image registries in file `/etc/rancher/k3s/registries.yaml`:
-```
-mirrors:
-  "*":
-```
+Registry mirroring `/etc/rancher/k3s/registries.yaml`: same as for server
 
 ## k3s Updates
 
