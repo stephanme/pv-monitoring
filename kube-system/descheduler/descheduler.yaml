@@ -16,6 +16,9 @@ spec:
     # https://github.com/kubernetes-sigs/descheduler?tab=readme-ov-file
     kind: Deployment
     deschedulingInterval: 1m
+    resources:
+      requests:
+        cpu: 50m
     service:
       enabled: true
     serviceMonitor:
@@ -40,7 +43,6 @@ spec:
               args:
                 nodeAffinityType:
                 - requiredDuringSchedulingIgnoredDuringExecution
-                - preferredDuringSchedulingIgnoredDuringExecution
             - name: RemovePodsViolatingNodeTaints
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingTopologySpreadConstraint

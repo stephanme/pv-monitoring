@@ -1,0 +1,38 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: descheduler2
+  namespace: kube-system
+spec:
+  # renovate: HelmChart
+  repo: https://kubernetes-sigs.github.io/descheduler/
+  chart: descheduler
+  version: 0.33.0
+  targetNamespace: kube-system
+  timeout: 10m
+  failurePolicy: abort
+  valuesContent: |-
+    # https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/values.yaml
+    # https://github.com/kubernetes-sigs/descheduler?tab=readme-ov-file
+    kind: CronJob
+    schedule: "10 2 * * *"  # 2:10 every day
+    successfulJobsHistoryLimit: 3
+    failedJobsHistoryLimit: 1
+    resources:
+      requests:
+        cpu: 50m
+    deschedulerPolicy:
+      # TODO: use metrics server?
+      profiles:
+        - name: default
+          pluginConfig:
+            - name: RemovePodsViolatingNodeAffinity
+              args:
+                nodeAffinityType:
+                - preferredDuringSchedulingIgnoredDuringExecution
+          plugins:
+            balance:
+              enabled: []
+            deschedule:
+              enabled:
+                - RemovePodsViolatingNodeAffinity
