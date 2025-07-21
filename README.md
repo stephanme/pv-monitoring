@@ -38,6 +38,13 @@ Important release notes
 - [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx/releases)
 - [zot](https://github.com/project-zot/zot/releases)
 
+### Prerequisites
+
+- kubectl
+- curl, yq
+- [regctl](https://github.com/regclient/regclient)
+  - `regctl registry set --tls=disabled registry.fritz.box`
+
 ## k3s Installation
 
 Standard installation as described in https://rancher.com/docs/k3s/latest/en/quick-start/.

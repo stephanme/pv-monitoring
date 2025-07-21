@@ -1,0 +1,96 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: regsync
+  namespace: zot
+spec:
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Replace
+  suspend: false
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 14400  # 4h
+      template:
+        spec:
+          containers:
+            - name: regsync
+              image: zot.ghcr.io/stephanme/toolbox:latest
+              command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                date
+                regsynccmd=once  # check|once
+                echo regsync ${regsynccmd}
+                regsync ${regsynccmd} --config /etc/regsync/config.yaml --logopt json 2> >(tee -a /regsync.log >&2) || true
+                FIXIDX=$(cat /regsync.log | grep -e '^{"time":' | jq -rs '[.[]|select(.msg=="Image sync needed" and (.source|test("/stephanme/")|not))|.target]|join(" ")')
+                regctl registry set --tls=disabled registry.fritz.box
+                for target in $FIXIDX; do
+                  echo regctl index create $target --platform linux/amd64 --platform linux/arm64 --ref ${target:19}
+                  if [ "$regsynccmd" = "once" ]; then
+                    regctl index create $target --platform linux/amd64 --platform linux/arm64 --ref ${target:19}
+                  fi
+                done
+              volumeMounts:
+                - mountPath: "/etc/regsync"
+                  name: regsync-config
+          restartPolicy: Never
+          volumes:
+            - name: regsync-config
+              configMap:
+                name: regsync-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: regsync-config
+  namespace: zot
+data:
+  config.yaml: |-
+    version: 1
+    creds:
+      - registry: registry.fritz.box
+        tls: disabled
+    defaults:
+      ratelimit:
+        min: 10
+        retry: 15m
+      parallel: 1
+      fastCopy: true
+    sync:
+      - source: ghcr.io/stephanme/pv-control
+        target: registry.fritz.box/ghcr.io/stephanme/pv-control
+        type: repository
+        tags:
+          allow:
+            - "latest"
+            - "v\\d+"
+          deny:
+            - "v1[0123]" # <v13 outdated
+            - "v\\d"
+
+      - source: ghcr.io/stephanme/toolbox
+        target: registry.fritz.box/ghcr.io/stephanme/toolbox
+        type: repository
+        tags:
+          allow:
+            - "latest"
+            - "v\\d+"
+          deny:
+            - "v[0123]"  # <v4 outdated
+      - source: eclipse-mosquitto
+        target: registry.fritz.box/docker.io/library/eclipse-mosquitto
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+        tags:
+          allow:
+            - "2.0.\\d+"
+          deny:
+            - "2.0.21"  # <2.0.22 outdated
+            - "2.0.20"
+            - "2.0.1\\d"
+            - "2.0.\\d"
+            - "2.0"
