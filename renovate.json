@@ -4,16 +4,16 @@
     "config:recommended"
   ],
   "kubernetes": {
-    "fileMatch": [
-      "\\.yaml$"
+    "managerFilePatterns": [
+      "/\\.yaml$/"
     ]
   },
   "customManagers": [
     {
       "customType": "regex",
       "description": "Update chart version in HelmChart custom resource",
-      "fileMatch": [
-        "\\.yaml$"
+      "managerFilePatterns": [
+        "/\\.yaml$/"
       ],
       "matchStrings": [
         "# renovate: HelmChart\\s+repo:\\s+\\\"?(?<registryUrl>[^\\s\"]*)\\\"?\\s+chart:\\s+\\\"?(?<depName>[^\\s\"]*)\\\"?\\s+version:\\s+\\\"?(?<currentValue>[^\\s\"]*)\\\"?"
@@ -24,8 +24,8 @@
     {
       "customType": "regex",
       "description": "Update chart version in separate CRD deploy script",
-      "fileMatch": [
-        "\\/deploy\\.sh$"
+      "managerFilePatterns": [
+        "/\\/deploy\\.sh$/"
       ],
       "matchStrings": [
         "# renovate: HelmChartCRD repo=(?<registryUrl>[^\\s]+)\\s+chart=(?<depName>[^\\s]+)\\s+kubectl apply -f https:\\/\\/raw.githubusercontent.com\\/[^\\/]+\\/[^\\/]+\\/v(?<currentValue>[^\\/]*)\\/"
