@@ -100,7 +100,7 @@ data:
           "enable": true
         },
         "sync": {
-          "enable": true,
+          "enable": false,
           "credentialsFile": "/secrets/sync-auth.json",
           "registries": [
             {
