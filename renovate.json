@@ -33,5 +33,9 @@
       "datasourceTemplate": "helm",
       "versioningTemplate": "helm"
     }
-  ]
+  ],
+  "registryAliases": {
+    "zot.docker.io": "docker.io",
+    "zot.ghcr.io": "ghcr.io"
+  }
 }

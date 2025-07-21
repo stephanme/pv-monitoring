@@ -20,7 +20,7 @@ spec:
       containers:
         - name: mosquitto
           # https://hub.docker.com/_/eclipse-mosquitto
-          image: eclipse-mosquitto:2.0.22
+          image: zot.docker.io/library/eclipse-mosquitto:2.0.22
           ports:
             - containerPort: 1883
           volumeMounts:
