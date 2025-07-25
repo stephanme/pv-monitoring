@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homeassistant-deployment
+  namespace: homeassistant
   labels:
     app: homeassistant
 spec:
@@ -20,7 +21,7 @@ spec:
       containers:
         - name: homeassistant
           # https://github.com/home-assistant/core/pkgs/container/home-assistant
-          image: ghcr.io/home-assistant/home-assistant
+          image: zot.ghcr.io/home-assistant/home-assistant:2025.7.3
           ports:
             - containerPort: 8123
           volumeMounts:
@@ -33,7 +34,7 @@ spec:
 
         # code-server add-on: https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/templates/addons/code-server
         - name: codeserver
-          image: ghcr.io/coder/code-server
+          image: zot.ghcr.io/coder/code-server:4.102.2
           securityContext:
             runAsUser: 0
           ports:
@@ -64,6 +65,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: homeassistant
+  namespace: homeassistant
 spec:
   type: ClusterIP
   selector:
@@ -78,6 +80,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: homeassistant-codeserver
+  namespace: homeassistant
 spec:
   type: ClusterIP
   selector:
@@ -92,6 +95,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: homeassistant-pvc
+  namespace: homeassistant
   labels:
     app: homeassistant
 spec:
@@ -106,6 +110,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: homeassistant
+  namespace: homeassistant
 spec:
   entryPoints:
     - web
@@ -116,7 +121,7 @@ spec:
     - name: homeassistant
       port: 8123
   - kind: Rule
-    match: Host(`homeassistant.fritz.box`) && PathPrefix(`/codeserver/`) 
+    match: Host(`homeassistant.fritz.box`) && PathPrefix(`/codeserver/`)
     middlewares:
     - name: codeserver-stripprefix
     services:
@@ -127,6 +132,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: codeserver-stripprefix
+  namespace: homeassistant
 spec:
   stripPrefix:
     prefixes:

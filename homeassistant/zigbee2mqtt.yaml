@@ -5,6 +5,7 @@ metadata:
   labels:
     app: zigbee2mqtt
   name: zigbee2mqtt
+  namespace: homeassistant
 spec:
   replicas: 1
   selector:
@@ -99,6 +100,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: zigbee2mqtt-config
+  namespace: homeassistant
   labels:
     app: zigbee2mqtt
 data:
@@ -145,6 +147,7 @@ metadata:
   labels:
     app: zigbee2mqtt
   name: zigbee2mqtt
+  namespace: homeassistant
 spec:
   ports:
     - name: zigbee2mqtt
@@ -160,6 +163,7 @@ metadata:
   labels:
     app: zigbee2mqtt
   name: zigbee2mqtt-pvc
+  namespace: homeassistant
 spec:
   accessModes:
     - ReadWriteOnce
@@ -172,6 +176,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: zigbee2mqtt
+  namespace: homeassistant
 spec:
   entryPoints:
     - web
@@ -188,6 +193,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: zigbee2mqtt-stripprefix
+  namespace: homeassistant
 spec:
   stripPrefix:
     prefixes:
@@ -209,6 +215,7 @@ metadata:
   labels:
     app: zigbee-firmware
   name: zigbee-firmware
+  namespace: homeassistant
 spec:
   suspend: true
   backoffLimit: 1
