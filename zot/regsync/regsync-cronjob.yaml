@@ -122,3 +122,18 @@ data:
             - "v\\d+"
           deny: # < v4
             - "v[0123]"
+      # quay.io
+      - source: quay.io/prometheus/blackbox-exporter
+        target: registry.fritz.box/quay.io/prometheus/blackbox-exporter
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
+        tags:
+          allow:
+            - "v0\\.\\d+.\\d+"
+          deny: # < v0.26.0
+            - "v0\\.2[0-5].\\d+"
+            - "v0\\.1\\d.\\d+"
+            - "v0\\.\\d.\\d+"

@@ -13,6 +13,8 @@ spec:
   targetNamespace: monitoring
   valuesContent: |-
     # https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-blackbox-exporter/values.yaml
+    global:
+      imageRegistry: "zot.quay.io"
     config:
       modules:
         dns:
