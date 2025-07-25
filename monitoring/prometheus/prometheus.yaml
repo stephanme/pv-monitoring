@@ -18,6 +18,10 @@ spec:
     # references
     # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
 
+    crds:
+      upgradeJob:
+        enabled: true
+
     # etcd monitoring. See https://github.com/cablespaghetti/k3s-monitoring/issues/4
     kubeEtcd:
       enabled: true

@@ -4,7 +4,6 @@ set -ex
 scriptdir=$(dirname "$0")
 
 # upgrade kube-prometheus-stack installations
-kubectl apply -f $scriptdir/prometheus-operator-crds.yaml
 kubectl apply -f $scriptdir/prometheus.yaml
 kubectl apply -f $scriptdir/prometheus-lt.yaml
 
