@@ -60,9 +60,13 @@ spec:
       dashboard:
         enabled: true
         entryPoints: ["web"]
-        matchRule: PathPrefix(`/traefik/dashboard`) || PathPrefix(`/traefik/api`)
+        matchRule: PathPrefix(`/traefik/dashboard`) || PathPrefix(`/traefik/api`)    
+    globalArguments: #
+      - --global.checknewversion=false
+      - --global.sendanonymoususage=false
     additionalArguments:
       - --api.basepath=/traefik
+      - --entrypoints.web.transport.respondingtimeouts.readtimeout=0  # no timeout, needed for regsync
     metrics:
       prometheus:
         service:

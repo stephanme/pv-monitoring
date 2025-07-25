@@ -24,12 +24,12 @@ spec:
                 regsynccmd=once  # check|once
                 echo regsync ${regsynccmd}
                 regsync ${regsynccmd} --config /etc/regsync/config.yaml --logopt json 2> >(tee -a /regsync.log >&2) || true
-                FIXIDX=$(cat /regsync.log | grep -e '^{"time":' | jq -rs '[.[]|select(.msg=="Image sync needed" and (.source|test("/stephanme/")|not))|.target]|join(" ")')
+                FIXIDX=$(cat /regsync.log | grep -e '^{"time":' | jq -rs '[.[]|select(.msg=="Image sync needed" and (.target|test("/stephanme/")|not))|.target]|join(" ")')
                 regctl registry set --tls=disabled registry.fritz.box
                 for target in $FIXIDX; do
-                  echo regctl index create $target --platform linux/amd64 --platform linux/arm64 --ref ${target:19}
+                  echo regctl index create $target --platform linux/amd64 --platform linux/arm64 --platform unknown/unknown --ref ${target:19}
                   if [ "$regsynccmd" = "once" ]; then
-                    regctl index create $target --platform linux/amd64 --platform linux/arm64 --ref ${target:19}
+                    regctl index create $target --platform linux/amd64 --platform linux/arm64 --platform unknown/unknown --ref ${target:19}
                   fi
                 done
               volumeMounts:
@@ -66,6 +66,7 @@ data:
         platforms:
           - linux/amd64
           - linux/arm64
+          - unknown/unknown
         tags:
           allow:
             - "2\\.0\\.\\d+"
@@ -79,21 +80,29 @@ data:
       - source: ghcr.io/coder/code-server
         target: registry.fritz.box/ghcr.io/coder/code-server
         type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
         tags:
           allow:
-            - "4\\.1\\d\\d.\\d+"
-          deny: # < 4.102.1
-            - "4\\.102.0"
-            - "4\\.10[01].\\d+"
+            - "4\\.1\\d\\d\\.\\d+"
+          deny: # < 4.102.2
+            - "4\\.102\\.[01]"
+            - "4\\.10[01]\\.\\d+"
       - source: ghcr.io/home-assistant/home-assistant
         target: registry.fritz.box/ghcr.io/home-assistant/home-assistant
         type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
         tags:
           allow:
-            - "2025\\.\\d+.\\d+"
-          deny: # < 2025.7.2
-            - "2025\\.7.[01]"
-            - "2025\\.[123456].\\d+"
+            - "2025\\.\\d+\\.\\d+"
+          deny: # < 2025.7.3
+            - "2025\\.7\\.[0-2]"
+            - "2025\\.[1-6]\\.\\d+"
       - source: ghcr.io/stephanme/pv-control
         target: registry.fritz.box/ghcr.io/stephanme/pv-control
         type: repository
@@ -102,7 +111,7 @@ data:
             - "latest"
             - "v\\d+"
           deny: # < v13
-            - "v1[0123]"
+            - "v1[0-3]"
             - "v\\d"
       - source: ghcr.io/stephanme/toolbox
         target: registry.fritz.box/ghcr.io/stephanme/toolbox
