@@ -116,6 +116,15 @@ data:
           deny: # < 2025.7.3
             - "2025\\.7\\.[0-2]"
             - "2025\\.[1-6]\\.\\d+"
+      - source: ghcr.io/stephanme/modbus_exporter
+        target: registry.fritz.box/ghcr.io/stephanme/modbus_exporter
+        type: repository
+        tags:
+          allow:
+            - "latest"
+            - "v\\d+"
+          deny: # < v8
+            - "v[0-7]"
       - source: ghcr.io/stephanme/pv-control
         target: registry.fritz.box/ghcr.io/stephanme/pv-control
         type: repository

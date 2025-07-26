@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: modbus-exporter
-          image: ghcr.io/stephanme/modbus_exporter:v7
+          image: zot.ghcr.io/stephanme/modbus_exporter:v8
           ports:
             - containerPort: 9602
           command:
