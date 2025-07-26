@@ -63,6 +63,8 @@ spec:
         pathType: Prefix
 
       prometheusSpec:
+        image:
+          registry: zot.quay.io
         scrapeInterval: 15m
         evaluationInterval: 15m
         retention: 100y
@@ -180,8 +182,9 @@ spec:
     # disable operator, alert manager, grafana
     prometheusOperator:
       enabled: false
-      admissionWebhooks:
-          enabled: false # https://github.com/helm/charts/issues/23326
+      prometheusConfigReloader:
+        image:
+          registry: zot.quay.io
     alertmanager:
       enabled: false
     grafana:

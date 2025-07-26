@@ -37,6 +37,7 @@
   "registryAliases": {
     "zot.docker.io": "docker.io",
     "zot.ghcr.io": "ghcr.io",
-    "zot.quay.io": "quay.io"
+    "zot.quay.io": "quay.io",
+    "zot.k8s.registry.io": "k8s.registry.io"
   }
 }

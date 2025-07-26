@@ -74,6 +74,9 @@ spec:
 
     alertmanager:
       alertmanagerSpec:
+        image:
+          registry: zot.quay.io
+
         # see alertmanagerconfig.yml
         alertmanagerConfiguration:
           name: kube-prometheus-stack-alertmanagerconfig
@@ -110,6 +113,8 @@ spec:
         pathType: Prefix
 
       prometheusSpec:
+        image:
+          registry: zot.quay.io
         retention: 7d
         externalUrl: "http://k3s.fritz.box/prometheus/"
         enableAdminAPI: true
@@ -212,6 +217,8 @@ spec:
               #     source: grid
 
     grafana:
+      image:
+        registry: zot.docker.io
       plugins:
         - grafana-piechart-panel
         - flant-statusmap-panel
@@ -243,6 +250,8 @@ spec:
           cpu: 25m
           memory: 400Mi
       sidecar:
+        image:
+          registry: zot.quay.io
         dashboards:
           searchNamespace: ALL
         resources:
@@ -255,18 +264,29 @@ spec:
           release: prometheus
 
     prometheusOperator:
+      image:
+        registry: zot.quay.io
+      prometheusConfigReloader:
+        image:
+          registry: zot.quay.io
+      prometheusDefaultBaseImageRegistry: zot.quay.io
+      alertmanagerDefaultBaseImageRegistry: zot.quay.io
       resources:
         requests:
           cpu: 50m
           memory: 128Mi
 
     prometheus-node-exporter:
+      image:
+        registry: zot.quay.io
       resources:
         requests:
           cpu: 10m
           memory: 16Mi
 
     kube-state-metrics:
+      image:
+        registry: zot.registry.k8s.io
       resources:
         requests:
           cpu: 5m

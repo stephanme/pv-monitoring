@@ -76,6 +76,19 @@ data:
             - "2\\.0\\.1\\d"
             - "2\\.0\\.\\d"
             - "2\\.0"
+      - source: docker.io/grafana/grafana
+        target: registry.fritz.box/docker.io/grafana/grafana
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
+        tags:
+          allow:
+            - "\\d\\d\\.\\d+\\.\\d+"
+          deny: # < 12.1.0
+            - "12\\.0\\.\\d+"
+            - "1[01]\\.\\d+\\.\\d+"
       # ghcr.io
       - source: ghcr.io/coder/code-server
         target: registry.fritz.box/ghcr.io/coder/code-server
@@ -123,6 +136,35 @@ data:
           deny: # < v4
             - "v[0123]"
       # quay.io
+      - source: quay.io/kiwigrid/k8s-sidecar
+        target: registry.fritz.box/quay.io/kiwigrid/k8s-sidecar
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
+        tags:
+          allow:
+            - "1\\.\\d+\\.\\d+"
+          deny: # < 1.30.3
+            - "1\\.30\\.[0-2]"
+            - "1\\.[12]\\d\\.\\d+"
+            - "1\\.\\d\\.\\d+"
+      - source: quay.io/prometheus/alertmanager
+        target: registry.fritz.box/quay.io/prometheus/alertmanager
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
+        tags:
+          allow:
+            - "v0\\.\\d+\\.\\d+"
+          deny: # < v0.28.1
+            - "v0\\.28\\.0"
+            - "v0\\.2[0-7]\\.\\d+"
+            - "v0\\.1\\d\\.\\d+"
+            - "v0\\.\\d\\.\\d+"
       - source: quay.io/prometheus/blackbox-exporter
         target: registry.fritz.box/quay.io/prometheus/blackbox-exporter
         type: repository
@@ -132,8 +174,75 @@ data:
           - unknown/unknown
         tags:
           allow:
-            - "v0\\.\\d+.\\d+"
+            - "v0\\.\\d+\\.\\d+"
           deny: # < v0.26.0
-            - "v0\\.2[0-5].\\d+"
-            - "v0\\.1\\d.\\d+"
-            - "v0\\.\\d.\\d+"
+            - "v0\\.2[0-5]\\.\\d+"
+            - "v0\\.1\\d\\.\\d+"
+            - "v0\\.\\d\\.\\d+"
+      - source: quay.io/prometheus/node-exporter
+        target: registry.fritz.box/quay.io/prometheus/node-exporter
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
+        tags:
+          allow:
+            - "v1\\.\\d+\\.\\d+"
+          deny: # < v1.9.1
+            - "v1\\.9\\.0"
+            - "v1\\.[0-8]\\.\\d+"
+      - source: quay.io/prometheus/prometheus
+        target: registry.fritz.box/quay.io/prometheus/prometheus
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
+        tags:
+          allow:
+            - "v3\\.\\d+\\.\\d+"
+          deny: # < v3.5.0
+            - "v3\\.[0-4]\\.\\d+"
+      - source: quay.io/prometheus-operator/prometheus-config-reloader
+        target: registry.fritz.box/quay.io/prometheus-operator/prometheus-config-reloader
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
+        tags:
+          allow:
+            - "v0\\.\\d+\\.\\d+"
+          deny: # < v0.83.0
+            - "v0\\.8[0-2]\\.\\d+"
+            - "v0\\.[1-7]\\d\\.\\d+"
+            - "v0\\.\\d\\.\\d+"
+      - source: quay.io/prometheus-operator/prometheus-operator
+        target: registry.fritz.box/quay.io/prometheus-operator/prometheus-operator
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
+        tags:
+          allow:
+            - "v0\\.\\d+\\.\\d+"
+          deny: # < v0.83.0
+            - "v0\\.8[0-2]\\.\\d+"
+            - "v0\\.[1-7]\\d\\.\\d+"
+            - "v0\\.\\d\\.\\d+"
+      # registry.k8s.io
+      - source: registry.k8s.io/kube-state-metrics/kube-state-metrics
+        target: registry.fritz.box/registry.k8s.io/kube-state-metrics/kube-state-metrics
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
+        tags:
+          allow:
+            - "v2\\.\\d+\\.\\d+"
+          deny: # < v2.16.0
+            - "v2\\.1[0-5]\\.\\d+"
+            - "v2\\.\\d\\.\\d+"
