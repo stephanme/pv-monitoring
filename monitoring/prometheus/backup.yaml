@@ -23,7 +23,7 @@ spec:
                 type: Directory
           containers:
             - name: backup
-              image: zot.ghcr.io/stephanme/toolbox:v4
+              image: ghcr.io/stephanme/toolbox:v4
               command:
               - /bin/sh
               - -c

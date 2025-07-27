@@ -21,7 +21,7 @@ spec:
       containers:
         - name: homeassistant
           # https://github.com/home-assistant/core/pkgs/container/home-assistant
-          image: zot.ghcr.io/home-assistant/home-assistant:2025.7.3
+          image: ghcr.io/home-assistant/home-assistant:2025.7.3
           ports:
             - containerPort: 8123
           volumeMounts:
@@ -34,7 +34,7 @@ spec:
 
         # code-server add-on: https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/templates/addons/code-server
         - name: codeserver
-          image: zot.ghcr.io/coder/code-server:4.102.2
+          image: ghcr.io/coder/code-server:4.102.2
           securityContext:
             runAsUser: 0
           ports:

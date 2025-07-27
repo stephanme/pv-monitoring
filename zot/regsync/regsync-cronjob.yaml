@@ -14,7 +14,7 @@ spec:
         spec:
           containers:
             - name: regsync
-              image: zot.ghcr.io/stephanme/toolbox:latest
+              image: ghcr.io/stephanme/toolbox:latest
               command:
               - /bin/sh
               - -c
