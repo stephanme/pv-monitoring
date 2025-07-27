@@ -89,6 +89,20 @@ data:
           deny: # < 12.1.0
             - "12\\.0\\.\\d+"
             - "1[01]\\.\\d+\\.\\d+"
+      - source: docker.io/library/nginx
+        target: registry.fritz.box/docker.io/library/nginx
+        type: repository
+        platforms:
+          - linux/amd64
+          - linux/arm64
+          - unknown/unknown
+        tags:
+          allow:
+            - "1\\.\\d+\\.\\d+-alpine-slim"
+          deny: # < 1.29.0-alpine-slim
+            - "1\\.2[0-8]\\.\\d+-alpine-slim"
+            - "1\\.1\\d\\.\\d+-alpine-slim"
+            - "1\\.\\d\\.\\d+-alpine-slim"
       # ghcr.io
       - source: ghcr.io/coder/code-server
         target: registry.fritz.box/ghcr.io/coder/code-server

@@ -110,12 +110,7 @@ shutdownGracePeriod: 30s
 shutdownGracePeriodCriticalPods: 10s
 ```
 
-Configure registry mirroring in file `/etc/rancher/k3s/registries.yaml`:
-```
-mirrors: {}
-# see ./zot/registries.yaml for using oci registry mirror (zot)
-#  "*": needed for spegel
-```
+Configure registry mirroring in file `/etc/rancher/k3s/registries.yaml`: see [./zot/zot/registries.yaml](./zot/zot/registries.yaml)
 
 
 Others:
