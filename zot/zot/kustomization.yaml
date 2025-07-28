@@ -11,4 +11,5 @@ images:
 resources:
 - secrets.yaml
 - zot.yaml
+- zot-grafana.yaml
 - fetch-images.yaml

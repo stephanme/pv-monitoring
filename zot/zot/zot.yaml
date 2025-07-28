@@ -203,3 +203,22 @@ spec:
     services:
     - name: zot
       port: 5000
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: prometheus
+  name: zot
+  namespace: zot
+spec:
+  endpoints:
+  - path: /metrics
+    port: zot
+  namespaceSelector:
+    matchNames:
+    - zot
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zot
+      app.kubernetes.io/instance: zot
