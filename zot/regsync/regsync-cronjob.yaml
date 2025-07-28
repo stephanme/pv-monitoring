@@ -49,6 +49,16 @@ metadata:
 data:
   config.yaml: |-
     version: 1
+    x-platforms: &x-platforms
+      - linux/amd64
+      - linux/arm64
+      - unknown/unknown
+    x-longhorn-main-tags: &x-longhorn-main-tags
+      allow:
+        - "v1\\.\\d+\\.\\d+"
+      deny: # < v1.9.1
+        - "v1\\.9\\.0"
+        - "v1\\.[0-8]\\.\\d+"
     creds:
       - registry: registry.fritz.box
         tls: disabled
@@ -63,10 +73,7 @@ data:
       - source: eclipse-mosquitto
         target: registry.fritz.box/docker.io/library/eclipse-mosquitto
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "2\\.0\\.\\d+"
@@ -79,10 +86,7 @@ data:
       - source: docker.io/grafana/grafana
         target: registry.fritz.box/docker.io/grafana/grafana
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "\\d\\d\\.\\d+\\.\\d+"
@@ -92,10 +96,7 @@ data:
       - source: docker.io/library/nginx
         target: registry.fritz.box/docker.io/library/nginx
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "1\\.\\d+\\.\\d+-alpine-slim"
@@ -103,14 +104,121 @@ data:
             - "1\\.2[0-8]\\.\\d+-alpine-slim"
             - "1\\.1\\d\\.\\d+-alpine-slim"
             - "1\\.\\d\\.\\d+-alpine-slim"
+      - source: docker.io/longhornio/longhorn-engine
+        target: registry.fritz.box/docker.io/longhornio/longhorn-engine
+        type: repository
+        platforms: *x-platforms
+        tags: *x-longhorn-main-tags
+      - source: docker.io/longhornio/longhorn-manager
+        target: registry.fritz.box/docker.io/longhornio/longhorn-manager
+        type: repository
+        platforms: *x-platforms
+        tags: *x-longhorn-main-tags
+      - source: docker.io/longhornio/longhorn-ui
+        target: registry.fritz.box/docker.io/longhornio/longhorn-ui
+        type: repository
+        platforms: *x-platforms
+        tags: *x-longhorn-main-tags
+      - source: docker.io/longhornio/longhorn-instance-manager
+        target: registry.fritz.box/docker.io/longhornio/longhorn-instance-manager
+        type: repository
+        platforms: *x-platforms
+        tags: *x-longhorn-main-tags
+      - source: docker.io/longhornio/longhorn-share-manager
+        target: registry.fritz.box/docker.io/longhornio/longhorn-share-manager
+        type: repository
+        platforms: *x-platforms
+        tags: *x-longhorn-main-tags
+      - source: docker.io/longhornio/backing-image-manager
+        target: registry.fritz.box/docker.io/longhornio/backing-image-manager
+        type: repository
+        platforms: *x-platforms
+        tags: *x-longhorn-main-tags
+      - source: docker.io/longhornio/support-bundle-kit
+        target: registry.fritz.box/docker.io/longhornio/support-bundle-kit
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v0\\.0\\.\\d+"
+          deny: # < v0.0.61
+            - "v0\\.0\\.60"
+            - "v0\\.0\\.[1-5]\\d"
+            - "v0\\.0\\.\\d"
+      - source: docker.io/longhornio/csi-attacher
+        target: registry.fritz.box/docker.io/longhornio/csi-attacher
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v4\\.\\d+\\.\\d+"
+            - "v4\\.9\\.0-20250709"
+          deny: # < v4.9.0-20250709
+            - "v4\\.9\\.0"
+            - "v4\\.[0-8]\\.\\d+"
+      - source: docker.io/longhornio/csi-provisioner
+        target: registry.fritz.box/docker.io/longhornio/csi-provisioner
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v5\\.\\d+\\.\\d+"
+            - "v5\\.3\\.0-20250709"
+          deny: # < v5.3.0-20250709
+            - "v5\\.3\\.0"
+            - "v5\\.[0-2]\\.\\d+"
+      - source: docker.io/longhornio/csi-node-driver-registrar
+        target: registry.fritz.box/docker.io/longhornio/csi-node-driver-registrar
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v2\\.\\d+\\.\\d+"
+            - "v2\\.14\\.0-20250709"
+          deny: # < v2.14.0-20250709
+            - "v2\\.14\\.0"
+            - "v2\\.1[0-3]\\.\\d+"
+            - "v2\\.\\d\\.\\d+"
+      - source: docker.io/longhornio/csi-resizer
+        target: registry.fritz.box/docker.io/longhornio/csi-resizer
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v1\\.\\d+\\.\\d+"
+            - "v1\\.14\\.0-20250709"
+          deny: # < v1.14.0-20250709
+            - "v1\\.14\\.0"
+            - "v1\\.1[0-3]\\.\\d+"
+            - "v1\\.\\d\\.\\d+"
+      - source: docker.io/longhornio/csi-snapshotter
+        target: registry.fritz.box/docker.io/longhornio/csi-snapshotter
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v8\\.\\d+\\.\\d+"
+            - "v8\\.3\\.0-20250709"
+          deny: # < v8.3.0-20250709
+            - "v8\\.3\\.0"
+            - "v8\\.[0-2]\\.\\d+"
+      - source: docker.io/longhornio/livenessprobe
+        target: registry.fritz.box/docker.io/longhornio/livenessprobe
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v2\\.\\d+\\.\\d+"
+            - "v2\\.16\\.0-20250709"
+          deny: # < v2.16.0-20250709
+            - "v2\\.16\\.0"
+            - "v2\\.1[0-5]\\.\\d+"
+            - "v2\\.\\d\\.\\d+"
       # ghcr.io
       - source: ghcr.io/coder/code-server
         target: registry.fritz.box/ghcr.io/coder/code-server
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "4\\.1\\d\\d\\.\\d+"
@@ -120,10 +228,7 @@ data:
       - source: ghcr.io/home-assistant/home-assistant
         target: registry.fritz.box/ghcr.io/home-assistant/home-assistant
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "2025\\.\\d+\\.\\d+"
@@ -162,10 +267,7 @@ data:
       - source: quay.io/kiwigrid/k8s-sidecar
         target: registry.fritz.box/quay.io/kiwigrid/k8s-sidecar
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "1\\.\\d+\\.\\d+"
@@ -176,10 +278,7 @@ data:
       - source: quay.io/prometheus/alertmanager
         target: registry.fritz.box/quay.io/prometheus/alertmanager
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "v0\\.\\d+\\.\\d+"
@@ -191,10 +290,7 @@ data:
       - source: quay.io/prometheus/blackbox-exporter
         target: registry.fritz.box/quay.io/prometheus/blackbox-exporter
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "v0\\.\\d+\\.\\d+"
@@ -205,10 +301,7 @@ data:
       - source: quay.io/prometheus/node-exporter
         target: registry.fritz.box/quay.io/prometheus/node-exporter
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "v1\\.\\d+\\.\\d+"
@@ -218,10 +311,7 @@ data:
       - source: quay.io/prometheus/prometheus
         target: registry.fritz.box/quay.io/prometheus/prometheus
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "v3\\.\\d+\\.\\d+"
@@ -230,10 +320,7 @@ data:
       - source: quay.io/prometheus-operator/prometheus-config-reloader
         target: registry.fritz.box/quay.io/prometheus-operator/prometheus-config-reloader
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "v0\\.\\d+\\.\\d+"
@@ -244,10 +331,7 @@ data:
       - source: quay.io/prometheus-operator/prometheus-operator
         target: registry.fritz.box/quay.io/prometheus-operator/prometheus-operator
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "v0\\.\\d+\\.\\d+"
@@ -259,10 +343,7 @@ data:
       - source: registry.k8s.io/kube-state-metrics/kube-state-metrics
         target: registry.fritz.box/registry.k8s.io/kube-state-metrics/kube-state-metrics
         type: repository
-        platforms:
-          - linux/amd64
-          - linux/arm64
-          - unknown/unknown
+        platforms: *x-platforms
         tags:
           allow:
             - "v2\\.\\d+\\.\\d+"
