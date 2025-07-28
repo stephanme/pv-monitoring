@@ -73,6 +73,7 @@ spec:
       - 192.168.178.12
 
     alertmanager:
+      alertmanagerSpec:
         # see alertmanagerconfig.yml
         alertmanagerConfiguration:
           name: kube-prometheus-stack-alertmanagerconfig
