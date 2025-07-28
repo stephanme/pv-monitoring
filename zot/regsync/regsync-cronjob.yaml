@@ -263,6 +263,16 @@ data:
             - "v\\d+"
           deny: # < v4
             - "v[0123]"
+      - source: ghcr.io/project-zot/zot
+        target: registry.fritz.box/ghcr.io/project-zot/zot
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v2\\.\\d+\\.\\d+"
+          deny: # < v2.1.5
+            - "v2\\.1\\.[0-5]"
+            - "v2\\.0\\.\\d+"
       # quay.io
       - source: quay.io/kiwigrid/k8s-sidecar
         target: registry.fritz.box/quay.io/kiwigrid/k8s-sidecar
