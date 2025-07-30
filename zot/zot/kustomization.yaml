@@ -8,8 +8,18 @@ images:
 - name: ghcr.io/project-zot/zot
   newTag: v2.1.6 
 
+labels:
+  - pairs:
+      app.kubernetes.io/name: zot
+      app.kubernetes.io/instance: zot
+    includeSelectors: true
+
+configMapGenerator:
+- name: zot-config
+  files:
+    - config.json
+
 resources:
 - secrets.yaml
 - zot.yaml
 - zot-grafana.yaml
-- fetch-images.yaml

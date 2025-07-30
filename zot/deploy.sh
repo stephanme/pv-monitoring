@@ -4,5 +4,6 @@ set -ex
 scriptdir=$(dirname "$0")
 kubectl apply -f $scriptdir/namespace.yaml
 
-${scriptdir}/zot/deloy.sh
-${scriptdir}/regsync/deloy.sh
+${scriptdir}/prefetch-image/deploy.sh
+${scriptdir}/zot/deploy.sh
+${scriptdir}/regsync/deploy.sh
