@@ -13,16 +13,3 @@ mirrors:
   quay.io:
     endpoint:
       - http://registry.fritz.box/v2/quay.io
-  # remove when reverted all registry changes in manifests
-  zot.docker.io:
-    endpoint:
-      - http://registry.fritz.box/v2/docker.io
-  zot.ghcr.io:
-    endpoint:
-      - http://registry.fritz.box/v2/ghcr.io
-  zot.registry.k8s.io:
-    endpoint:
-      - http://registry.fritz.box/v2/registry.k8s.io
-  zot.quay.io:
-    endpoint:
-      - http://registry.fritz.box/v2/quay.io

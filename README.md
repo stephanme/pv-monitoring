@@ -103,7 +103,7 @@ apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
 
 # https://github.com/k3s-io/k3s/discussions/10125
-imageMaximumGCAge: 672h # 4 weeks
+imageMaximumGCAge: 168h # 1 week
 
 # https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/
 shutdownGracePeriod: 30s
