@@ -1,57 +1,66 @@
 # pre-fetch images on all nodes
 apiVersion: batch/v1
-kind: Job
+kind: CronJob
 metadata:
   name: fetch-images-nasbox
   namespace: zot
 spec:
-  backoffLimit: 1
-  ttlSecondsAfterFinished: 3600
-  template:
+  schedule: "0 0 */6 * *" # every 6 days at midnight
+  jobTemplate:
     spec:
-      containers:
-        - name: zot
-          image: ghcr.io/project-zot/zot
-          args:
-          - "-v"
-      nodeSelector:
-        kubernetes.io/hostname: nasbox
-      restartPolicy: Never
+      backoffLimit: 1
+      ttlSecondsAfterFinished: 3600
+      template:
+        spec:
+          containers:
+            - name: zot
+              image: ghcr.io/project-zot/zot
+              args:
+              - "-v"
+          nodeSelector:
+            kubernetes.io/hostname: nasbox
+          restartPolicy: Never
 ---
 apiVersion: batch/v1
-kind: Job
+kind: CronJob
 metadata:
   name: fetch-images-pi1
   namespace: zot
 spec:
-  backoffLimit: 1
-  ttlSecondsAfterFinished: 3600
-  template:
+  schedule: "0 0 */6 * *" # every 6 days at midnight
+  jobTemplate:
     spec:
-      containers:
-        - name: zot
-          image: ghcr.io/project-zot/zot
-          args:
-          - "-v"
-      nodeSelector:
-        kubernetes.io/hostname: pi1
-      restartPolicy: Never
+      backoffLimit: 1
+      ttlSecondsAfterFinished: 3600
+      template:
+        spec:
+          containers:
+            - name: zot
+              image: ghcr.io/project-zot/zot
+              args:
+              - "-v"
+          nodeSelector:
+            kubernetes.io/hostname: pi1
+          restartPolicy: Never
 ---
 apiVersion: batch/v1
-kind: Job
+kind: CronJob
 metadata:
   name: fetch-images-pi2
   namespace: zot
 spec:
-  backoffLimit: 1
-  ttlSecondsAfterFinished: 3600
-  template:
+  schedule: "0 0 */6 * *" # every 6 days at midnight
+  jobTemplate:
     spec:
-      containers:
-        - name: zot
-          image: ghcr.io/project-zot/zot
-          args:
-          - "-v"
-      nodeSelector:
-        kubernetes.io/hostname: pi2
-      restartPolicy: Never
+      backoffLimit: 1
+      ttlSecondsAfterFinished: 3600
+      template:
+        spec:
+          containers:
+            - name: zot
+              image: ghcr.io/project-zot/zot
+              args:
+              - "-v"
+          nodeSelector:
+            kubernetes.io/hostname: pi2
+          restartPolicy: Never
