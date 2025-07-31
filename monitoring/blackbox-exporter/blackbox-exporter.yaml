@@ -7,7 +7,7 @@ spec:
   # renovate: HelmChart
   repo: https://prometheus-community.github.io/helm-charts
   chart: prometheus-blackbox-exporter
-  version: 11.1.1
+  version: 11.2.0
   timeout: 10m
   failurePolicy: abort
   targetNamespace: monitoring
