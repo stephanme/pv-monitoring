@@ -28,10 +28,12 @@ spec:
                 regctl registry set --tls=disabled registry.fritz.box
                 echo "Fix missing index manifests"
                 for target in $FIXIDX; do
-                  regctl manifest head $target > /dev/null
+                  set +e 
+                  regctl manifest head $target >/dev/null 2>/dev/null
                   if [ $? -ne 0 ]; then
                     echo regctl index create $target --platform linux/amd64 --platform linux/arm64 --platform unknown/unknown --ref ${target:19}
                     if [ "$regsynccmd" = "once" ]; then
+                      set -e
                       regctl index create $target --platform linux/amd64 --platform linux/arm64 --platform unknown/unknown --ref ${target:19}
                     fi
                   fi
@@ -86,7 +88,6 @@ data:
             - "2\\.0\\.20"
             - "2\\.0\\.1\\d"
             - "2\\.0\\.\\d"
-            - "2\\.0"
       - source: docker.io/grafana/grafana
         target: registry.fritz.box/docker.io/grafana/grafana
         type: repository
@@ -108,6 +109,16 @@ data:
             - "1\\.2[0-8]\\.\\d+-alpine-slim"
             - "1\\.1\\d\\.\\d+-alpine-slim"
             - "1\\.\\d\\.\\d+-alpine-slim"
+      - source: koenkk/zigbee2mqtt
+        target: registry.fritz.box/docker.io/koenkk/zigbee2mqtt
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "2\\.\\d+\\.\\d+"
+          deny: # < 2.5.1
+            - "2\\.5\\.0"
+            - "2\\.[0-4]\\.\\d"
       - source: docker.io/longhornio/longhorn-engine
         target: registry.fritz.box/docker.io/longhornio/longhorn-engine
         type: repository
@@ -229,6 +240,16 @@ data:
           deny: # < 4.102.2
             - "4\\.102\\.[01]"
             - "4\\.10[01]\\.\\d+"
+      - source: ghcr.io/hikhvar/mqtt2prometheus
+        target: registry.fritz.box/ghcr.io/hikhvar/mqtt2prometheus
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v0\\.\\d+\\.\\d+"
+          deny: # < v0.1.7
+            - "v0\\.1\\.[0-6]"
+            - "v0\\.0\\.\\d+"
       - source: ghcr.io/home-assistant/home-assistant
         target: registry.fritz.box/ghcr.io/home-assistant/home-assistant
         type: repository
