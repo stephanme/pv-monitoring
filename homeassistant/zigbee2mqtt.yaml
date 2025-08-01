@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: zigbee2mqtt
-          image: koenkk/zigbee2mqtt:2.5.1
+          image: koenkk/zigbee2mqtt:2.6.0
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
