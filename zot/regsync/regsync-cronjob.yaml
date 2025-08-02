@@ -76,6 +76,16 @@ data:
       fastCopy: true
     sync:
       # docker.io
+      - source: docker.io/apache/tika
+        target: registry.fritz.box/docker.io/apache/tika
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "3\\.\\d+\\.\\d+.\\d+"
+          deny: # < 3.2.1.0
+            - "3\\.2\\.0\\.\\d+"
+            - "3\\.[0-1]\\.\\d+.\\d+"
       - source: eclipse-mosquitto
         target: registry.fritz.box/docker.io/library/eclipse-mosquitto
         type: repository
@@ -88,6 +98,18 @@ data:
             - "2\\.0\\.20"
             - "2\\.0\\.1\\d"
             - "2\\.0\\.\\d"
+      - source: docker.io/gotenberg/gotenberg
+        target: registry.fritz.box/docker.io/gotenberg/gotenberg
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "8\\.\\d+\\.\\d+"
+          deny: # < 8.21.1
+            - "8\\.21\\.0"
+            - "8\\.20\\.\\d+"
+            - "8\\.1\\d\\.\\d+"
+            - "8\\.\\d\\.\\d+"
       - source: docker.io/grafana/grafana
         target: registry.fritz.box/docker.io/grafana/grafana
         type: repository
@@ -229,6 +251,15 @@ data:
             - "v2\\.16\\.0"
             - "v2\\.1[0-5]\\.\\d+"
             - "v2\\.\\d\\.\\d+"
+      - source: redis
+        target: registry.fritz.box/docker.io/library/redis
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "8\\.\\d+\\.\\d+-alpine"
+          deny: # < 8.0.3
+            - "8\\.0\\.[0-2]-alpine"
       # ghcr.io
       - source: ghcr.io/coder/code-server
         target: registry.fritz.box/ghcr.io/coder/code-server
@@ -260,6 +291,17 @@ data:
           deny: # < 2025.7.3
             - "2025\\.7\\.[0-2]"
             - "2025\\.[1-6]\\.\\d+"
+      - source: ghcr.io/paperless-ngx/paperless-ngx
+        target: registry.fritz.box/ghcr.io/paperless-ngx/paperless-ngx
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "2\\.\\d+\\.\\d+"
+          deny: # < 2.17.1
+            - "2\\.17\\.0"
+            - "2\\.1[0-6]\\.\\d+"
+            - "2\\.\\d\\.\\d+"
       - source: ghcr.io/stephanme/modbus_exporter
         target: registry.fritz.box/ghcr.io/stephanme/modbus_exporter
         type: repository
