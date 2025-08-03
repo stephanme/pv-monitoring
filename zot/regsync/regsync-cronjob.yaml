@@ -251,6 +251,48 @@ data:
             - "v2\\.16\\.0"
             - "v2\\.1[0-5]\\.\\d+"
             - "v2\\.\\d\\.\\d+"
+      - source: docker.io/rancher/local-path-provisioner
+        target: registry.fritz.box/docker.io/rancher/local-path-provisioner
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v0\\.\\d+\\.\\d+"
+          deny: # < v0.0.31
+            - "v0\\.0\\.30"
+            - "v0\\.0\\.[1-2]\\d"
+            - "v0\\.0\\.\\d"
+      - source: docker.io/rancher/mirrored-coredns-coredns
+        target: registry.fritz.box/docker.io/rancher/mirrored-coredns-coredns
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "1\\.\\d+\\.\\d+"
+          deny: # < 1.12.1
+            - "1\\.12\\.0"
+            - "1\\.1[0-1]\\.\\d+"
+            - "1\\.\\d\\.\\d+"
+      - source: docker.io/rancher/mirrored-metrics-server
+        target: registry.fritz.box/docker.io/rancher/mirrored-metrics-server
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v0\\.\\d+\\.\\d+"
+          deny: # < v0.7.2
+            - "v0\\.7\\.[0-1]"
+            - "v0\\.[0-6]\\.\\d+"
+      - source: docker.io/rancher/mirrored-library-traefik
+        target: registry.fritz.box/docker.io/rancher/mirrored-library-traefik
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "3\\.\\d+\\.\\d+"
+          deny: # < v3.3.6
+            - "3\\.3\\.[0-5]"
+            - "3\\.[0-2]\\.\\d+"
       - source: redis
         target: registry.fritz.box/docker.io/library/redis
         type: repository
@@ -260,6 +302,13 @@ data:
             - "8\\.\\d+\\.\\d+-alpine"
           deny: # < 8.0.3
             - "8\\.0\\.[0-2]-alpine"
+      - source: docker.io/ricardbejarano/dnsmasq  # not maintained anymore, needs replacement
+        target: registry.fritz.box/docker.io/ricardbejarano/dnsmasq
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "2\\.90"
       # ghcr.io
       - source: ghcr.io/coder/code-server
         target: registry.fritz.box/ghcr.io/coder/code-server
@@ -352,6 +401,39 @@ data:
             - "1\\.30\\.[0-2]"
             - "1\\.[12]\\d\\.\\d+"
             - "1\\.\\d\\.\\d+"
+      - source: quay.io/metallb/controller
+        target: registry.fritz.box/quay.io/metallb/controller
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v0\\.\\d+\\.\\d+"
+          deny: # < v0.15.2
+            - "v0\\.15\\.[0-1]"
+            - "v0\\.1[0-4]\\.\\d+"
+            - "v0\\.\\d\\.\\d+"
+      - source: quay.io/metallb/speaker
+        target: registry.fritz.box/quay.io/metallb/speaker
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v0\\.\\d+\\.\\d+"
+          deny: # < v0.15.2
+            - "v0\\.15\\.[0-1]"
+            - "v0\\.1[0-4]\\.\\d+"
+            - "v0\\.\\d\\.\\d+"
+      - source: quay.io/frrouting/frr
+        target: registry.fritz.box/quay.io/frrouting/frr
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            # - "\\d+\\.\\d+\\.\\d+" - too many versions
+            - "9\\.1\\.0"
+          deny: # < 9.1.0
+            - "9\\.0\\.\\d+"
+            - "[0-8]\\.\\d+\\.\\d+"
       - source: quay.io/prometheus/alertmanager
         target: registry.fritz.box/quay.io/prometheus/alertmanager
         type: repository
@@ -417,6 +499,17 @@ data:
             - "v0\\.[1-7]\\d\\.\\d+"
             - "v0\\.\\d\\.\\d+"
       # registry.k8s.io
+      - source: registry.k8s.io/descheduler/descheduler
+        target: registry.fritz.box/registry.k8s.io/descheduler/descheduler
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v0\\.\\d+\\.\\d+"
+          deny: # < v0.33.0
+            - "v0\\.3[0-2]\\.\\d+"
+            - "v0\\.[1-2]\\d\\.\\d+"
+            - "v0\\.\\d\\.\\d+"
       - source: registry.k8s.io/kube-state-metrics/kube-state-metrics
         target: registry.fritz.box/registry.k8s.io/kube-state-metrics/kube-state-metrics
         type: repository
@@ -427,3 +520,14 @@ data:
           deny: # < v2.16.0
             - "v2\\.1[0-5]\\.\\d+"
             - "v2\\.\\d\\.\\d+"
+      - source: registry.k8s.io/nfd/node-feature-discovery
+        target: registry.fritz.box/registry.k8s.io/nfd/node-feature-discovery
+        type: repository
+        platforms: *x-platforms
+        tags:
+          allow:
+            - "v0\\.\\d+\\.\\d+"
+          deny: # < v0.17.3
+            - "v0\\.17\\.[0-2]"
+            - "v0\\.1[0-6]\\.\\d+"
+            - "v0\\.\\d\\.\\d+"
