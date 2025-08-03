@@ -1,21 +1,138 @@
-apiVersion: helm.cattle.io/v1
-kind: HelmChart
+apiVersion: apps/v1
+kind: Deployment
 metadata:
+  labels:
+    app.kubernetes.io/instance: paperless-ngx-redis
+    app.kubernetes.io/name: redis
   name: paperless-ngx-redis
   namespace: paperless
 spec:
-  # renovate: HelmChart
-  repo: https://charts.bitnami.com/bitnami
-  chart: redis
-  version: 21.1.4
-  targetNamespace: paperless
-  timeout: 1h
-  failurePolicy: abort
-  valuesContent: |-
-    auth:
-      enabled: true
-    master:
-      persistence:
-        enabled: false
-    replica:
-      replicaCount: 0
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: paperless-ngx-redis
+      app.kubernetes.io/name: redis
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: paperless-ngx-redis
+        app.kubernetes.io/name: redis
+    spec:
+      affinity:
+        # run close to paperless-ngx
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/instance: paperless-ngx
+                    app.kubernetes.io/name: paperless-ngx
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+
+      containers:
+        - name: redis
+          image: docker.io/redis:8.0.3-alpine
+          command:
+            - redis-server
+            - /etc/redis/redis.conf
+            - --requirepass
+            - $(REDIS_PASSWORD)
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-redis
+                  key: redis-password
+          ports:
+            - name: redis
+              containerPort: 6379
+          startupProbe:
+            failureThreshold: 10
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            tcpSocket:
+              port: redis
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 5
+            exec:
+              command:
+                - redis-cli
+                - --no-auth-warning
+                - -u
+                - redis://default:$(REDIS_PASSWORD)@localhost:6379
+                - ping
+          livenessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 5
+            exec:
+              command:
+                - redis-cli
+                - --no-auth-warning
+                - -u
+                - redis://default:$(REDIS_PASSWORD)@localhost:6379
+                - ping
+          resources:
+            limits:
+              cpu: 150m
+              ephemeral-storage: 2Gi
+              memory: 192Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: 50Mi
+              memory: 128Mi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: redis-config
+              mountPath: /etc/redis
+      volumes:
+      - name: redis-config
+        configMap:
+          name: paperless-ngx-redis-config
+      - name: data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paperless-ngx-redis-config
+  namespace: paperless
+  labels:
+    app.kubernetes.io/instance: paperless-ngx-redis
+    app.kubernetes.io/name: redis
+data:
+  redis.conf: |-
+    # https://redis.io/docs/latest/operate/oss_and_stack/
+    dir /data
+    maxmemory 100mb
+    # Disable persistence
+    save ""
+    appendonly no
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-redis
+  namespace: paperless
+  labels:
+    app.kubernetes.io/instance: paperless-ngx-redis
+    app.kubernetes.io/name: redis
+spec:
+  type: ClusterIP
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: redis
+  selector:
+    app.kubernetes.io/instance: paperless-ngx-redis
+    app.kubernetes.io/name: redis
+

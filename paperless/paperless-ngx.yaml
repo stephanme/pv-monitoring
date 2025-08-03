@@ -56,7 +56,7 @@ spec:
               name: paperless-ngx-redis
               key: redis-password
         - name: PAPERLESS_REDIS
-          value: redis://:$(A_REDIS_PASSWORD)@paperless-ngx-redis-master.paperless.svc.cluster.local
+          value: redis://:$(A_REDIS_PASSWORD)@paperless-ngx-redis.paperless.svc.cluster.local
         - name: PAPERLESS_ADMIN_USER
           valueFrom:
             secretKeyRef:
