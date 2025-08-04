@@ -7,6 +7,7 @@ x-longhorn-main-tags: &x-longhorn-main-tags
   allow:
     - "v1\\.\\d+\\.\\d+"
   deny: # < v1.9.1
+    - "v1\\.9\\.1"
     - "v1\\.9\\.0"
     - "v1\\.[0-8]\\.\\d+"
 creds:
@@ -28,6 +29,7 @@ sync:
       allow:
         - "3\\.\\d+\\.\\d+.\\d+"
       deny: # < 3.2.1.0
+        - "3\\.2\\.1\\.0"
         - "3\\.2\\.0\\.\\d+"
         - "3\\.[0-1]\\.\\d+.\\d+"
   - source: eclipse-mosquitto
@@ -38,6 +40,7 @@ sync:
       allow:
         - "2\\.0\\.\\d+"
       deny: # < 2.0.22
+        - "2\\.0\\.22"
         - "2\\.0\\.21"
         - "2\\.0\\.20"
         - "2\\.0\\.1\\d"
@@ -50,6 +53,7 @@ sync:
       allow:
         - "8\\.\\d+\\.\\d+"
       deny: # < 8.21.1
+        - "8\\.21\\.1"
         - "8\\.21\\.0"
         - "8\\.20\\.\\d+"
         - "8\\.1\\d\\.\\d+"
@@ -62,6 +66,7 @@ sync:
       allow:
         - "\\d\\d\\.\\d+\\.\\d+"
       deny: # < 12.1.0
+        - "12\\.1\\.0"
         - "12\\.0\\.\\d+"
         - "1[01]\\.\\d+\\.\\d+"
   - source: docker.io/library/nginx
@@ -72,6 +77,7 @@ sync:
       allow:
         - "1\\.\\d+\\.\\d+-alpine-slim"
       deny: # < 1.29.0-alpine-slim
+        - "1\\.29\\.0-alpine-slim"
         - "1\\.2[0-8]\\.\\d+-alpine-slim"
         - "1\\.1\\d\\.\\d+-alpine-slim"
         - "1\\.\\d\\.\\d+-alpine-slim"
@@ -83,6 +89,8 @@ sync:
       allow:
         - "2\\.\\d+\\.\\d+"
       deny: # < 2.5.1
+        - "2\\.6\\.0"
+        - "2\\.5\\.1"
         - "2\\.5\\.0"
         - "2\\.[0-4]\\.\\d"
   - source: docker.io/longhornio/longhorn-engine
@@ -123,6 +131,7 @@ sync:
       allow:
         - "v0\\.0\\.\\d+"
       deny: # < v0.0.61
+        - "v0\\.0\\.61"
         - "v0\\.0\\.60"
         - "v0\\.0\\.[1-5]\\d"
         - "v0\\.0\\.\\d"
@@ -135,6 +144,7 @@ sync:
         - "v4\\.\\d+\\.\\d+"
         - "v4\\.9\\.0-20250709"
       deny: # < v4.9.0-20250709
+        - "v4\\.9\\.0-20250709"
         - "v4\\.9\\.0"
         - "v4\\.[0-8]\\.\\d+"
   - source: docker.io/longhornio/csi-provisioner
@@ -146,6 +156,7 @@ sync:
         - "v5\\.\\d+\\.\\d+"
         - "v5\\.3\\.0-20250709"
       deny: # < v5.3.0-20250709
+        - "v5\\.3\\.0-20250709"
         - "v5\\.3\\.0"
         - "v5\\.[0-2]\\.\\d+"
   - source: docker.io/longhornio/csi-node-driver-registrar
@@ -157,6 +168,7 @@ sync:
         - "v2\\.\\d+\\.\\d+"
         - "v2\\.14\\.0-20250709"
       deny: # < v2.14.0-20250709
+        - "v2\\.14\\.0-20250709"
         - "v2\\.14\\.0"
         - "v2\\.1[0-3]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
@@ -169,6 +181,7 @@ sync:
         - "v1\\.\\d+\\.\\d+"
         - "v1\\.14\\.0-20250709"
       deny: # < v1.14.0-20250709
+        - "v1\\.14\\.0-20250709"
         - "v1\\.14\\.0"
         - "v1\\.1[0-3]\\.\\d+"
         - "v1\\.\\d\\.\\d+"
@@ -181,6 +194,7 @@ sync:
         - "v8\\.\\d+\\.\\d+"
         - "v8\\.3\\.0-20250709"
       deny: # < v8.3.0-20250709
+        - "v8\\.3\\.0-20250709"
         - "v8\\.3\\.0"
         - "v8\\.[0-2]\\.\\d+"
   - source: docker.io/longhornio/livenessprobe
@@ -192,6 +206,7 @@ sync:
         - "v2\\.\\d+\\.\\d+"
         - "v2\\.16\\.0-20250709"
       deny: # < v2.16.0-20250709
+        - "v2\\.16\\.0-20250709"
         - "v2\\.16\\.0"
         - "v2\\.1[0-5]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
@@ -203,6 +218,8 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.0.31
+        - "v0\\.0\\.32"
+        - "v0\\.0\\.31"
         - "v0\\.0\\.30"
         - "v0\\.0\\.[1-2]\\d"
         - "v0\\.0\\.\\d"
@@ -214,6 +231,7 @@ sync:
       allow:
         - "1\\.\\d+\\.\\d+"
       deny: # < 1.12.1
+        - "1\\.12\\.1"
         - "1\\.12\\.0"
         - "1\\.1[0-1]\\.\\d+"
         - "1\\.\\d\\.\\d+"
@@ -225,6 +243,7 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.7.2
+        - "v0\\.7\\.2"
         - "v0\\.7\\.[0-1]"
         - "v0\\.[0-6]\\.\\d+"
   - source: docker.io/rancher/mirrored-library-traefik
@@ -235,6 +254,7 @@ sync:
       allow:
         - "3\\.\\d+\\.\\d+"
       deny: # < v3.3.6
+        - "3\\.3\\.6"
         - "3\\.3\\.[0-5]"
         - "3\\.[0-2]\\.\\d+"
   - source: redis
@@ -245,13 +265,16 @@ sync:
       allow:
         - "8\\.\\d+\\.\\d+-alpine"
       deny: # < 8.0.3
+        - "8\\.0\\.3-alpine"
         - "8\\.0\\.[0-2]-alpine"
-  - source: docker.io/ricardbejarano/dnsmasq  # not maintained anymore, needs replacement
+  - source: docker.io/ricardbejarano/dnsmasq # not maintained anymore, needs replacement
     target: registry.fritz.box/docker.io/ricardbejarano/dnsmasq
     type: repository
     platforms: *x-platforms
     tags:
       allow:
+        - "2\\.90"
+      deny:
         - "2\\.90"
   # ghcr.io
   - source: ghcr.io/coder/code-server
@@ -262,6 +285,7 @@ sync:
       allow:
         - "4\\.1\\d\\d\\.\\d+"
       deny: # < 4.102.2
+        - "4\\.102\\.2"
         - "4\\.102\\.[01]"
         - "4\\.10[01]\\.\\d+"
   - source: ghcr.io/hikhvar/mqtt2prometheus
@@ -272,6 +296,7 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.1.7
+        - "v0\\.1\\.7"
         - "v0\\.1\\.[0-6]"
         - "v0\\.0\\.\\d+"
   - source: ghcr.io/home-assistant/home-assistant
@@ -282,6 +307,8 @@ sync:
       allow:
         - "2025\\.\\d+\\.\\d+"
       deny: # < 2025.7.3
+        - "2025\\.7\\.4"
+        - "2025\\.7\\.3"
         - "2025\\.7\\.[0-2]"
         - "2025\\.[1-6]\\.\\d+"
   - source: ghcr.io/paperless-ngx/paperless-ngx
@@ -292,6 +319,7 @@ sync:
       allow:
         - "2\\.\\d+\\.\\d+"
       deny: # < 2.17.1
+        - "2\\.17\\.1"
         - "2\\.17\\.0"
         - "2\\.1[0-6]\\.\\d+"
         - "2\\.\\d\\.\\d+"
@@ -303,6 +331,7 @@ sync:
         - "latest"
         - "v\\d+"
       deny: # < v8
+        - "v8"
         - "v[0-7]"
   - source: ghcr.io/stephanme/pv-control
     target: registry.fritz.box/ghcr.io/stephanme/pv-control
@@ -322,6 +351,7 @@ sync:
         - "latest"
         - "v\\d+"
       deny: # < v4
+        - "v4"
         - "v[0123]"
   - source: ghcr.io/project-zot/zot
     target: registry.fritz.box/ghcr.io/project-zot/zot
@@ -331,6 +361,8 @@ sync:
       allow:
         - "v2\\.\\d+\\.\\d+"
       deny: # < v2.1.5
+        - "v2\\.1\\.7"
+        - "v2\\.1\\.6"
         - "v2\\.1\\.[0-5]"
         - "v2\\.0\\.\\d+"
   # quay.io
@@ -342,6 +374,11 @@ sync:
       allow:
         - "1\\.\\d+\\.\\d+"
       deny: # < 1.30.3
+        - "1\\.30\\.7"
+        - "1\\.30\\.6"
+        - "1\\.30\\.5"
+        - "1\\.30\\.4"
+        - "1\\.30\\.3"
         - "1\\.30\\.[0-2]"
         - "1\\.[12]\\d\\.\\d+"
         - "1\\.\\d\\.\\d+"
@@ -353,6 +390,7 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.15.2
+        - "v0\\.15\\.2"
         - "v0\\.15\\.[0-1]"
         - "v0\\.1[0-4]\\.\\d+"
         - "v0\\.\\d\\.\\d+"
@@ -364,6 +402,7 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.15.2
+        - "v0\\.15\\.2"
         - "v0\\.15\\.[0-1]"
         - "v0\\.1[0-4]\\.\\d+"
         - "v0\\.\\d\\.\\d+"
@@ -376,6 +415,7 @@ sync:
         # - "\\d+\\.\\d+\\.\\d+" - too many versions
         - "9\\.1\\.0"
       deny: # < 9.1.0
+        - "9\\.1\\.0"
         - "9\\.0\\.\\d+"
         - "[0-8]\\.\\d+\\.\\d+"
   - source: quay.io/prometheus/alertmanager
@@ -386,6 +426,7 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.28.1
+        - "v0\\.28\\.1"
         - "v0\\.28\\.0"
         - "v0\\.2[0-7]\\.\\d+"
         - "v0\\.1\\d\\.\\d+"
@@ -398,6 +439,8 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.26.0
+        - "v0\\.27\\.0"
+        - "v0\\.26\\.0"
         - "v0\\.2[0-5]\\.\\d+"
         - "v0\\.1\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
@@ -409,6 +452,7 @@ sync:
       allow:
         - "v1\\.\\d+\\.\\d+"
       deny: # < v1.9.1
+        - "v1\\.9\\.1"
         - "v1\\.9\\.0"
         - "v1\\.[0-8]\\.\\d+"
   - source: quay.io/prometheus/prometheus
@@ -419,6 +463,7 @@ sync:
       allow:
         - "v3\\.\\d+\\.\\d+"
       deny: # < v3.5.0
+        - "v3\\.5\\.0"
         - "v3\\.[0-4]\\.\\d+"
   - source: quay.io/prometheus-operator/prometheus-config-reloader
     target: registry.fritz.box/quay.io/prometheus-operator/prometheus-config-reloader
@@ -428,6 +473,8 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.83.0
+        - "v0\\.84\\.0"
+        - "v0\\.83\\.0"
         - "v0\\.8[0-2]\\.\\d+"
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
@@ -439,6 +486,8 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.83.0
+        - "v0\\.84\\.0"
+        - "v0\\.83\\.0"
         - "v0\\.8[0-2]\\.\\d+"
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
@@ -451,6 +500,7 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.33.0
+        - "v0\\.33\\.0"
         - "v0\\.3[0-2]\\.\\d+"
         - "v0\\.[1-2]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
@@ -462,6 +512,7 @@ sync:
       allow:
         - "v2\\.\\d+\\.\\d+"
       deny: # < v2.16.0
+        - "v2\\.16\\.0"
         - "v2\\.1[0-5]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
   - source: registry.k8s.io/nfd/node-feature-discovery
@@ -472,6 +523,7 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # < v0.17.3
+        - "v0\\.17\\.3"
         - "v0\\.17\\.[0-2]"
         - "v0\\.1[0-6]\\.\\d+"
         - "v0\\.\\d\\.\\d+"
