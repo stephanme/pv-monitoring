@@ -3,7 +3,7 @@ set -ex
 
 scriptdir=$(dirname "$0")
 
-kubectl apply -k .
+kubectl apply -k $scriptdir
 
 # ensure images are pre-fetched on nodes = trigger CronJobs manually and wait for completion
 for node in nasbox pi1 pi2; do
