@@ -10,20 +10,20 @@ for repo in $repos; do
     echo $repo
     tags=$(regctl tag ls "$repo")
     echo '    '$tags
-    # Get the config.yaml path for this repo
-    yaml_path=$(yq ".sync[] | select(.target == \"$repo\") | path" "$scriptdir/config.yaml" | yq 'join(".")')
     # For each tag, add to deny list if not present
     for tag in $tags; do
         # Skip 'latest' tag
         if [ "$tag" = "latest" ]; then
             continue
         fi
-        # Escape dots for regex
-        regex_tag=$(echo "$tag" | sed 's/\./\\\\./g')
-        # Check if regex already in deny list
-        exists=$(yq ".sync[] | select(.target == \"$repo\") | .tags.deny[]" "$scriptdir/config.yaml" | grep -x "$regex_tag" || true)
-        if [ -z "$exists" ]; then
-            yq -i ".sync[] |= (select(.target == \"$repo\") | .tags.deny = [\"$regex_tag\"] + .tags.deny | .tags.deny[] style = \"double\")" "$scriptdir/config.yaml"
+        # Get deny regexps for this repo
+        deny_regexps=$(yq ".sync[] | select(.target == \"$repo\") | .tags.deny[]" "$scriptdir/config.yaml")
+        # Check if tag matches any deny regexp
+        if echo "$tag" | grep -Eq "^($(echo "$deny_regexps" | paste -sd'|' -))$"; then
+            continue
         fi
+        # Add to deny list if not present, escape dots for regex
+        regex_tag=$(echo "$tag" | sed 's/\./\\\\./g')
+        yq -i ".sync[] |= (select(.target == \"$repo\") | .tags.deny = [\"$regex_tag\"] + .tags.deny | .tags.deny[] style = \"double\")" "$scriptdir/config.yaml"
     done
 done

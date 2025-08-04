@@ -18,7 +18,7 @@ Goal is to minimize image pull times during updates or node failures even with l
 zot is configured to prune unused tags: see [zot config.json](./zot/config.json). As this may interfere with mirroring, the tag deny lists should be updated after new tags have been mirrored.
 
 The script `maintain-deny-list.sh` adds all mirrored tags to the deny list. This prevents that unused and pruned images are mirrored again.
-`maintain-deny-list.sh` doesn't (yet) check if mirrored tags are already covered by existing deny list regexps.
+`maintain-deny-list.sh` doesn't try to opimise the deny list regexps.
 
 ## HA
 
