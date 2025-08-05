@@ -34,7 +34,7 @@ spec:
 
       containers:
         - name: redis
-          image: docker.io/redis:8.0.3-alpine
+          image: docker.io/redis:8.2.0-alpine
           command:
             - redis-server
             - /etc/redis/redis.conf
