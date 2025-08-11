@@ -21,6 +21,7 @@ spec:
     crds:
       upgradeJob:
         enabled: true
+        forceConflicts: true
 
     # etcd monitoring. See https://github.com/cablespaghetti/k3s-monitoring/issues/4
     kubeEtcd:
