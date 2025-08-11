@@ -65,6 +65,16 @@ sync:
         - "12\\.1\\.0"
         - "12\\.0\\.\\d+"
         - "1[01]\\.\\d+\\.\\d+"
+  - source: docker.io/jaymedh/fritzbox_smarthome_exporter
+    target: registry.fritz.box/docker.io/jaymedh/fritzbox_smarthome_exporter
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "v\\d+.\\d+\\.\\d+"
+      deny: # <= v0.4.2
+        - "v0\\.4\\.[0-2]"
+        - "v0\\.[0-3]\\.\\d+"
   - source: docker.io/library/nginx
     target: registry.fritz.box/docker.io/library/nginx
     type: repository
@@ -254,7 +264,7 @@ sync:
         - "8\\.\\d+\\.\\d+-alpine"
       deny: # <= 8.2.0
         - "8\\.2\\.0-alpine"
-        - "8\\.0\\.[0-3]-alpine"
+        - "8\\.0\\.\\d+-alpine"
   - source: docker.io/ricardbejarano/dnsmasq # not maintained anymore, needs replacement
     target: registry.fritz.box/docker.io/ricardbejarano/dnsmasq
     type: repository
@@ -493,3 +503,53 @@ sync:
         - "v0\\.17\\.[0-3]"
         - "v0\\.1[0-6]\\.\\d+"
         - "v0\\.\\d\\.\\d+"
+  - source: registry.k8s.io/sig-storage/csi-node-driver-registrar
+    target: registry.fritz.box/registry.k8s.io/sig-storage/csi-node-driver-registrar
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "v2\\.\\d+\\.\\d+"
+      deny: # < v2.13.0
+        - "v2\\.1[0-2]\\.\\d+"
+        - "v2\\.\\d\\.\\d+"
+  - source: registry.k8s.io/sig-storage/csi-provisioner
+    target: registry.fritz.box/registry.k8s.io/sig-storage/csi-provisioner
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "v5\\.\\d+\\.\\d+"
+      deny: # < v5.2.0
+        - "v5\\.[0-1]\\.\\d+"
+  - source: registry.k8s.io/sig-storage/csi-resizer
+    target: registry.fritz.box/registry.k8s.io/sig-storage/csi-resizer
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "v1\\.\\d+\\.\\d+"
+      deny: # < v1.13.2
+        - "v1\\.13\\.[0-1]"
+        - "v1\\.1[0-2]\\.\\d+"
+        - "v1\\.\\d\\.\\d+"
+  - source: registry.k8s.io/sig-storage/livenessprobe
+    target: registry.fritz.box/registry.k8s.io/sig-storage/livenessprobe
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "v2\\.\\d+\\.\\d+"
+      deny: # < v2.15.0
+        - "v2\\.1[0-4]\\.\\d+"
+        - "v2\\.\\d\\.\\d+"
+  - source: registry.k8s.io/sig-storage/smbplugin
+    target: registry.fritz.box/registry.k8s.io/sig-storage/smbplugin
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "v1\\.\\d+\\.\\d+"
+      deny: # < v1.18.0
+        - "v1\\.1[0-7]\\.\\d+"
+        - "v1\\.\\d\\.\\d+"
