@@ -27,9 +27,9 @@ sync:
     tags:
       allow:
         - "3\\.\\d+\\.\\d+.\\d+"
-      deny: # <= 3.2.1.0
-        - "3\\.2\\.1\\.0"
-        - "3\\.2\\.0\\.\\d+"
+      deny: # <= 3.2.2.0
+        - "3\\.2\\.2\\.0"
+        - "3\\.2\\.[0-1]\\.\\d+"
         - "3\\.[0-1]\\.\\d+.\\d+"
   - source: eclipse-mosquitto
     target: registry.fritz.box/docker.io/library/eclipse-mosquitto
@@ -221,8 +221,8 @@ sync:
     tags:
       allow:
         - "1\\.\\d+\\.\\d+"
-      deny: # <= 1.12.1
-        - "1\\.12\\.[0-1]"
+      deny: # <= 1.12.3
+        - "1\\.12\\.[0-3]"
         - "1\\.1[0-1]\\.\\d+"
         - "1\\.\\d\\.\\d+"
   - source: docker.io/rancher/mirrored-metrics-server
@@ -252,7 +252,8 @@ sync:
     tags:
       allow:
         - "8\\.\\d+\\.\\d+-alpine"
-      deny: # <= 8.0.3
+      deny: # <= 8.2.0
+        - "8\\.2\\.0-alpine"
         - "8\\.0\\.[0-3]-alpine"
   - source: docker.io/ricardbejarano/dnsmasq # not maintained anymore, needs replacement
     target: registry.fritz.box/docker.io/ricardbejarano/dnsmasq
@@ -291,9 +292,9 @@ sync:
     tags:
       allow:
         - "2025\\.\\d+\\.\\d+"
-      deny: # <= 2025.7.4
-        - "2025\\.7\\.[0-4]"
-        - "2025\\.[1-6]\\.\\d+"
+      deny: # <= 2025.8.0
+        - "2025\\.8\\.0"
+        - "2025\\.[1-7]\\.\\d+"
   - source: ghcr.io/paperless-ngx/paperless-ngx
     target: registry.fritz.box/ghcr.io/paperless-ngx/paperless-ngx
     type: repository
@@ -321,8 +322,8 @@ sync:
       allow:
         - "latest"
         - "v\\d+"
-      deny: # <= v13
-        - "v1[0-3]"
+      deny: # <= v14
+        - "v1[0-4]"
         - "v\\d"
   - source: ghcr.io/stephanme/toolbox
     target: registry.fritz.box/ghcr.io/stephanme/toolbox
@@ -440,8 +441,8 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.84.0
-        - "v0\\.84\\.0"
+      deny: # <= v0.84.1
+        - "v0\\.84\\.[0-1]"
         - "v0\\.8[0-3]\\.\\d+"
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
@@ -453,7 +454,7 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # <= v0.84.0
-        - "v0\\.84\\.0"
+        - "v0\\.84\\.[0-1]"
         - "v0\\.8[0-3]\\.\\d+"
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
