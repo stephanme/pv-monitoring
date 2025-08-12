@@ -213,6 +213,16 @@ sync:
         - "v2\\.16\\.0"
         - "v2\\.1[0-5]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
+  - source: docker.io/rancher/klipper-helm
+    target: registry.fritz.box/docker.io/rancher/klipper-helm
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "v0\\.\\d+\\.\\d+-build\\d+"
+      deny: # < v0.9.5-build20250306
+        - "v0\\.9\\.[0-4]-build\\d+"
+        - "v0\\.[0-8]\\.\\d+-build\\d+"
   - source: docker.io/rancher/local-path-provisioner
     target: registry.fritz.box/docker.io/rancher/local-path-provisioner
     type: repository
@@ -255,6 +265,26 @@ sync:
       deny: # <= v3.3.6
         - "3\\.3\\.[0-6]"
         - "3\\.[0-2]\\.\\d+"
+  - source: docker.io/rancher/mirrored-pause
+    target: registry.fritz.box/docker.io/rancher/mirrored-pause
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "3\\.\\d+"
+      deny: # < v3.6
+        - "3\\.[0-5]"
+  - source: docker.io/rancher/system-upgrade-controller
+    target: registry.fritz.box/docker.io/rancher/system-upgrade-controller
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "v0\\.\\d+\\.\\d+"
+      deny: # < v0.16.2
+        - "v0\\.16\\.[0-1]"
+        - "v0\\.1[0-5]\\.\\d+"
+        - "v0\\.\\d\\.\\d+"
   - source: redis
     target: registry.fritz.box/docker.io/library/redis
     type: repository
@@ -492,6 +522,18 @@ sync:
         - "v2\\.16\\.0"
         - "v2\\.1[0-5]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
+  - source: registry.k8s.io/kubectl
+    target: registry.fritz.box/registry.k8s.io/kubectl
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "v1\\.\\d+\\.\\d+"
+      deny: # < v1.33.1
+        - "v1\\.33\\.0"
+        - "v1\\.3[0-2]\\.\\d+"
+        - "v1\\.[1-2]\\d\\.\\d+"
+        - "v1\\.\\d\\.\\d+"
   - source: registry.k8s.io/nfd/node-feature-discovery
     target: registry.fritz.box/registry.k8s.io/nfd/node-feature-discovery
     type: repository
