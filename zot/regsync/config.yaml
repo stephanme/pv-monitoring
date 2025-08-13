@@ -72,8 +72,8 @@ sync:
     tags:
       allow:
         - "v\\d+.\\d+\\.\\d+"
-      deny: # <= v0.4.2
-        - "v0\\.4\\.[0-2]"
+      deny: # <= v0.4.3
+        - "v0\\.4\\.[0-3]"
         - "v0\\.[0-3]\\.\\d+"
   - source: docker.io/library/nginx
     target: registry.fritz.box/docker.io/library/nginx
@@ -220,8 +220,8 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+-build\\d+"
-      deny: # < v0.9.5-build20250306
-        - "v0\\.9\\.[0-4]-build\\d+"
+      deny: # <= v0.9.8-build20250306
+        - "v0\\.9\\.[0-8]-build\\d+"
         - "v0\\.[0-8]\\.\\d+-build\\d+"
   - source: docker.io/rancher/local-path-provisioner
     target: registry.fritz.box/docker.io/rancher/local-path-provisioner
@@ -252,9 +252,9 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.7.2
-        - "v0\\.7\\.[0-2]"
-        - "v0\\.[0-6]\\.\\d+"
+      deny: # <= v0.8.0
+        - "v0\\.8\\.0"
+        - "v0\\.[0-7]\\.\\d+"
   - source: docker.io/rancher/mirrored-library-traefik
     target: registry.fritz.box/docker.io/rancher/mirrored-library-traefik
     type: repository
@@ -272,8 +272,9 @@ sync:
     tags:
       allow:
         - "3\\.\\d+"
-      deny: # < v3.6
-        - "3\\.[0-5]"
+      deny: # <= v3.10
+        - "3\\.10"
+        - "3\\.\\d"
   - source: docker.io/rancher/system-upgrade-controller
     target: registry.fritz.box/docker.io/rancher/system-upgrade-controller
     type: repository
@@ -281,8 +282,8 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # < v0.16.2
-        - "v0\\.16\\.[0-1]"
+      deny: # <= v0.16.2
+        - "v0\\.16\\.[0-2]"
         - "v0\\.1[0-5]\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: redis
@@ -312,9 +313,9 @@ sync:
     tags:
       allow:
         - "4\\.1\\d\\d\\.\\d+"
-      deny: # <= 4.102.2
-        - "4\\.102\\.[0-2]"
-        - "4\\.10[01]\\.\\d+"
+      deny: # <= 4.103.0
+        - "4\\.103\\.0"
+        - "4\\.10[0-2]\\.\\d+"
   - source: ghcr.io/hikhvar/mqtt2prometheus
     target: registry.fritz.box/ghcr.io/hikhvar/mqtt2prometheus
     type: repository
@@ -332,8 +333,8 @@ sync:
     tags:
       allow:
         - "2025\\.\\d+\\.\\d+"
-      deny: # <= 2025.8.0
-        - "2025\\.8\\.0"
+      deny: # <= 2025.8.1
+        - "2025\\.8\\.[0-1]"
         - "2025\\.[1-7]\\.\\d+"
   - source: ghcr.io/paperless-ngx/paperless-ngx
     target: registry.fritz.box/ghcr.io/paperless-ngx/paperless-ngx
@@ -529,8 +530,8 @@ sync:
     tags:
       allow:
         - "v1\\.\\d+\\.\\d+"
-      deny: # < v1.33.1
-        - "v1\\.33\\.0"
+      deny: # <= v1.33.3
+        - "v1\\.33\\.[0-3]"
         - "v1\\.3[0-2]\\.\\d+"
         - "v1\\.[1-2]\\d\\.\\d+"
         - "v1\\.\\d\\.\\d+"
@@ -552,8 +553,9 @@ sync:
     tags:
       allow:
         - "v2\\.\\d+\\.\\d+"
-      deny: # < v2.13.0
-        - "v2\\.1[0-2]\\.\\d+"
+      deny: # <= v2.14.0
+        - "v2\\.14\\.0"
+        - "v2\\.1[0-3]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
   - source: registry.k8s.io/sig-storage/csi-provisioner
     target: registry.fritz.box/registry.k8s.io/sig-storage/csi-provisioner
@@ -562,8 +564,9 @@ sync:
     tags:
       allow:
         - "v5\\.\\d+\\.\\d+"
-      deny: # < v5.2.0
-        - "v5\\.[0-1]\\.\\d+"
+      deny: # <= v5.3.0
+        - "v5\\.3\\.0"
+        - "v5\\.[0-2]\\.\\d+"
   - source: registry.k8s.io/sig-storage/csi-resizer
     target: registry.fritz.box/registry.k8s.io/sig-storage/csi-resizer
     type: repository
@@ -571,9 +574,9 @@ sync:
     tags:
       allow:
         - "v1\\.\\d+\\.\\d+"
-      deny: # < v1.13.2
-        - "v1\\.13\\.[0-1]"
-        - "v1\\.1[0-2]\\.\\d+"
+      deny: # <= v1.14.0
+        - "v1\\.14\\.0"
+        - "v1\\.1[0-3]\\.\\d+"
         - "v1\\.\\d\\.\\d+"
   - source: registry.k8s.io/sig-storage/livenessprobe
     target: registry.fritz.box/registry.k8s.io/sig-storage/livenessprobe
@@ -582,8 +585,9 @@ sync:
     tags:
       allow:
         - "v2\\.\\d+\\.\\d+"
-      deny: # < v2.15.0
-        - "v2\\.1[0-4]\\.\\d+"
+      deny: # <= v2.16.0
+        - "v2\\.16\\.0"
+        - "v2\\.1[0-5]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
   - source: registry.k8s.io/sig-storage/smbplugin
     target: registry.fritz.box/registry.k8s.io/sig-storage/smbplugin
@@ -592,6 +596,7 @@ sync:
     tags:
       allow:
         - "v1\\.\\d+\\.\\d+"
-      deny: # < v1.18.0
+      deny: # <= v1.18.0
+        - "v1\\.18\\.0"
         - "v1\\.1[0-7]\\.\\d+"
         - "v1\\.\\d\\.\\d+"
