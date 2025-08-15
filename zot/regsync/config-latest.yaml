@@ -1,0 +1,30 @@
+version: 1
+creds:
+  - registry: registry.fritz.box
+    tls: disabled
+defaults:
+  ratelimit:
+    min: 10
+    retry: 15m
+  parallel: 1
+  fastCopy: true
+sync:
+  # Only mirror images with tag 'latest' from the original config
+  - source: ghcr.io/stephanme/modbus_exporter
+    target: registry.fritz.box/ghcr.io/stephanme/modbus_exporter
+    type: repository
+    tags:
+      allow:
+        - "latest"
+  - source: ghcr.io/stephanme/pv-control
+    target: registry.fritz.box/ghcr.io/stephanme/pv-control
+    type: repository
+    tags:
+      allow:
+        - "latest"
+  - source: ghcr.io/stephanme/toolbox
+    target: registry.fritz.box/ghcr.io/stephanme/toolbox
+    type: repository
+    tags:
+      allow:
+        - "latest"

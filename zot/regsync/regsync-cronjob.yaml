@@ -46,3 +46,39 @@ spec:
             - name: regsync-config
               configMap:
                 name: regsync-config
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: regsync-latest
+  namespace: zot
+spec:
+  # Manual trigger only (runs only on Jan 1st at midnight)
+  schedule: "0 0 1 1 *"
+  concurrencyPolicy: Replace
+  suspend: true
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 14400  # 4h
+      template:
+        spec:
+          containers:
+            - name: regsync-latest
+              image: ghcr.io/stephanme/toolbox:latest
+              command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                date
+                regsynccmd=once
+                echo regsync ${regsynccmd}
+                regsync ${regsynccmd} --config /etc/regsync/config-latest.yaml --logopt json || true
+              volumeMounts:
+                - mountPath: "/etc/regsync"
+                  name: regsync-config-latest
+          restartPolicy: Never
+          volumes:
+            - name: regsync-config-latest
+              configMap:
+                name: regsync-config-latest

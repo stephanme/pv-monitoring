@@ -9,6 +9,11 @@ configMapGenerator:
     - config.yaml
   options:
     disableNameSuffixHash: true
+- name: regsync-config-latest
+  files:
+    - config-latest.yaml
+  options:
+    disableNameSuffixHash: true
 
 resources:
 - regsync-cronjob.yaml
