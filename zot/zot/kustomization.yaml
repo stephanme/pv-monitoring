@@ -17,7 +17,7 @@ labels:
 configMapGenerator:
 - name: zot-config
   files:
-    - config.json
+    - config.yaml
 
 resources:
 - secrets.yaml

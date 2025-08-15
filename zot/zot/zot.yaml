@@ -23,6 +23,9 @@ spec:
       containers:
         - name: zot
           image: ghcr.io/project-zot/zot
+          args:
+            - serve
+            - /etc/zot/config.yaml
           ports:
             - name: zot
               containerPort: 5000
