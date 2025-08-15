@@ -347,6 +347,15 @@ sync:
         - "2\\.17\\.[0-1]"
         - "2\\.1[0-6]\\.\\d+"
         - "2\\.\\d\\.\\d+"
+  - source: ghcr.io/stephanme/dnsmasq
+    target: registry.fritz.box/ghcr.io/stephanme/dnsmasq
+    type: repository
+    tags:
+      allow:
+        - "latest"
+        - "2\\.\\d+"
+      deny: # < 2.90
+        - "2\\.[0-8]\\d"
   - source: ghcr.io/stephanme/modbus_exporter
     target: registry.fritz.box/ghcr.io/stephanme/modbus_exporter
     type: repository

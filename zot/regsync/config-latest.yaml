@@ -10,6 +10,12 @@ defaults:
   fastCopy: true
 sync:
   # Only mirror images with tag 'latest' from the original config
+  - source: ghcr.io/stephanme/dnsmasq
+    target: registry.fritz.box/ghcr.io/stephanme/dnsmasq
+    type: repository
+    tags:
+      allow:
+        - "latest"
   - source: ghcr.io/stephanme/modbus_exporter
     target: registry.fritz.box/ghcr.io/stephanme/modbus_exporter
     type: repository
