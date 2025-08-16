@@ -32,6 +32,22 @@ spec:
               protocol: UDP
             - containerPort: 1053
               protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 1053
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 1053
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
           volumeMounts:
             - name: config
               mountPath: /config/
