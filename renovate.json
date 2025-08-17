@@ -32,12 +32,30 @@
       ],
       "datasourceTemplate": "helm",
       "versioningTemplate": "helm"
+    },
+    {
+      "customType": "regex",
+      "description": "Update versions in deploy scripts",
+      "managerFilePatterns": [
+        "/\\/deploy\\.sh$/"
+      ],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?VERSION=\"(?<currentValue>.*)\"\\s"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
+      "customType": "regex",
+      "description": "Update k3s version in upgrade plans",
+      "managerFilePatterns": [
+        "/\\/k3s-upgrade\\.yaml$/"
+      ],
+      "matchStrings": [
+        "#\\s*renovate:\\s* k3s\\s+version:\\s*\"?(?<currentValue>.*)\"?\\s"
+      ],
+      "datasourceTemplate": "github-release",
+      "depNameTemplate": "rancher/k3s",
+      "versioningTemplate": "semver-coerced"
     }
-  ],
-  "registryAliases": {
-    "zot.docker.io": "docker.io",
-    "zot.ghcr.io": "ghcr.io",
-    "zot.quay.io": "quay.io",
-    "zot.k8s.registry.io": "k8s.registry.io"
-  }
+  ]
 }

@@ -22,6 +22,7 @@ spec:
     skipWaitForDeleteTimeout: 60 # 1.18+ (honor pod disruption budgets up to 60 seconds per pod then moves on)
   upgrade:
     image: rancher/k3s-upgrade
+  #renovate: k3s
   version: v1.33.1+k3s1
 ---
 # Agent plan
@@ -49,4 +50,5 @@ spec:
     skipWaitForDeleteTimeout: 60 # 1.18+ (honor pod disruption budgets up to 60 seconds per pod then moves on)
   upgrade:
     image: rancher/k3s-upgrade
+  #renovate: k3s
   version: v1.33.1+k3s1
