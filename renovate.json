@@ -53,8 +53,8 @@
       "matchStrings": [
         "#\\s*renovate:\\s* k3s\\s+version:\\s*\"?(?<currentValue>.*)\"?\\s"
       ],
-      "datasourceTemplate": "github-release",
-      "packageNameTemplate": "rancher/k3s",
+      "datasourceTemplate": "github-releases",
+      "packageNameTemplate": "k3s-io/k3s",
       "versioningTemplate": "semver-coerced"
     }
   ]
