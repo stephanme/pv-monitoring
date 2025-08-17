@@ -19,12 +19,12 @@ for img in $images; do
         repo="${img%%:*}"
         # Add default namespace 'library' if missing
         if [[ "$repo" != */* ]]; then
-        repo="library/$repo"
+            repo="library/$repo"
         fi
     fi
     tag="${img##*:}"
     # If no tag, default to 'latest'
-    if [[ "$repo" == "$tag" ]]; then
+    if [[ "$img" == "$tag" ]]; then
         tag="latest"
     fi
     # Check if image exists in mirror

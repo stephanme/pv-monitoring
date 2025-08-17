@@ -61,8 +61,8 @@ sync:
     tags:
       allow:
         - "\\d\\d\\.\\d+\\.\\d+"
-      deny: # <= 12.1.0
-        - "12\\.1\\.0"
+      deny: # <= 12.1.1
+        - "12\\.1\\.[0-1]"
         - "12\\.0\\.\\d+"
         - "1[01]\\.\\d+\\.\\d+"
   - source: docker.io/jaymedh/fritzbox_smarthome_exporter
@@ -82,8 +82,8 @@ sync:
     tags:
       allow:
         - "1\\.\\d+\\.\\d+-alpine-slim"
-      deny: # <= 1.29.0-alpine-slim
-        - "1\\.29\\.0-alpine-slim"
+      deny: # <= 1.29.1-alpine-slim
+        - "1\\.29\\.[0-1]-alpine-slim"
         - "1\\.2[0-8]\\.\\d+-alpine-slim"
         - "1\\.1\\d\\.\\d+-alpine-slim"
         - "1\\.\\d\\.\\d+-alpine-slim"
@@ -313,8 +313,8 @@ sync:
     tags:
       allow:
         - "4\\.1\\d\\d\\.\\d+"
-      deny: # <= 4.103.0
-        - "4\\.103\\.0"
+      deny: # <= 4.103.1
+        - "4\\.103\\.[0-1]"
         - "4\\.10[0-2]\\.\\d+"
   - source: ghcr.io/hikhvar/mqtt2prometheus
     target: registry.fritz.box/ghcr.io/hikhvar/mqtt2prometheus
@@ -333,8 +333,8 @@ sync:
     tags:
       allow:
         - "2025\\.\\d+\\.\\d+"
-      deny: # <= 2025.8.1
-        - "2025\\.8\\.[0-1]"
+      deny: # <= 2025.8.2
+        - "2025\\.8\\.[0-2]"
         - "2025\\.[1-7]\\.\\d+"
   - source: ghcr.io/paperless-ngx/paperless-ngx
     target: registry.fritz.box/ghcr.io/paperless-ngx/paperless-ngx
@@ -343,9 +343,9 @@ sync:
     tags:
       allow:
         - "2\\.\\d+\\.\\d+"
-      deny: # <= 2.17.1
-        - "2\\.17\\.[0-1]"
-        - "2\\.1[0-6]\\.\\d+"
+      deny: # <= 2.18.0
+        - "2\\.18\\.0"
+        - "2\\.1[0-7]\\.\\d+"
         - "2\\.\\d\\.\\d+"
   - source: ghcr.io/stephanme/dnsmasq
     target: registry.fritz.box/ghcr.io/stephanme/dnsmasq
@@ -354,8 +354,8 @@ sync:
       allow:
         - "latest"
         - "2\\.\\d+"
-      deny: # < 2.90
-        - "2\\.[0-8]\\d"
+      deny: # <= 2.90
+        - "2\\.90"
   - source: ghcr.io/stephanme/modbus_exporter
     target: registry.fritz.box/ghcr.io/stephanme/modbus_exporter
     type: repository
@@ -402,8 +402,8 @@ sync:
     tags:
       allow:
         - "1\\.\\d+\\.\\d+"
-      deny: # <= 1.30.7
-        - "1\\.30\\.[0-7]"
+      deny: # <= 1.30.9
+        - "1\\.30\\.[0-9]"
         - "1\\.[12]\\d\\.\\d+"
         - "1\\.\\d\\.\\d+"
   - source: quay.io/metallb/controller
@@ -539,8 +539,8 @@ sync:
     tags:
       allow:
         - "v1\\.\\d+\\.\\d+"
-      deny: # <= v1.33.3
-        - "v1\\.33\\.[0-3]"
+      deny: # <= v1.33.4
+        - "v1\\.33\\.[0-4]"
         - "v1\\.3[0-2]\\.\\d+"
         - "v1\\.[1-2]\\d\\.\\d+"
         - "v1\\.\\d\\.\\d+"
