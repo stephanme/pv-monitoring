@@ -9,4 +9,3 @@ $scriptdir/prometheus/deploy.sh
 $scriptdir/modbus-exporter/deploy.sh
 $scriptdir/fritzbox-exporter/deploy.sh
 $scriptdir/blackbox-exporter/deploy.sh
-$scriptdir/pvcontrol/deploy.sh

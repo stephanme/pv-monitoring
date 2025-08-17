@@ -9,6 +9,7 @@ $scriptdir/smb-csi-system/deploy.sh
 $scriptdir/longhorn-system/deploy.sh
 $scriptdir/default/zot.sh
 $scriptdir/monitoring/deploy.sh
+$scriptdir/pvcontrol/deploy.sh
 $scriptdir/homeassistant/deploy.sh
 $scriptdir/paperless/deploy.sh
 $scriptdir/default/deploy.sh

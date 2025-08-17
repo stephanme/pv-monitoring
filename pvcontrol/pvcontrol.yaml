@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pvcontrol-deployment
+  namespace: pvcontrol
 spec:
   selector:
     matchLabels:
@@ -104,6 +105,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pvcontrol-service
+  namespace: pvcontrol
   labels:
     app: pvcontrol
 spec:
@@ -118,6 +120,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: pvcontrol-ingress
+  namespace: pvcontrol
 spec:
   entryPoints:
     - web
@@ -142,6 +145,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: pvcontrol-redirect
+  namespace: pvcontrol
 spec:
   redirectRegex:
     regex: .*
@@ -152,6 +156,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: pvcontrol-compress
+  namespace: pvcontrol
 spec:
   compress:
     minResponseBodyBytes: 2048
@@ -168,6 +173,7 @@ metadata:
   labels:
     release: prometheus
   name: pvcontrol
+  namespace: pvcontrol
 spec:
   endpoints:
   - path: /metrics
@@ -182,6 +188,7 @@ metadata:
   labels:
     release: prometheus
   name: pvcontrol
+  namespace: pvcontrol
 spec:
   groups:
   - name: pv-control.rules
