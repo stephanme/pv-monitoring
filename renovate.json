@@ -40,7 +40,7 @@
         "/\\/deploy\\.sh$/"
       ],
       "matchStrings": [
-        "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?VERSION=\"(?<currentValue>.*)\"\\s"
+        "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?VERSION=\"?(?<currentValue>.*)\"?\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     },
@@ -54,7 +54,7 @@
         "#\\s*renovate:\\s* k3s\\s+version:\\s*\"?(?<currentValue>.*)\"?\\s"
       ],
       "datasourceTemplate": "github-release",
-      "depNameTemplate": "rancher/k3s",
+      "packageNameTemplate": "rancher/k3s",
       "versioningTemplate": "semver-coerced"
     }
   ]
