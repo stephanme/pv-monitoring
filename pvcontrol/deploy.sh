@@ -10,4 +10,4 @@ regctl image copy --fast ghcr.io/stephanme/pv-control:latest registry.fritz.box/
 kubectl apply -f $scriptdir/namespace.yaml
 kubectl apply -f $scriptdir
 # needed when using latest tag
-kubectl rollout restart deployment pvcontrol-deployment
+kubectl rollout restart deployment pvcontrol-deployment -n pvcontrol
