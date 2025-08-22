@@ -49,9 +49,9 @@ sync:
     tags:
       allow:
         - "8\\.\\d+\\.\\d+"
-      deny: # <= 8.21.1
-        - "8\\.21\\.[0-1]"
-        - "8\\.20\\.\\d+"
+      deny: # <= 8.22.0
+        - "8\\.22\\.0"
+        - "8\\.2[0-1]\\.\\d+"
         - "8\\.1\\d\\.\\d+"
         - "8\\.\\d\\.\\d+"
   - source: docker.io/grafana/grafana
@@ -293,8 +293,8 @@ sync:
     tags:
       allow:
         - "8\\.\\d+\\.\\d+-alpine"
-      deny: # <= 8.2.0
-        - "8\\.2\\.0-alpine"
+      deny: # <= 8.2.1
+        - "8\\.2\\.[0-1]-alpine"
         - "8\\.0\\.\\d+-alpine"
   - source: docker.io/ricardbejarano/dnsmasq # not maintained anymore, needs replacement
     target: registry.fritz.box/docker.io/ricardbejarano/dnsmasq
@@ -333,8 +333,8 @@ sync:
     tags:
       allow:
         - "2025\\.\\d+\\.\\d+"
-      deny: # <= 2025.8.2
-        - "2025\\.8\\.[0-2]"
+      deny: # <= 2025.8.3
+        - "2025\\.8\\.[0-3]"
         - "2025\\.[1-7]\\.\\d+"
   - source: ghcr.io/paperless-ngx/paperless-ngx
     target: registry.fritz.box/ghcr.io/paperless-ngx/paperless-ngx
@@ -343,8 +343,8 @@ sync:
     tags:
       allow:
         - "2\\.\\d+\\.\\d+"
-      deny: # <= 2.18.0
-        - "2\\.18\\.0"
+      deny: # <= 2.18.1
+        - "2\\.18\\.[0-1]"
         - "2\\.1[0-7]\\.\\d+"
         - "2\\.\\d\\.\\d+"
   - source: ghcr.io/stephanme/dnsmasq
@@ -354,8 +354,8 @@ sync:
       allow:
         - "latest"
         - "2\\.\\d+"
-      deny: # <= 2.90
-        - "2\\.90"
+      deny: # <= 2.91
+        - "2\\.9[0-1]"
   - source: ghcr.io/stephanme/modbus_exporter
     target: registry.fritz.box/ghcr.io/stephanme/modbus_exporter
     type: repository
@@ -491,9 +491,9 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.84.1
-        - "v0\\.84\\.[0-1]"
-        - "v0\\.8[0-3]\\.\\d+"
+      deny: # <= v0.85.0
+        - "v0\\.85\\.0"
+        - "v0\\.8[0-4]\\.\\d+"
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: quay.io/prometheus-operator/prometheus-operator
@@ -503,9 +503,9 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.84.0
-        - "v0\\.84\\.[0-1]"
-        - "v0\\.8[0-3]\\.\\d+"
+      deny: # <= v0.85.0
+        - "v0\\.85\\.0"
+        - "v0\\.8[0-4]\\.\\d+"
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   # registry.k8s.io
