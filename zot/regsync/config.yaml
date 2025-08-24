@@ -296,15 +296,6 @@ sync:
       deny: # <= 8.2.1
         - "8\\.2\\.[0-1]-alpine"
         - "8\\.0\\.\\d+-alpine"
-  - source: docker.io/ricardbejarano/dnsmasq # not maintained anymore, needs replacement
-    target: registry.fritz.box/docker.io/ricardbejarano/dnsmasq
-    type: repository
-    platforms: *x-platforms
-    tags:
-      allow:
-        - "2\\.90"
-      deny:
-        - "2\\.90"
   # ghcr.io
   - source: ghcr.io/coder/code-server
     target: registry.fritz.box/ghcr.io/coder/code-server

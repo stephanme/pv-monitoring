@@ -1,32 +1,17 @@
 #!/bin/bash
+scriptdir=$(dirname "$0")
+source "$scriptdir/helper.sh"
 mirror="registry.fritz.box"
 
 # List all images (with tags) used by all containers in all pods
-images=$(kubectl get pods --all-namespaces -o json \
-    | jq -r '.items[] | .spec.containers[]?.image' \
-    | sort | uniq)
+images_yaml=$(get_used_images)
 
 echo "Checking for images not mirrored to $mirror..."
-for img in $images; do
-    # Extract registry, repo, and tag from image
-    first_part="${img%%[/:]*}"
-    if [[ "$first_part" == *.* ]]; then
-        registry="$first_part"
-        remainder="${img#*/}"
-        repo="${remainder%%:*}"
-    else
-        registry="docker.io"
-        repo="${img%%:*}"
-        # Add default namespace 'library' if missing
-        if [[ "$repo" != */* ]]; then
-            repo="library/$repo"
-        fi
-    fi
-    tag="${img##*:}"
-    # If no tag, default to 'latest'
-    if [[ "$img" == "$tag" ]]; then
-        tag="latest"
-    fi
+echo "$images_yaml" | yq -o json '.' | jq -c '.[]' | while read -r img_json; do
+    img=$(echo "$img_json" | jq -r '.image')
+    registry=$(echo "$img_json" | jq -r '.registry')
+    repo=$(echo "$img_json" | jq -r '.repo')
+    tag=$(echo "$img_json" | jq -r '.tag')
     # Check if image exists in mirror
     mirror_img="$mirror/$registry/$repo:$tag"
     regctl manifest head "$mirror_img" > /dev/null 2>&1

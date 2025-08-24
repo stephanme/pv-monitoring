@@ -16,9 +16,13 @@ Goal is to minimize image pull times during updates or node failures even with l
 ## Image Pruning
 
 zot is configured to prune unused tags: see [zot config.json](./zot/config.json). As this may interfere with mirroring, the tag deny lists should be updated after new tags have been mirrored.
+However image pruning by zot seems not to work.
 
-The script `maintain-deny-list.sh` adds all mirrored tags to the deny list. This prevents that unused and pruned images are mirrored again.
-`maintain-deny-list.sh` doesn't try to opimise the deny list regexps.
+Helper scripts for image maintenance:
+- `maintain-deny-list.sh` - adds all mirrored tags to the deny list. This prevents that unused and pruned images are mirrored again.
+`maintain-deny-list.sh` doesn't try to optimize the deny list regexps.
+- `check-unmirrored-images.sh` - lists images deployed to k8s but are not mirrored
+- `prune-old-images.sh [-p]` - prunes old/unused image tags. Image tags deployed to k8s and one older tag are kept (or at least 3 tags). 
 
 ## HA
 
