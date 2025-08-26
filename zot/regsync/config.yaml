@@ -134,8 +134,8 @@ sync:
     tags:
       allow:
         - "v0\\.0\\.\\d+"
-      deny: # <= v0.0.61
-        - "v0\\.0\\.6[0-1]"
+      deny: # <= v0.0.62
+        - "v0\\.0\\.6[0-2]"
         - "v0\\.0\\.[1-5]\\d"
         - "v0\\.0\\.\\d"
   - source: docker.io/longhornio/csi-attacher
@@ -304,8 +304,8 @@ sync:
     tags:
       allow:
         - "4\\.1\\d\\d\\.\\d+"
-      deny: # <= 4.103.1
-        - "4\\.103\\.[0-1]"
+      deny: # <= 4.103.2
+        - "4\\.103\\.[0-2]"
         - "4\\.10[0-2]\\.\\d+"
   - source: ghcr.io/hikhvar/mqtt2prometheus
     target: registry.fritz.box/ghcr.io/hikhvar/mqtt2prometheus
@@ -334,8 +334,8 @@ sync:
     tags:
       allow:
         - "2\\.\\d+\\.\\d+"
-      deny: # <= 2.18.1
-        - "2\\.18\\.[0-1]"
+      deny: # <= 2.18.2
+        - "2\\.18\\.[0-2]"
         - "2\\.1[0-7]\\.\\d+"
         - "2\\.\\d\\.\\d+"
   - source: ghcr.io/stephanme/dnsmasq
