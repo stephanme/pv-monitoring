@@ -1,0 +1,90 @@
+###
+@repo = ghcr.io/home-assistant/home-assistant
+
+### Catalog
+GET http://registry.fritz.box/v2/_catalog
+Content-Type: application/json
+
+
+### List tags
+GET http://registry.fritz.box/v2/{{repo}}/tags/list
+Content-Type: application/json
+
+### Get manifest
+GET http://registry.fritz.box/v2/{{repo}}/manifests/sha256:e49250b410adb3a0ebc39a776f0ec1730617617e5aab0ea3fd51c38ff258b170
+Content-Type: application/json
+
+### Get referrers (signatures etc) for digest
+GET http://registry.fritz.box/v2/{{repo}}/referrers/sha256:96f535c3a34fa0433d95e6c537a7fb33e0805f764fd7bf735554d7eb95d71e5f
+Content-Type: application/json
+
+### check if blob exists
+HEAD http://registry.fritz.box/v2/{{repo}}/blobs/sha256:6e771e15690e2fabf2332d3a3b744495411d6e0b00b2aea64419b58b0066cf81
+Content-Type: application/json
+
+
+### ImageListForDigest
+POST http://registry.fritz.box//v2/_zot/ext/search
+Content-Type: application/json
+X-Request-Type: GraphQL
+
+query {
+  ImageListForDigest(
+    id: "a3f3364d7874835b06f141616fcdda8e696fc189f47272c52765714fc7d91459"
+  ) {
+    Results{
+      RepoName
+      Tag
+      Title
+      Digest
+    }
+  }
+}
+
+### ImageList
+POST http://registry.fritz.box//v2/_zot/ext/search
+Content-Type: application/json
+X-Request-Type: GraphQL
+
+query {
+  ImageList(
+    repo: "ghcr.io/home-assistant/home-assistant"
+  ) {
+    Results{
+      Tag
+      Digest
+      LastUpdated
+      Size
+      Manifests {
+        Digest
+      }
+    }
+  }
+}
+
+### GlobalSearch
+POST http://registry.fritz.box//v2/_zot/ext/search
+Content-Type: application/json
+X-Request-Type: GraphQL
+
+query {
+  GlobalSearch(query: "ghcr.io/home-assistant/home-assistant:2025.8.3") {
+    Page {
+      ItemCount
+      TotalCount
+    }
+    Images {
+      RepoName
+      Tag
+      LastUpdated
+      Size
+      Manifests {
+        Digest
+        Layers {
+          Size
+          Digest
+        }
+      }
+    }
+  }
+}

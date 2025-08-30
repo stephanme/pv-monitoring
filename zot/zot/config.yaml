@@ -26,6 +26,7 @@ http:
 
 log:
   level: debug
+  #output: /var/lib/registry/zot.log
   audit: /var/lib/registry/zot-audit.log
 
 extensions:
