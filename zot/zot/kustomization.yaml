@@ -6,7 +6,7 @@ namespace: zot
 images:
 # https://github.com/project-zot/zot/pkgs/container/zot
 - name: ghcr.io/project-zot/zot
-  newTag: v2.1.7 
+  newTag: v2.1.8 
 
 labels:
   - pairs:
