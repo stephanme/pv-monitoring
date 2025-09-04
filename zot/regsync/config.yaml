@@ -49,9 +49,8 @@ sync:
     tags:
       allow:
         - "8\\.\\d+\\.\\d+"
-      deny: # <= 8.22.0
-        - "8\\.22\\.0"
-        - "8\\.2[0-1]\\.\\d+"
+      deny: # <= 8.23.0
+        - "8\\.2[0-3]\\.\\d+"
         - "8\\.1\\d\\.\\d+"
         - "8\\.\\d\\.\\d+"
   - source: docker.io/grafana/grafana
@@ -94,8 +93,8 @@ sync:
     tags:
       allow:
         - "2\\.\\d+\\.\\d+"
-      deny: # <= 2.6.0
-        - "2\\.6\\.0"
+      deny: # <= 2.6.1
+        - "2\\.6\\.[0-1]"
         - "2\\.[0-5]\\.\\d"
   - source: docker.io/longhornio/longhorn-engine
     target: registry.fritz.box/docker.io/longhornio/longhorn-engine
@@ -134,8 +133,8 @@ sync:
     tags:
       allow:
         - "v0\\.0\\.\\d+"
-      deny: # <= v0.0.62
-        - "v0\\.0\\.6[0-2]"
+      deny: # <= v0.0.64
+        - "v0\\.0\\.6[0-4]"
         - "v0\\.0\\.[1-5]\\d"
         - "v0\\.0\\.\\d"
   - source: docker.io/longhornio/csi-attacher
@@ -262,9 +261,9 @@ sync:
     tags:
       allow:
         - "3\\.\\d+\\.\\d+"
-      deny: # <= v3.3.6
-        - "3\\.3\\.[0-6]"
-        - "3\\.[0-2]\\.\\d+"
+      deny: # <= v3.5.1
+        - "3\\.5\\.0"
+        - "3\\.[0-4]\\.\\d+"
   - source: docker.io/rancher/mirrored-pause
     target: registry.fritz.box/docker.io/rancher/mirrored-pause
     type: repository
@@ -282,8 +281,8 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.16.2
-        - "v0\\.16\\.[0-2]"
+      deny: # <= v0.16.3
+        - "v0\\.16\\.[0-3]"
         - "v0\\.1[0-5]\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: redis
@@ -324,9 +323,9 @@ sync:
     tags:
       allow:
         - "2025\\.\\d+\\.\\d+"
-      deny: # <= 2025.8.3
-        - "2025\\.8\\.[0-3]"
-        - "2025\\.[1-7]\\.\\d+"
+      deny: # <= 2025.9.0
+        - "2025\\.9\\.0"
+        - "2025\\.[1-8]\\.\\d+"
   - source: ghcr.io/paperless-ngx/paperless-ngx
     target: registry.fritz.box/ghcr.io/paperless-ngx/paperless-ngx
     type: repository
@@ -334,8 +333,8 @@ sync:
     tags:
       allow:
         - "2\\.\\d+\\.\\d+"
-      deny: # <= 2.18.2
-        - "2\\.18\\.[0-2]"
+      deny: # <= 2.18.3
+        - "2\\.18\\.[0-3]"
         - "2\\.1[0-7]\\.\\d+"
         - "2\\.\\d\\.\\d+"
   - source: ghcr.io/stephanme/dnsmasq
@@ -382,8 +381,8 @@ sync:
     tags:
       allow:
         - "v2\\.\\d+\\.\\d+"
-      deny: # <= v2.1.7
-        - "v2\\.1\\.[0-7]"
+      deny: # <= v2.1.8
+        - "v2\\.1\\.[0-8]"
         - "v2\\.0\\.\\d+"
   # quay.io
   - source: quay.io/kiwigrid/k8s-sidecar
@@ -393,7 +392,8 @@ sync:
     tags:
       allow:
         - "1\\.\\d+\\.\\d+"
-      deny: # <= 1.30.9
+      deny: # <= 1.30.10
+        - "1\\.30\\.10"
         - "1\\.30\\.[0-9]"
         - "1\\.[12]\\d\\.\\d+"
         - "1\\.\\d\\.\\d+"
@@ -519,9 +519,8 @@ sync:
     tags:
       allow:
         - "v2\\.\\d+\\.\\d+"
-      deny: # <= v2.16.0
-        - "v2\\.16\\.0"
-        - "v2\\.1[0-5]\\.\\d+"
+      deny: # <= v2.17.0
+        - "v2\\.1[0-7]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
   - source: registry.k8s.io/kubectl
     target: registry.fritz.box/registry.k8s.io/kubectl
@@ -530,9 +529,9 @@ sync:
     tags:
       allow:
         - "v1\\.\\d+\\.\\d+"
-      deny: # <= v1.33.4
-        - "v1\\.33\\.[0-4]"
-        - "v1\\.3[0-2]\\.\\d+"
+      deny: # <= v1.34.0
+        - "v1\\.34\\.0"
+        - "v1\\.3[0-3]\\.\\d+"
         - "v1\\.[1-2]\\d\\.\\d+"
         - "v1\\.\\d\\.\\d+"
   - source: registry.k8s.io/nfd/node-feature-discovery
