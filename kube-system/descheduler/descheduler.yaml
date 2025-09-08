@@ -44,6 +44,10 @@ spec:
                 nodeAffinityType:
                 - requiredDuringSchedulingIgnoredDuringExecution
             - name: RemovePodsViolatingNodeTaints
+              args:
+                excludedTaints:
+                  # don't deschedule from cordoned nodes to support admin tasks
+                  - node.kubernetes.io/unschedulable
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingTopologySpreadConstraint
             - name: LowNodeUtilization
