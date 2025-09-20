@@ -63,6 +63,8 @@ query {
 }
 
 ### GlobalSearch
+### https://github.com/project-zot/zot/blob/main/pkg/extensions/search/schema.graphql
+### https://github.com/project-zot/zot/blob/main/pkg/common/model.go
 POST http://registry.fritz.box//v2/_zot/ext/search
 Content-Type: application/json
 X-Request-Type: GraphQL
@@ -77,14 +79,8 @@ query {
       RepoName
       Tag
       LastUpdated
+      LastPullTimestamp
       Size
-      Manifests {
-        Digest
-        Layers {
-          Size
-          Digest
-        }
-      }
     }
   }
 }

@@ -49,8 +49,8 @@ sync:
     tags:
       allow:
         - "8\\.\\d+\\.\\d+"
-      deny: # <= 8.23.0
-        - "8\\.23\\.0"
+      deny: # <= 8.23.1
+        - "8\\.23\\.[0-1]"
         - "8\\.2[0-2]\\.\\d+"
         - "8\\.1\\d\\.\\d+"
         - "8\\.\\d\\.\\d+"
@@ -304,8 +304,8 @@ sync:
     tags:
       allow:
         - "4\\.1\\d\\d\\.\\d+"
-      deny: # <= 4.104.0
-        - "4\\.104\\.0"
+      deny: # <= 4.104.1
+        - "4\\.104\\.[0-1]"
         - "4\\.10[0-3]\\.\\d+"
   - source: ghcr.io/hikhvar/mqtt2prometheus
     target: registry.fritz.box/ghcr.io/hikhvar/mqtt2prometheus
@@ -324,8 +324,8 @@ sync:
     tags:
       allow:
         - "2025\\.\\d+\\.\\d+"
-      deny: # <= 2025.9.3
-        - "2025\\.9\\.[0-3]"
+      deny: # <= 2025.9.4
+        - "2025\\.9\\.[0-4]"
         - "2025\\.[1-8]\\.\\d+"
   - source: ghcr.io/paperless-ngx/paperless-ngx
     target: registry.fritz.box/ghcr.io/paperless-ngx/paperless-ngx

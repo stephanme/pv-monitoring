@@ -15,8 +15,8 @@ storage:
         keepTags:
           - mostRecentlyPushedCount: 3
             mostRecentlyPulledCount: 3
-            pulledWithin: 720h  # 30d
-            pushedWithin: 720h
+            pulledWithin: 168h  # 7d
+            pushedWithin: 168h
 
 http:
   address: "0.0.0.0"
