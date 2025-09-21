@@ -17,7 +17,7 @@ spec:
     service:
       enabled: true
       annotations:
-        metallb.universe.tf/loadBalancerIPs: 192.168.178.230
+        metallb.io/loadBalancerIPs: 192.168.178.230
       spec:
         allocateLoadBalancerNodePorts: false
         externalTrafficPolicy: Local

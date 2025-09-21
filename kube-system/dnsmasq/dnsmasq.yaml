@@ -103,8 +103,8 @@ metadata:
   name: dnsmasq-service
   namespace: kube-system
   annotations:
-    metallb.universe.tf/address-pool: dnsmasq-pool
-    metallb.universe.tf/loadBalancerIPs: 192.168.178.2
+    metallb.io/address-pool: dnsmasq-pool
+    metallb.io/loadBalancerIPs: 192.168.178.2
 spec:
   type: LoadBalancer
   allocateLoadBalancerNodePorts: false
