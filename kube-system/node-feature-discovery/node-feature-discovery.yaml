@@ -7,7 +7,7 @@ spec:
   # renovate: HelmChart
   repo: https://kubernetes-sigs.github.io/node-feature-discovery/charts
   chart: node-feature-discovery
-  version: 0.17.3
+  version: 0.17.4
   targetNamespace: kube-system
   timeout: 10m
   failurePolicy: abort
