@@ -6,9 +6,9 @@ x-platforms: &x-platforms
 x-longhorn-main-tags: &x-longhorn-main-tags
   allow:
     - "v1\\.\\d+\\.\\d+"
-  deny: # <= v1.9.1
-    - "v1\\.9\\.[0-1]"
-    - "v1\\.[0-8]\\.\\d+"
+  deny: # <= v1.10.0
+    - "v1\\.10\\.0"
+    - "v1\\.[0-9]\\.\\d+"
 creds:
   - registry: registry.fritz.box
     tls: disabled
@@ -61,9 +61,9 @@ sync:
     tags:
       allow:
         - "\\d\\d\\.\\d+\\.\\d+"
-      deny: # <= 12.1.1
-        - "12\\.1\\.[0-1]"
-        - "12\\.0\\.\\d+"
+      deny: # <= 12.2.0
+        - "12\\.2\\.0"
+        - "12\\.[0-1]\\.\\d+"
         - "1[01]\\.\\d+\\.\\d+"
   - source: docker.io/jaymedh/fritzbox_smarthome_exporter
     target: registry.fritz.box/docker.io/jaymedh/fritzbox_smarthome_exporter
@@ -134,9 +134,8 @@ sync:
     tags:
       allow:
         - "v0\\.0\\.\\d+"
-      deny: # <= v0.0.68
-        - "v0\\.0\\.6[0-8]"
-        - "v0\\.0\\.[1-5]\\d"
+      deny: # <= v0.0.69
+        - "v0\\.0\\.[1-6]\\d"
         - "v0\\.0\\.\\d"
   - source: docker.io/longhornio/csi-attacher
     target: registry.fritz.box/docker.io/longhornio/csi-attacher
@@ -473,9 +472,9 @@ sync:
     tags:
       allow:
         - "v3\\.\\d+\\.\\d+"
-      deny: # <= v3.5.0
-        - "v3\\.5\\.0"
-        - "v3\\.[0-4]\\.\\d+"
+      deny: # <= v3.6.0
+        - "v3\\.6\\.0"
+        - "v3\\.[0-5]\\.\\d+"
   - source: quay.io/prometheus-operator/prometheus-config-reloader
     target: registry.fritz.box/quay.io/prometheus-operator/prometheus-config-reloader
     type: repository
@@ -542,8 +541,8 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.17.3
-        - "v0\\.17\\.[0-3]"
+      deny: # <= v0.17.4
+        - "v0\\.17\\.[0-4]"
         - "v0\\.1[0-6]\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: registry.k8s.io/sig-storage/csi-node-driver-registrar
@@ -553,9 +552,9 @@ sync:
     tags:
       allow:
         - "v2\\.\\d+\\.\\d+"
-      deny: # <= v2.14.0
-        - "v2\\.14\\.0"
-        - "v2\\.1[0-3]\\.\\d+"
+      deny: # <= v2.15.0
+        - "v2\\.15\\.0"
+        - "v2\\.1[0-4]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
   - source: registry.k8s.io/sig-storage/csi-provisioner
     target: registry.fritz.box/registry.k8s.io/sig-storage/csi-provisioner
@@ -585,9 +584,9 @@ sync:
     tags:
       allow:
         - "v2\\.\\d+\\.\\d+"
-      deny: # <= v2.16.0
-        - "v2\\.16\\.0"
-        - "v2\\.1[0-5]\\.\\d+"
+      deny: # <= v2.17.0
+        - "v2\\.17\\.0"
+        - "v2\\.1[0-6]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
   - source: registry.k8s.io/sig-storage/smbplugin
     target: registry.fritz.box/registry.k8s.io/sig-storage/smbplugin
