@@ -7,7 +7,7 @@ spec:
   # renovate: HelmChart
   repo: https://prometheus-community.github.io/helm-charts
   chart: kube-prometheus-stack
-  version: 77.10.0
+  version: 77.11.1
   targetNamespace: monitoring
   timeout: 10m
   failurePolicy: abort
