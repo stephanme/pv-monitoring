@@ -71,10 +71,22 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v\\d+.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny: # <= v0.4.3
         - "v0\\.4\\.[0-3]"
         - "v0\\.[0-3]\\.\\d+"
+  - source: docker.io/kopia/kopia
+    target: registry.fritz.box/docker.io/kopia/kopia
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "0\\.\\d+\\.\\d+"
+      deny: # <= 0.21.1
+        - "0\\.21\\.[0]"
+        - "0\\.20\\.\\d+"
+        - "0\\.1\\d\\.\\d+"
+        - "0\\.\\d\\.\\d+"
   - source: docker.io/library/nginx
     target: registry.fritz.box/docker.io/library/nginx
     type: repository
