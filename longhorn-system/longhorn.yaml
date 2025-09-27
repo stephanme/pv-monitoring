@@ -17,7 +17,7 @@ spec:
       defaultClassReplicaCount: 2
       defaultDataLocality: best-effort
     defaultSettings:
-      defaultReplicaCount: 2
+      defaultReplicaCount: "2"
       defaultDataLocality: best-effort
       replicaAutoBalance: least-effort
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
@@ -25,10 +25,10 @@ spec:
       backupTargetCredentialSecret: cifs-backup-target-secret
       upgradeChecker: false
       backupstorePollInterval: 0
-      concurrentAutomaticEngineUpgradePerNodeLimit: 2
+      concurrentAutomaticEngineUpgradePerNodeLimit: "2"
       allowCollectingLonghornUsageMetrics: false
       orphanResourceAutoDeletion: replica-data;instance
-      offlineRelicaRebuilding: true
+      offlineReplicaRebuilding: "true"
     helmPreUpgradeCheckerJob:
       enabled: false
     csi:
