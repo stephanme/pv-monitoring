@@ -12,4 +12,5 @@ $scriptdir/monitoring/deploy.sh
 $scriptdir/pvcontrol/deploy.sh
 $scriptdir/homeassistant/deploy.sh
 $scriptdir/paperless/deploy.sh
+$scriptdir/kopia/deploy.sh
 $scriptdir/default/deploy.sh

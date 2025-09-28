@@ -14,6 +14,7 @@ data:
         <li><a href="http://homeassistant.fritz.box">Home Assistant</a></li>
         <li><a href="http://pvcontrol.fritz.box">PV Control</a></li>
         <li><a href="http://paperless.fritz.box">Paperless</a></li>
+        <li><a href="https://nasbox.fritz.box:31515">Kopia</a></li>
       </ul>
       <h2>Monitoring</h2>
       <ul>
