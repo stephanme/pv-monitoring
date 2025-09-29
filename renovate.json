@@ -57,5 +57,19 @@
       "packageNameTemplate": "k3s-io/k3s",
       "versioningTemplate": "semver-coerced"
     }
+  ],
+  "packageRules": [
+    {
+      "description": "Ignore kopia versions that look like dates",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "kopia/kopia"
+      ],
+      "ignoreVersions": [
+        "/^\\d{8}\\./"
+      ]
+    }
   ]
 }

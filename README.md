@@ -21,6 +21,7 @@ Monitoring of a photovoltaic system, car charging and heat pump
   - UI for controlling charge modes
 - [Home Assistant](https://www.home-assistant.io/) for additional home automation
 - [Paperless-ngx](https://docs.paperless-ngx.com/) for taming the bureaucracy
+- [Kopia](https://kopia.io/) for backups
 
 ## Deploy
 
