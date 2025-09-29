@@ -33,7 +33,7 @@ spec:
             - start
             - --disable-csrf-token-checks
             - --address=0.0.0.0:51515
-            - --refresh-interval=168h # TODO, should not lead to spinning up disks too often, 0?
+            - --refresh-interval=168h # TODO: should not lead to spinning up disks too often, 0 leads to high CPU load
             - --server-username=kopia
             - --server-control-username=server-control
             - --tls-cert-file=/app/config/kopia.cert
@@ -67,9 +67,8 @@ spec:
               mountPath: /srv/kopia/backup-repo
       volumes:
         - name: config
-          hostPath:
-              path: /home/backup/.config/kopia
-              type: Directory
+          secret:
+            secretName: kopia-config
         - name: logs
           emptyDir: {}
         - name: cache
