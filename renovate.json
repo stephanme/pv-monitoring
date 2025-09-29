@@ -67,9 +67,7 @@
       "matchPackageNames": [
         "kopia/kopia"
       ],
-      "ignoreVersions": [
-        "/^\\d{8}\\./"
-      ]
+      "allowedVersions": "!/^\\d{8}\\./"
     }
   ]
 }
