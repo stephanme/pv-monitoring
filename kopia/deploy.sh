@@ -4,4 +4,6 @@ set -ex
 scriptdir=$(dirname "$0")
 
 kubectl apply -f $scriptdir/namespace.yaml
-kubectl apply -f $scriptdir
+
+$scriptdir/kopia-server/deploy.sh
+$scriptdir/backup-cronjobs/deploy.sh
