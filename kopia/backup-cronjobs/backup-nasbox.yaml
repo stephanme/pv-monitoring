@@ -1,7 +1,8 @@
+# backups for user stephan@nasbox
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: backup-nasbox
+  name: backup-nasbox-stephan
   namespace: kopia
 spec:
   schedule: "15 12 * * SUN"
@@ -39,6 +40,74 @@ spec:
                     secretKeyRef:
                       name: kopia-backup-secrets
                       key: KOPIA_SERVER_STEPHAN_NASBOX_PASSWORD
+                - name: SERVER_CERT_FINGERPRINT
+                  valueFrom:
+                    secretKeyRef:
+                      name: kopia-backup-secrets
+                      key: SERVER_CERT_FINGERPRINT
+              volumeMounts:
+                - name: config
+                  mountPath: /app/config
+                - name: logs
+                  mountPath: /app/logs
+                - name: cache
+                  mountPath: /app/cache
+                - name: srv-ssd
+                  mountPath: /srv-ssd
+          volumes:
+            - name: config
+              emptyDir: {}
+            - name: logs
+              emptyDir: {}
+            - name: cache
+              emptyDir: {}
+            - name: srv-ssd
+              hostPath:
+                path: /srv-ssd
+                type: Directory
+---
+# backups for user backup@nasbox
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-nasbox-backup
+  namespace: kopia
+spec:
+  schedule: "17 12 * * SUN"
+  concurrencyPolicy: Replace
+  suspend: false
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 3600  # 1h
+      template:
+        spec:
+          nodeSelector:
+            kubernetes.io/hostname: nasbox
+          securityContext:
+            # nasbox: id stephan
+            # uid=1001(backup) gid=1001(backup) groups=1001(backup)
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+          restartPolicy: Never
+          containers:
+            - name: kopia
+              # https://github.com/kopia/kopia/blob/master/tools/docker/Dockerfile
+              image: kopia/kopia:0.21.1
+              command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                date
+                kopia repository connect server --url https://nasbox.fritz.box:31515 --server-cert-fingerprint ${SERVER_CERT_FINGERPRINT} --override-username=backup --override-hostname=nasbox
+                kopia snapshot create /srv-ssd/music
+              env:
+                - name: KOPIA_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: kopia-backup-secrets
+                      key: KOPIA_SERVER_BACKUP_NASBOX_PASSWORD
                 - name: SERVER_CERT_FINGERPRINT
                   valueFrom:
                     secretKeyRef:
