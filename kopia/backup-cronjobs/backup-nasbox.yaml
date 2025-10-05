@@ -33,7 +33,7 @@ spec:
                 set -e
                 date
                 kopia repository connect server --url https://nasbox.fritz.box:31515 --server-cert-fingerprint ${SERVER_CERT_FINGERPRINT} --override-username=stephan --override-hostname=nasbox
-                kopia snapshot create /srv-ssd/samba-private/stephan
+                kopia snapshot create /srv-ssd/samba-private/stephan --no-progress
               env:
                 - name: KOPIA_PASSWORD
                   valueFrom:
@@ -101,7 +101,7 @@ spec:
                 set -e
                 date
                 kopia repository connect server --url https://nasbox.fritz.box:31515 --server-cert-fingerprint ${SERVER_CERT_FINGERPRINT} --override-username=backup --override-hostname=nasbox
-                kopia snapshot create /srv-ssd/music
+                kopia snapshot create /srv-ssd/music --no-progress
               env:
                 - name: KOPIA_PASSWORD
                   valueFrom:
