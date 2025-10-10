@@ -49,9 +49,9 @@ sync:
     tags:
       allow:
         - "8\\.\\d+\\.\\d+"
-      deny: # <= 8.23.2
-        - "8\\.23\\.[0-2]"
-        - "8\\.2[0-2]\\.\\d+"
+      deny: # <= 8.24.0
+        - "8\\.24\\.0"
+        - "8\\.2[0-3]\\.\\d+"
         - "8\\.1\\d\\.\\d+"
         - "8\\.\\d\\.\\d+"
   - source: docker.io/grafana/grafana
@@ -94,8 +94,8 @@ sync:
     tags:
       allow:
         - "1\\.\\d+\\.\\d+-alpine-slim"
-      deny: # <= 1.29.1-alpine-slim
-        - "1\\.29\\.[0-1]-alpine-slim"
+      deny: # <= 1.29.2-alpine-slim
+        - "1\\.29\\.[0-2]-alpine-slim"
         - "1\\.2[0-8]\\.\\d+-alpine-slim"
         - "1\\.1\\d\\.\\d+-alpine-slim"
         - "1\\.\\d\\.\\d+-alpine-slim"
@@ -258,9 +258,9 @@ sync:
     tags:
       allow:
         - "1\\.\\d+\\.\\d+"
-      deny: # <= 1.12.3
-        - "1\\.12\\.[0-3]"
-        - "1\\.1[0-1]\\.\\d+"
+      deny: # <= 1.13.1
+        - "1\\.13\\.[0-1]"
+        - "1\\.1[0-2]\\.\\d+"
         - "1\\.\\d\\.\\d+"
   - source: docker.io/rancher/mirrored-metrics-server
     target: registry.fritz.box/docker.io/rancher/mirrored-metrics-server
@@ -310,8 +310,8 @@ sync:
     tags:
       allow:
         - "8\\.\\d+\\.\\d+-alpine"
-      deny: # <= 8.2.1
-        - "8\\.2\\.[0-1]-alpine"
+      deny: # <= 8.2.2
+        - "8\\.2\\.[0-2]-alpine"
         - "8\\.0\\.\\d+-alpine"
   # ghcr.io
   - source: ghcr.io/coder/code-server
@@ -321,8 +321,8 @@ sync:
     tags:
       allow:
         - "4\\.1\\d\\d\\.\\d+"
-      deny: # <= 4.104.2
-        - "4\\.104\\.[0-2]"
+      deny: # <= 4.104.3
+        - "4\\.104\\.[0-3]"
         - "4\\.10[0-3]\\.\\d+"
   - source: ghcr.io/hikhvar/mqtt2prometheus
     target: registry.fritz.box/ghcr.io/hikhvar/mqtt2prometheus
@@ -341,9 +341,9 @@ sync:
     tags:
       allow:
         - "2025\\.\\d+\\.\\d+"
-      deny: # <= 2025.10.0
-        - "2025\\.10\\.0"
-        - "2025\\.[1-9]\\.\\d+"
+      deny: # <= 2025.10.1
+        - "2025\\.10\\.[0-1]"
+        - "2025\\.\\d\\.\\d+"
   - source: ghcr.io/paperless-ngx/paperless-ngx
     target: registry.fritz.box/ghcr.io/paperless-ngx/paperless-ngx
     type: repository
@@ -500,9 +500,8 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.85.0
-        - "v0\\.85\\.0"
-        - "v0\\.8[0-4]\\.\\d+"
+      deny: # <= v0.86.0
+        - "v0\\.8[0-6]\\.\\d+"
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: quay.io/prometheus-operator/prometheus-operator
@@ -512,9 +511,8 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.85.0
-        - "v0\\.85\\.0"
-        - "v0\\.8[0-4]\\.\\d+"
+      deny: # <= v0.86.0
+        - "v0\\.8[0-6]\\.\\d+"
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   # registry.k8s.io
@@ -559,8 +557,8 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.18.0
-        - "v0\\.18\\.0"
+      deny: # <= v0.18.1
+        - "v0\\.18\\.[0-1]"
         - "v0\\.1[0-7]\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: registry.k8s.io/sig-storage/csi-node-driver-registrar
@@ -613,7 +611,7 @@ sync:
     tags:
       allow:
         - "v1\\.\\d+\\.\\d+"
-      deny: # <= v1.18.0
-        - "v1\\.18\\.0"
-        - "v1\\.1[0-7]\\.\\d+"
+      deny: # <= v1.19.0
+        - "v1\\.19\\.0"
+        - "v1\\.1[0-8]\\.\\d+"
         - "v1\\.\\d\\.\\d+"
