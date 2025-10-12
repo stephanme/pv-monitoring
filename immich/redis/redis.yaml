@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: immich-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: immich-redis
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: immich-redis
+    spec:
+      affinity:
+        # run close to immich
+        # podAffinity:
+        #   preferredDuringSchedulingIgnoredDuringExecution:
+        #     - podAffinityTerm:
+        #         labelSelector:
+        #           matchLabels:
+        #             app.kubernetes.io/instance: immich
+        #             app.kubernetes.io/name: immich
+        #         topologyKey: kubernetes.io/hostname
+        #       weight: 1
+
+      containers:
+        - name: redis
+          image: redis
+          command:
+            - redis-server
+            - /etc/redis/redis.conf
+          ports:
+            - name: redis
+              containerPort: 6379
+          startupProbe:
+            failureThreshold: 10
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            tcpSocket:
+              port: redis
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 5
+            exec:
+              command:
+                - redis-cli
+                - -u
+                - redis://localhost:6379
+                - ping
+          livenessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 5
+            exec:
+              command:
+                - redis-cli
+                - -u
+                - redis://localhost:6379
+                - ping
+          resources:
+            limits:
+              cpu: 150m
+              ephemeral-storage: 2Gi
+              memory: 192Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: 50Mi
+              memory: 128Mi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: redis-config
+              mountPath: /etc/redis
+      volumes:
+      - name: redis-config
+        configMap:
+          name: immich-redis-config
+      - name: data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: immich-redis-config
+data:
+  redis.conf: |-
+    # https://redis.io/docs/latest/operate/oss_and_stack/
+    dir /data
+    maxmemory 100mb
+    # Disable persistence
+    save ""
+    appendonly no
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich-redis
+spec:
+  type: ClusterIP
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: redis
+  selector:
+    app.kubernetes.io/instance: immich-redis

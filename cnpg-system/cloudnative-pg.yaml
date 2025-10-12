@@ -1,0 +1,17 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: cloudnative-pg
+  namespace: cnpg-system
+spec:
+  # operator version = appVersion in https://github.com/cloudnative-pg/charts/blob/main/charts/cloudnative-pg/Chart.yaml
+  # see https://cloudnative-pg.io/documentation/current/installation_upgrade/#details-about-the-deployment for upgrade notes
+  # renovate: HelmChart
+  repo: https://cloudnative-pg.github.io/charts
+  chart: cloudnative-pg
+  version: v0.26.0
+  targetNamespace: cnpg-system
+  timeout: 1h
+  failurePolicy: abort
+  valuesContent: |-
+    # https://github.com/cloudnative-pg/charts/blob/main/charts/cloudnative-pg/values.yaml

@@ -21,6 +21,7 @@ Monitoring of a photovoltaic system, car charging and heat pump
   - UI for controlling charge modes
 - [Home Assistant](https://www.home-assistant.io/) for additional home automation
 - [Paperless-ngx](https://docs.paperless-ngx.com/) for taming the bureaucracy
+- [Immich](https://immich.app/) for managing photos
 - [Kopia](https://kopia.io/) for backups
 
 ## Deploy
@@ -30,12 +31,14 @@ This repo is structured by namespace and app: `pv-monitoring/<namespace>/<app>`.
 Software versions including helm chart versions are maintained in deploy.sh and yaml files. Versions are kept up-to-ate by the [renovate bot](https://docs.renovatebot.com/).
 
 Important release notes
-- [k3s](https://github.com/k3s-io/k3s/releases)
-- [metallb](https://metallb.universe.tf/release-notes/)
-- [longhorn](https://github.com/longhorn/longhorn/tree/master/CHANGELOG)
+- [cloudnative-pg](https://cloudnative-pg.io/documentation/current/installation_upgrade/#upgrades)
 - [csi-driver-smb](https://github.com/kubernetes-csi/csi-driver-smb/releases)
-- [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
 - [homeassistant](https://www.home-assistant.io/blog/categories/release-notes/)
+- [immich](https://github.com/immich-app/immich/releases)
+- [k3s](https://github.com/k3s-io/k3s/releases)
+- [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
+- [longhorn](https://github.com/longhorn/longhorn/tree/master/CHANGELOG)
+- [metallb](https://metallb.universe.tf/release-notes/)
 - [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx/releases)
 - [zot](https://github.com/project-zot/zot/releases)
 
