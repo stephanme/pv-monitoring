@@ -299,9 +299,9 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.16.3
-        - "v0\\.16\\.[0-3]"
-        - "v0\\.1[0-5]\\.\\d+"
+      deny: # <= v0.17.0
+        - "v0\\.17\\.0"
+        - "v0\\.1[0-6]\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: redis
     target: registry.fritz.box/docker.io/library/redis
@@ -322,6 +322,7 @@ sync:
       allow:
         - "1\\.\\d+\\.\\d+"
       deny: # <= 1.27.0
+        - "1\\.27\\.0"
         - "1\\.2[0-6]\\.\\d+"
         - "1\\.1\\d\\.\\d+"
         - "1\\.\\d\\.\\d+"
@@ -358,27 +359,31 @@ sync:
   - source: ghcr.io/immich-app/immich-machine-learning
     target: registry.fritz.box/ghcr.io/immich-app/immich-machine-learning
     type: repository
-    platforms: *x-platforms
+    platforms:
+      - linux/arm64
     tags:
       allow:
-        - "v2\\.\\d+\\.\\d+"
-      deny: # <= v2.0.0
-        - "v2\\.0\\.0"
+        - "v2\\.\\d+\\.\\d+-rknn"
+      deny: # <= v2.0.1-rknn
+        - "v2\\.0\\.[0-1]-rknn"
   - source: ghcr.io/immich-app/immich-server
     target: registry.fritz.box/ghcr.io/immich-app/immich-server
     type: repository
-    platforms: *x-platforms
+    platforms:
+      - linux/arm64
     tags:
       allow:
         - "v2\\.\\d+\\.\\d+"
-      deny: # <= v2.0.0
-        - "v2\\.0\\.0"
+      deny: # <= v2.0.1
+        - "v2\\.0\\.[0-1]"
   - source: ghcr.io/tensorchord/cloudnative-vectorchord
     target: registry.fritz.box/ghcr.io/tensorchord/cloudnative-vectorchord
     type: repository
     platforms: *x-platforms
     tags:
       allow: # fixed version, see immich docs
+        - "16\\.9-0\\.4\\.3"
+      deny:
         - "16\\.9-0\\.4\\.3"
   - source: ghcr.io/paperless-ngx/paperless-ngx
     target: registry.fritz.box/ghcr.io/paperless-ngx/paperless-ngx
@@ -387,7 +392,7 @@ sync:
     tags:
       allow:
         - "2\\.\\d+\\.\\d+"
-      deny: # <= 2.18.3
+      deny: # <= 2.18.4
         - "2\\.18\\.[0-4]"
         - "2\\.1[0-7]\\.\\d+"
         - "2\\.\\d\\.\\d+"
@@ -435,8 +440,8 @@ sync:
     tags:
       allow:
         - "v2\\.\\d+\\.\\d+"
-      deny: # <= v2.1.8
-        - "v2\\.1\\.[0-8]"
+      deny: # <= v2.1.9
+        - "v2\\.1\\.[0-9]"
         - "v2\\.0\\.\\d+"
   # quay.io
   - source: quay.io/kiwigrid/k8s-sidecar
@@ -446,9 +451,9 @@ sync:
     tags:
       allow:
         - "1\\.\\d+\\.\\d+"
-      deny: # <= 1.30.10
-        - "1\\.30\\.10"
-        - "1\\.30\\.[0-9]"
+      deny: # <= 1.30.11
+        - "1\\.30\\.1[0-1]"
+        - "1\\.30\\.\\d"
         - "1\\.[12]\\d\\.\\d+"
         - "1\\.\\d\\.\\d+"
   - source: quay.io/metallb/controller
@@ -647,7 +652,7 @@ sync:
     tags:
       allow:
         - "v1\\.\\d+\\.\\d+"
-      deny: # <= v1.19.0
-        - "v1\\.19\\.0"
+      deny: # <= v1.19.1
+        - "v1\\.19\\.[0-1]"
         - "v1\\.1[0-8]\\.\\d+"
         - "v1\\.\\d\\.\\d+"

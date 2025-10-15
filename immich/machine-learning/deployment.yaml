@@ -1,0 +1,86 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: immich-machine-learning
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+  template:
+    metadata:
+      labels:
+    spec:
+      # because RKNN hardware acceleration of Rockchip NPU is used
+      nodeSelector:
+        kubernetes.io/hostname: pi2
+      securityContext:
+        # uid=1001(immich) gid=1001(immich) groups=1001(immich)
+        fsGroup: 1001
+      containers:
+        - name: server
+          image: ghcr.io/immich-app/immich-machine-learning
+          # needed for RKNN
+          # see also https://github.com/immich-app/immich/blob/main/docker/hwaccel.ml.yml
+          securityContext:
+            privileged: true
+          # command: [ "sleep", "infinity" ] # for debugging only
+          env:
+            - name: IMMICH_PORT
+              value: '3003'
+            - name: TZ
+              value: Europe/Berlin
+            # Keeps image recognition and search model in memory for faster response times
+            - name: MACHINE_LEARNING_PRELOAD__CLIP
+              value: immich-app/ViT-L-16-SigLIP-384__webli
+            # Keeps face recognition model in memory for faster response times
+            - name: MACHINE_LEARNING_PRELOAD__FACIAL_RECOGNITION
+              value: immich-app/buffalo_l
+            - name: MACHINE_LEARNING_RKNN
+              value: "true"
+            - name: MACHINE_LEARNING_RKNN_THREADS 
+              value: "1"
+            # If multiple replicas, disable http keepalive for proper loadbalancing
+            # - name: MACHINE_LEARNING_HTTP_KEEPALIVE_TIMEOUT_S
+            #   value: 0
+          startupProbe:
+            httpGet:
+              port: http
+              path: /ping
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            # Allows up to 6h = 2160*10s for downloading new models (several GB)
+            failureThreshold: 2160
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /ping
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /ping
+          volumeMounts:
+            - name: cache
+              mountPath: /cache
+          ports:
+            - name: http
+              containerPort: 3003
+      volumes:
+        # persistent model cache on host
+        - name: cache
+          hostPath:
+            path: /home/immich/ml-cache
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich-machine-learning
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3003
+      targetPort: http
+  selector:
