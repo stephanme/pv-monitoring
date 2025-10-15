@@ -2,7 +2,17 @@
 
 http://immich.fritz.box
 
+- [Documentation](https://docs.immich.app/overview/quick-start)
+- [Release Notes](https://github.com/immich-app/immich/releases)
+
 ## Installation
+
+### Photo Storage
+
+- photos are stored pi2 SSD: `/home/immich/immich-library`
+- owned by `immich` user on pi2
+- photos shared additionally via samba
+- backup with kopia
 
 ### Redis
 
@@ -11,16 +21,18 @@ http://immich.fritz.box
 
 ### Database
 
-- PostgreSQL instance installed by cloudnative-pg operator
+- PostgreSQL instance installed by [CloudNativePG operator](https://cloudnative-pg.io/documentation/current/)
+- single instance, no replication
 - longhorn pvc with backup
+- no superuser
+
+How to access DB:
+- ssh into `immich-database-1` pod
+- `psql app`
 
 ### Immich Server
 
-- assigned to pi2
-- uses pi2 SSD to store photos
-  - owned by `immich` user on pi2
-  - photos shared additionally via samba
-  - backup with kopia
+- assigned to pi2 so that `immich-library` can be accessed as `hostPath`
 
 ### Immich Machine Learning
 
