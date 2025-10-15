@@ -11,6 +11,12 @@ spec:
     metadata:
       labels:
     spec:
+      # immich stores photos directly on pi2's filesystem
+      nodeSelector:
+        kubernetes.io/hostname: pi2
+      securityContext:
+        # uid=1001(immich) gid=1001(immich) groups=1001(immich)
+        fsGroup: 1001
       containers:
         - name: server
           image: ghcr.io/immich-app/immich-server
@@ -71,8 +77,9 @@ spec:
               containerPort: 8082
       volumes:
         - name: library
-          persistentVolumeClaim:
-              claimName: immich-library
+          hostPath:
+            path: /home/immich/immich-library
+            type: Directory
 ---
 apiVersion: v1
 kind: Service

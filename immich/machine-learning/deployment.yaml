@@ -66,6 +66,9 @@ spec:
           ports:
             - name: http
               containerPort: 3003
+          resources:
+            requests:
+              memory: "4Gi"
       volumes:
         # persistent model cache on host
         - name: cache

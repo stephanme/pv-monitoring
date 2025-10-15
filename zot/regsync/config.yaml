@@ -359,8 +359,8 @@ sync:
   - source: ghcr.io/immich-app/immich-machine-learning
     target: registry.fritz.box/ghcr.io/immich-app/immich-machine-learning
     type: repository
-    platforms:
-      - linux/arm64
+    # platforms:
+    #   - linux/arm64 - image is already platform specific
     tags:
       allow:
         - "v2\\.\\d+\\.\\d+-rknn"

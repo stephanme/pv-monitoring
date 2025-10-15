@@ -16,7 +16,5 @@ labels:
     includeSelectors: true
 
 resources:
-- secrets.yaml
-- pvc.yaml
 - deployment.yaml
 - ingress.yaml

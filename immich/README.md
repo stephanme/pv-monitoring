@@ -27,6 +27,6 @@ http://immich.fritz.box
 - assigned to pi2
 - uses RKNN HW acceleration
 - uses pi2 SSD for model cache
-  - models are ~8 GB
+  - models are ~8 GB on disk
   - download takes many h
-
+- requires lots of mem, ~4G for 1 RKNN thread
