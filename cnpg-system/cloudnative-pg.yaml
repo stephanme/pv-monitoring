@@ -15,3 +15,12 @@ spec:
   failurePolicy: abort
   valuesContent: |-
     # https://github.com/cloudnative-pg/charts/blob/main/charts/cloudnative-pg/values.yaml
+    config:
+      data:
+        INHERITED_LABELS: release
+    monitoring:
+      podMonitorEnabled: true
+      podMonitorAdditionalLabels:
+        release: prometheus
+      grafanaDashboard:
+        create: true

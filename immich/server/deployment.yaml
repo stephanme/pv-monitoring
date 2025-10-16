@@ -26,7 +26,8 @@ spec:
             - name: TZ
               value: Europe/Berlin
             - name: IMMICH_TELEMETRY_INCLUDE
-              value: all
+              # host, api, io, repo, job
+              value: job
             - name: DB_HOSTNAME
               valueFrom:
                 secretKeyRef:
@@ -98,3 +99,20 @@ spec:
       port: 8082
       targetPort: jobs-metrics
   selector:
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: immich-server
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: immich-server
+      app.kubernetes.io/instance: immich-server
+  endpoints:
+    - port: server-metrics
+      scheme: http
+    - port: jobs-metrics
+      scheme: http

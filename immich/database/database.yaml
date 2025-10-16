@@ -2,6 +2,8 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: immich-database
+  labels:
+    release: prometheus
 spec:
   instances: 1
   enablePDB: false
@@ -24,3 +26,6 @@ spec:
         # Commands based on: https://immich.app/docs/administration/postgres-standalone/#without-superuser-permission
         - CREATE EXTENSION vchord CASCADE;
         - CREATE EXTENSION earthdistance CASCADE;
+
+  monitoring:
+    enablePodMonitor: true
