@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: default
+
+images:
+- name: nginx
+  newTag: 1.29.2-alpine-slim
+
+labels:
+  - pairs:
+      app.kubernetes.io/instance: homepage
+      app.kubernetes.io/name: homepage
+      app.kubernetes.io/part-of: homepage
+    includeSelectors: true
+
+configMapGenerator:
+  - name: homepage-static-pages
+    files:
+      - index.html
+    options:
+      disableNameSuffixHash: true
+
+resources:
+- deployment.yaml
