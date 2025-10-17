@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: dnsmasq
-          image: ghcr.io/stephanme/dnsmasq:2.91
+          image: ghcr.io/stephanme/dnsmasq
           imagePullPolicy: IfNotPresent
           command:
             - /bin/dnsmasq
@@ -56,47 +56,6 @@ spec:
         - name: config
           configMap:
             name: dnsmasq-config
----
-# Note: must restart dnsmask daemonset when config changes
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: dnsmasq-config
-  namespace: kube-system
-data:
-  dnsmasq.conf: |
-    # Configuration file for dnsmasq.
-    #
-    # Format is one option per line, legal options are the same
-    # as the long options legal on the command line. See
-    # "/usr/sbin/dnsmasq --help" or "man 8 dnsmasq" for details.
-    # https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=blob;f=dnsmasq.conf.example;hb=HEAD
-    port=1053
-    no-resolv
-    no-hosts
-    domain=fritz.box
-    expand-hosts
-    cache-size=1500
-
-    # forward to fritzbox DNS
-    server=192.168.178.1
-
-    # work around fritz.box domain disaster
-    # reject any duplicated fritz.box domains (caused by search+ndots:5 in pods /etc/resolve.conf)
-    # see also https://github.com/k3s-io/k3s/issues/9286
-    address=/fritz.box.fritz.box/
-
-    address=/pvcontrol.fritz.box/192.168.178.230
-    address=/homeassistant.fritz.box/192.168.178.230
-    address=/mosquitto.fritz.box/192.168.178.230
-    address=/paperless.fritz.box/192.168.178.230
-    address=/registry.fritz.box/192.168.178.230
-    address=/immich.fritz.box/192.168.178.230
-    address=/immich-kiosk.fritz.box/192.168.178.230
-    address=/k3s.fritz.box/192.168.178.230 # traefik via MetalLB
-    address=/k3s2.fritz.box/192.168.178.10 # traefik via node ports
-    address=/k3s2.fritz.box/192.168.178.11
-    address=/k3s2.fritz.box/192.168.178.12
 ---
 # Note: need to recreate LB when ports/protocols are changed
 apiVersion: v1

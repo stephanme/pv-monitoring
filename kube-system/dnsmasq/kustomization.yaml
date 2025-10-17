@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: kube-system
+
+images:
+- name: ghcr.io/stephanme/dnsmasq
+  newTag: "2.91"
+
+labels:
+  - pairs:
+      app: dnsmasq
+    includeSelectors: true
+
+configMapGenerator:
+  - name: dnsmasq-config
+    files:
+      - dnsmasq.conf
+resources:
+- dnsmasq.yaml
