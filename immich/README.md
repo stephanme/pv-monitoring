@@ -1,7 +1,7 @@
 # Immich
 
-http://immich.fritz.box
-
+- http://immich.fritz.box
+- http://immich-kiosk.fritz.box
 - [Documentation](https://docs.immich.app/overview/quick-start)
 - [Release Notes](https://github.com/immich-app/immich/releases)
 
@@ -42,3 +42,8 @@ How to access DB:
   - models are ~8 GB on disk
   - download takes many h
 - requires lots of mem, ~4G for 1 RKNN thread
+
+### Immich Kiosk
+
+- nice photo presentation app
+- [Configuration](https://docs.immichkiosk.app/configuration/)

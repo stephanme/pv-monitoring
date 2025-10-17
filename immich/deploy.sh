@@ -9,3 +9,4 @@ ${scriptdir}/redis/deploy.sh
 ${scriptdir}/database/deploy.sh
 ${scriptdir}/server/deploy.sh
 ${scriptdir}/machine-learning/deploy.sh
+${scriptdir}/kiosk/deploy.sh

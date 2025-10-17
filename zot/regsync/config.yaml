@@ -356,6 +356,18 @@ sync:
       deny: # <= 2025.10.2
         - "2025\\.10\\.[0-2]"
         - "2025\\.\\d\\.\\d+"
+  - source: ghcr.io/damongolding/immich-kiosk
+    target: registry.fritz.box/ghcr.io/damongolding/immich-kiosk
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "0\\.\\d+\\.\\d+"
+      deny: # <= 0.25.0
+        - "0\\.25\\.0"
+        - "0\\.2[0-4]\\.\\d+"
+        - "0\\.1\\d\\.\\d+"
+        - "0\\.\\d\\.\\d+"
   - source: ghcr.io/immich-app/immich-machine-learning
     target: registry.fritz.box/ghcr.io/immich-app/immich-machine-learning
     type: repository
@@ -365,6 +377,7 @@ sync:
       allow:
         - "v2\\.\\d+\\.\\d+-rknn"
       deny: # <= v2.0.1-rknn
+        - "v2\\.1\\.0-rknn"
         - "v2\\.0\\.[0-1]-rknn"
   - source: ghcr.io/immich-app/immich-server
     target: registry.fritz.box/ghcr.io/immich-app/immich-server
@@ -375,6 +388,7 @@ sync:
       allow:
         - "v2\\.\\d+\\.\\d+"
       deny: # <= v2.0.1
+        - "v2\\.1\\.0"
         - "v2\\.0\\.[0-1]"
   - source: ghcr.io/tensorchord/cloudnative-vectorchord
     target: registry.fritz.box/ghcr.io/tensorchord/cloudnative-vectorchord
@@ -531,9 +545,9 @@ sync:
     tags:
       allow:
         - "v3\\.\\d+\\.\\d+"
-      deny: # <= v3.6.0
-        - "v3\\.6\\.0"
-        - "v3\\.[0-5]\\.\\d+"
+      deny: # <= v3.7.1
+        - "v3\\.7\\.[0-1]"
+        - "v3\\.[0-6]\\.\\d+"
   - source: quay.io/prometheus-operator/prometheus-config-reloader
     target: registry.fritz.box/quay.io/prometheus-operator/prometheus-config-reloader
     type: repository
