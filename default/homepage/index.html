@@ -1,30 +1,113 @@
 <html>
-<head><title>k3s.fritz.box</title></head>
+<head>
+  <title>k3s.fritz.box</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      margin: 0;
+      padding: 1rem;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    header h1 {
+      text-align: center;
+      color: #1c1e21;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .sections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .section {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .section h2 {
+      font-size: 1.5rem;
+      color: #1c1e21;
+      border-bottom: 2px solid #e4e6eb;
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    .section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .section li {
+      margin-bottom: 0.75rem;
+    }
+    .section a {
+      text-decoration: none;
+      color: #0866ff;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .section a:hover {
+      color: #0052cc;
+      text-decoration: underline;
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 0.5rem;
+      }
+      .container {
+        margin: 1rem auto;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
 <body>
-  <h1>k3s.fritz.box</h1>
-  <h2>Applications</h2>
-  <ul>
-    <li><a href="http://homeassistant.fritz.box">Home Assistant</a></li>
-    <li><a href="http://pvcontrol.fritz.box">PV Control</a></li>
-    <li><a href="http://paperless.fritz.box">Paperless</a></li>
-    <li><a href="http://immich.fritz.box">Immich</a></li>
-    <li><a href="http://immich-kiosk.fritz.box">Immich Kiosk</a></li>
-    <li><a href="https://nasbox.fritz.box:31515">Kopia</a></li>
-  </ul>
-  <h2>Monitoring</h2>
-  <ul>
-    <li><a href="http://k3s.fritz.box/grafana">Grafana</a></li>
-    <li><a href="http://k3s.fritz.box/alertmanager">Alert Manager</a></li>
-    <li><a href="http://k3s.fritz.box/prometheus">Prometheus</a></li>
-    <li><a href="http://k3s.fritz.box/prometheus-lt">Prometheus Long-Term</a></li>
-    <li><a href="http://k3s.fritz.box/traefik/dashboard/">Traefik</a></li>
-    <li><a href="http://k3s.fritz.box/longhorn">Longhorn</a></li>
-    <li><a href="http://homeassistant.fritz.box/zigbee2mqtt/">Zigbee2Mqtt</a></li>
-    <li><a href="http://registry.fritz.box">Zot OCI Registry</a></li>
-  </ul>
-  <h2>More Info</h2>
-  <ul>
-    <li><a href="https://github.com/stephanme/pv-monitoring/blob/main/README.md">Github: pv-monitoring</a></li>
-  </ul>
+  <div class="container">
+    <header>
+      <h1>k3s.fritz.box</h1>
+    </header>
+    <main class="sections">
+      <div class="section">
+        <h2>Applications</h2>
+        <ul>
+          <li><a href="http://homeassistant.fritz.box">Home Assistant</a></li>
+          <li><a href="http://pvcontrol.fritz.box">PV Control</a></li>
+          <li><a href="http://paperless.fritz.box">Paperless</a></li>
+          <li><a href="http://immich.fritz.box">Immich</a></li>
+          <li><a href="http://immich-kiosk.fritz.box">Immich Kiosk</a></li>
+          <li><a href="https://nasbox.fritz.box:31515">Kopia</a></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Monitoring</h2>
+        <ul>
+          <li><a href="http://k3s.fritz.box/grafana">Grafana</a></li>
+          <li><a href="http://k3s.fritz.box/alertmanager">Alert Manager</a></li>
+          <li><a href="http://k3s.fritz.box/prometheus">Prometheus</a></li>
+          <li><a href="http://k3s.fritz.box/prometheus-lt">Prometheus Long-Term</a></li>
+          <li><a href="http://k3s.fritz.box/traefik/dashboard/">Traefik</a></li>
+          <li><a href="http://k3s.fritz.box/longhorn">Longhorn</a></li>
+          <li><a href="http://homeassistant.fritz.box/zigbee2mqtt/">Zigbee2Mqtt</a></li>
+          <li><a href="http://registry.fritz.box">Zot OCI Registry</a></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>More Info</h2>
+        <ul>
+          <li><a href="https://github.com/stephanme/pv-monitoring/blob/main/README.md">Github: pv-monitoring</a></li>
+        </ul>
+      </div>
+    </main>
+  </div>
 </body>
 </html>
