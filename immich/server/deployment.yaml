@@ -16,6 +16,8 @@ spec:
         kubernetes.io/hostname: pi2
       securityContext:
         # uid=1001(immich) gid=1001(immich) groups=1001(immich)
+        runAsUser: 1001
+        runAsGroup: 1001
         fsGroup: 1001
       containers:
         - name: server
