@@ -12,10 +12,12 @@ echo "$images_yaml" | yq -o json '.' | jq -c '.[]' | while read -r img_json; do
     registry=$(echo "$img_json" | jq -r '.registry')
     repo=$(echo "$img_json" | jq -r '.repo')
     tag=$(echo "$img_json" | jq -r '.tag')
-    # Check if image exists in mirror
+    # Check if image exists in mirror for required architectures
     mirror_img="$mirror/$registry/$repo:$tag"
-    regctl manifest head "$mirror_img" > /dev/null 2>&1
-    if [[ $? -ne 0 ]]; then
-        echo "$img is NOT mirrored to $mirror_img"
-    fi
+    for arch in "linux/amd64" "linux/arm64"; do
+        regctl manifest head --platform "$arch" "$mirror_img" > /dev/null 2>&1
+        if [[ $? -ne 0 ]]; then
+            echo "$img is NOT mirrored for architecture $arch"
+        fi
+    done
 done

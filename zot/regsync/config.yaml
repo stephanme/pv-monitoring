@@ -61,8 +61,8 @@ sync:
     tags:
       allow:
         - "\\d\\d\\.\\d+\\.\\d+"
-      deny: # <= 12.2.0
-        - "12\\.2\\.0"
+      deny: # <= 12.2.1
+        - "12\\.2\\.[0-1]"
         - "12\\.[0-1]\\.\\d+"
         - "1[01]\\.\\d+\\.\\d+"
   - source: docker.io/jaymedh/fritzbox_smarthome_exporter
@@ -146,7 +146,8 @@ sync:
     tags:
       allow:
         - "v0\\.0\\.\\d+"
-      deny: # <= v0.0.69
+      deny: # <= v0.0.70
+        - "v0\\.0\\.70"
         - "v0\\.0\\.[1-6]\\d"
         - "v0\\.0\\.\\d"
   - source: docker.io/longhornio/csi-attacher
@@ -158,6 +159,7 @@ sync:
         - "v4\\.\\d+\\.\\d+"
         - "v4\\.\\d+\\.\\d+-2025\\d+"
       deny: # <= v4.9.0-20250826
+        - "v4\\.10\\.0"
         - "v4\\.9\\.0-20250826"
         - "v4\\.9\\.0-20250709"
         - "v4\\.9\\.0"
@@ -184,6 +186,7 @@ sync:
         - "v2\\.\\d+\\.\\d+"
         - "v2\\.\\d+\\.\\d+-2025\\d+"
       deny: # <= v2.14.0-20250826
+        - "v2\\.15\\.0"
         - "v2\\.14\\.0-20250826"
         - "v2\\.14\\.0-20250709"
         - "v2\\.14\\.0"
@@ -225,6 +228,7 @@ sync:
         - "v2\\.\\d+\\.\\d+"
         - "v2\\.\\d+\\.\\d+-2025\\d+"
       deny: # <= v2.16.0-20250826
+        - "v2\\.17\\.0"
         - "v2\\.16\\.0-20250826"
         - "v2\\.16\\.0-20250709"
         - "v2\\.16\\.0"
@@ -334,6 +338,7 @@ sync:
       allow:
         - "4\\.1\\d\\d\\.\\d+"
       deny: # <= 4.105.0
+        - "4\\.105\\.1"
         - "4\\.105\\.0"
         - "4\\.10[0-4]\\.\\d+"
   - source: ghcr.io/hikhvar/mqtt2prometheus
@@ -356,6 +361,16 @@ sync:
       deny: # <= 2025.10.3
         - "2025\\.10\\.[0-3]"
         - "2025\\.\\d\\.\\d+"
+  - source: ghcr.io/music-assistant/server
+    target: registry.fritz.box/ghcr.io/music-assistant/server
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "2\\.\\d+\\.\\d+"
+      deny: # <= 2.6.0
+        - "2\\.6\\.0"
+        - "2\\.[0-5]\\.\\d+"
   - source: ghcr.io/damongolding/immich-kiosk
     target: registry.fritz.box/ghcr.io/damongolding/immich-kiosk
     type: repository
@@ -364,8 +379,8 @@ sync:
       allow:
         - "0\\.\\d+\\.\\d+"
       deny: # <= 0.25.0
-        - "0\\.25\\.0"
-        - "0\\.2[0-4]\\.\\d+"
+        - "0\\.26\\.0"
+        - "0\\.2[0-5]\\.\\d+"
         - "0\\.1\\d\\.\\d+"
         - "0\\.\\d\\.\\d+"
   - source: ghcr.io/immich-app/immich-machine-learning
@@ -406,9 +421,9 @@ sync:
     tags:
       allow:
         - "2\\.\\d+\\.\\d+"
-      deny: # <= 2.18.4
-        - "2\\.18\\.[0-4]"
-        - "2\\.1[0-7]\\.\\d+"
+      deny: # <= 2.19.0
+        - "2\\.19\\.0"
+        - "2\\.1[0-8]\\.\\d+"
         - "2\\.\\d\\.\\d+"
   - source: ghcr.io/stephanme/dnsmasq
     target: registry.fritz.box/ghcr.io/stephanme/dnsmasq
