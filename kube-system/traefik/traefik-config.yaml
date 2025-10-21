@@ -56,6 +56,12 @@ spec:
         expose:
           default: true
         protocol: TCP
+      music-assistant:
+        port: 8097
+        expose:
+          default: true
+        hostPort: 8097
+        protocol: TCP
     ingressRoute:
       dashboard:
         enabled: true

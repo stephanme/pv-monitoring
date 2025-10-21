@@ -20,6 +20,7 @@ Monitoring of a photovoltaic system, car charging and heat pump
   - 1 and 3 phase charging to get a wide control range starting at 1.3 kW up to (theoretical) 11kW
   - UI for controlling charge modes
 - [Home Assistant](https://www.home-assistant.io/) for additional home automation
+- [Music Assistant](https://www.music-assistant.io/)
 - [Paperless-ngx](https://docs.paperless-ngx.com/) for taming the bureaucracy
 - [Immich](https://immich.app/) for managing photos
 - [Kopia](https://kopia.io/) for backups

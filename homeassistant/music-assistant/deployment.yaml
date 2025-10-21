@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: music-assistant-server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+  template:
+    metadata:
+      labels:
+    spec:
+      # music ist stored directly on nasbox filesystem
+      nodeSelector:
+        kubernetes.io/hostname: nasbox
+      containers:
+        - name: music-assistant
+          image: ghcr.io/music-assistant/server
+          ports:
+            - name: web
+              containerPort: 8095
+            - name: devices
+              containerPort: 8097
+          volumeMounts:
+            - name: data-storage
+              mountPath: /data
+            - name: music-storage
+              mountPath: /music
+              readOnly: true
+          startupProbe:
+            periodSeconds: 10
+            failureThreshold: 6
+            httpGet:
+              port: web
+              path: /info
+          livenessProbe:
+            httpGet:
+              port: web
+              path: /info
+          readinessProbe:
+            httpGet:
+              port: web
+              path: /info
+      volumes:
+        - name: data-storage
+          persistentVolumeClaim:
+            claimName:  music-assistant-server-pvc 
+        - name: music-storage
+          hostPath:
+            path: /srv-ssd/music
+            type: Directory
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: music-assistant-server-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 50Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: music-assistant-server
+spec:
+  type: ClusterIP
+  ports:
+    - name: web
+      port: 80
+      targetPort: 8095
+    - name: devices
+      port: 8097
+      targetPort: 8097
+  selector:
