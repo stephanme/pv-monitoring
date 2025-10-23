@@ -23,6 +23,10 @@ spec:
               containerPort: 8095
             - name: devices
               containerPort: 8097
+              hostPort: 8097
+            - name: squeezelite
+              containerPort: 3483
+              hostPort: 3483
           volumeMounts:
             - name: data-storage
               mountPath: /data
@@ -74,7 +78,4 @@ spec:
     - name: web
       port: 80
       targetPort: 8095
-    - name: devices
-      port: 8097
-      targetPort: 8097
   selector:
