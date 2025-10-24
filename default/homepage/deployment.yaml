@@ -20,9 +20,14 @@ spec:
         - containerPort: 80
           protocol: TCP
         volumeMounts:
-        - name: homepage-static-pages
+        - name: homepage-index
           mountPath: /usr/share/nginx/html
+        - name: homepage-static-pages
+          mountPath: /usr/share/nginx/html/homepage
       volumes:
+      - name: homepage-index
+        configMap:
+          name: homepage-index
       - name: homepage-static-pages
         configMap:
           name: homepage-static-pages
@@ -48,7 +53,7 @@ spec:
   - web
   routes:
   - kind: Rule
-    match: Host(`k3s.fritz.box`) && Path(`/`)
+    match: Host(`k3s.fritz.box`) && (Path(`/`) || PathPrefix(`/homepage/`))
     services:
     - name: homepage
       port: 80

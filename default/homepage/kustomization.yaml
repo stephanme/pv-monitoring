@@ -15,9 +15,15 @@ labels:
     includeSelectors: true
 
 configMapGenerator:
-  - name: homepage-static-pages
+  - name: homepage-index
     files:
       - index.html
+    options:
+      disableNameSuffixHash: true
+  - name: homepage-static-pages
+    files:
+      - immich.html
+      - style.css
     options:
       disableNameSuffixHash: true
 
