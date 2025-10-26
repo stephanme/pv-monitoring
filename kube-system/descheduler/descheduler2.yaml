@@ -16,6 +16,7 @@ spec:
     # https://github.com/kubernetes-sigs/descheduler?tab=readme-ov-file
     kind: CronJob
     schedule: "10 2 * * *"  # 2:10 every day
+    timeZone: Europe/Berlin
     successfulJobsHistoryLimit: 3
     failedJobsHistoryLimit: 1
     resources:

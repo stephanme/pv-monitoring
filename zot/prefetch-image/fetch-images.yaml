@@ -6,6 +6,7 @@ metadata:
   namespace: zot
 spec:
   schedule: "0 0 */6 * *" # every 6 days at midnight
+  timeZone: Europe/Berlin
   jobTemplate:
     spec:
       backoffLimit: 1
@@ -28,6 +29,7 @@ metadata:
   namespace: zot
 spec:
   schedule: "0 0 */6 * *" # every 6 days at midnight
+  timeZone: Europe/Berlin
   jobTemplate:
     spec:
       backoffLimit: 1
@@ -50,6 +52,7 @@ metadata:
   namespace: zot
 spec:
   schedule: "0 0 */6 * *" # every 6 days at midnight
+  timeZone: Europe/Berlin
   jobTemplate:
     spec:
       backoffLimit: 1
