@@ -3,9 +3,9 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup-nasbox-stephan
-  namespace: kopia
 spec:
   schedule: "15 12 * * SUN"
+  timeZone: Europe/Berlin
   concurrencyPolicy: Replace
   suspend: false
   jobTemplate:
@@ -25,7 +25,7 @@ spec:
           containers:
             - name: kopia
               # https://github.com/kopia/kopia/blob/master/tools/docker/Dockerfile
-              image: kopia/kopia:0.21.1
+              image: kopia/kopia
               command:
               - /bin/sh
               - -c
@@ -71,9 +71,9 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup-nasbox-backup
-  namespace: kopia
 spec:
   schedule: "17 12 * * SUN"
+  timeZone: Europe/Berlin
   concurrencyPolicy: Replace
   suspend: false
   jobTemplate:
@@ -93,7 +93,7 @@ spec:
           containers:
             - name: kopia
               # https://github.com/kopia/kopia/blob/master/tools/docker/Dockerfile
-              image: kopia/kopia:0.21.1
+              image: kopia/kopia
               command:
               - /bin/sh
               - -c

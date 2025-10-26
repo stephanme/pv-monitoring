@@ -1,0 +1,67 @@
+# backups for user immich@pi2
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-pi2-immich
+spec:
+  schedule: "20 12 * * SUN"
+  timeZone: Europe/Berlin
+  concurrencyPolicy: Replace
+  suspend: false
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 3600  # 1h
+      template:
+        spec:
+          nodeSelector:
+            kubernetes.io/hostname: pi2
+          securityContext:
+            # pi2: id immich
+            # uid=1001(immich) gid=1001(immich) groups=1001(immich)
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+          restartPolicy: Never
+          containers:
+            - name: kopia
+              # https://github.com/kopia/kopia/blob/master/tools/docker/Dockerfile
+              image: kopia/kopia
+              command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                date
+                kopia repository connect server --url https://nasbox.fritz.box:31515 --server-cert-fingerprint ${SERVER_CERT_FINGERPRINT} --override-username=immich --override-hostname=pi2
+                kopia snapshot create /home/immich/immich-library --no-progress
+              env:
+                - name: KOPIA_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: kopia-backup-secrets
+                      key: KOPIA_SERVER_IMMICH_PI2_PASSWORD
+                - name: SERVER_CERT_FINGERPRINT
+                  valueFrom:
+                    secretKeyRef:
+                      name: kopia-backup-secrets
+                      key: SERVER_CERT_FINGERPRINT
+              volumeMounts:
+                - name: config
+                  mountPath: /app/config
+                - name: logs
+                  mountPath: /app/logs
+                - name: cache
+                  mountPath: /app/cache
+                - name: immich-home
+                  mountPath: /home/immich
+          volumes:
+            - name: config
+              emptyDir: {}
+            - name: logs
+              emptyDir: {}
+            - name: cache
+              emptyDir: {}
+            - name: immich-home
+              hostPath:
+                path: /home/immich
+                type: Directory

@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: kopia
+
+images:
+- name: kopia/kopia
+  newTag: 0.21.1
+
+resources:
+- secrets.yaml
+- backup-nasbox.yaml
+- backup-pi2.yaml

@@ -552,7 +552,9 @@ sync:
     tags:
       allow:
         - "v1\\.\\d+\\.\\d+"
-      deny: # <= v1.10.0
+      deny:
+        - "v1\\.10\\.2"
+        - "v1\\.10\\.1"
         - "v1\\.10\\.0"
         - "v1\\.\\d\\.\\d+"
   - source: quay.io/prometheus/prometheus
