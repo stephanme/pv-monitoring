@@ -1,0 +1,30 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: headlamp
+  namespace: kube-system
+spec:
+  # renovate: HelmChart
+  repo: https://kubernetes-sigs.github.io/headlamp/
+  chart: headlamp
+  version: 0.36.0
+  targetNamespace: kube-system
+  timeout: 10m
+  failurePolicy: abort
+  valuesContent: |-
+    # https://github.com/kubernetes-sigs/headlamp/blob/main/charts/headlamp/values.yaml
+    image:
+      # 0.36.0 doesn't work with baseUrl
+      # https://github.com/kubernetes-sigs/headlamp/issues/4014 
+      tag: nightly
+    config:
+      baseURL: /headlamp
+    ingress:
+      enabled: true
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+      hosts:
+        - host: k3s.fritz.box
+          paths:
+            - path: /headlamp/
+              type: Prefix

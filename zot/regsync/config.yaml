@@ -372,6 +372,17 @@ sync:
       deny: # <= 2.6.0
         - "2\\.6\\.0"
         - "2\\.[0-5]\\.\\d+"
+  - source: ghcr.io/headlamp-k8s/headlamp
+    target: registry.fritz.box/ghcr.io/headlamp-k8s/headlamp
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "0\\.\\d+\\.\\d+"
+      deny: # <= 0.36.0
+        - "0\\.3[0-6].\\d+"
+        - "0\\.[1-2]\\d\\.\\d+"
+        - "0\\.\\d\\.\\d+"
   - source: ghcr.io/damongolding/immich-kiosk
     target: registry.fritz.box/ghcr.io/damongolding/immich-kiosk
     type: repository
