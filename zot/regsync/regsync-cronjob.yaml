@@ -25,17 +25,23 @@ spec:
                 regsynccmd=once  # check|once
                 echo regsync ${regsynccmd}
                 regsync ${regsynccmd} --config /etc/regsync/config.yaml --logopt json 2> >(tee -a /regsync.log >&2) || true
-                FIXIDX=$(cat /regsync.log | grep -e '^{"time":' | jq -rs '[.[]|select(.msg=="Image sync needed" and (.target|test("/stephanme|immich-server/")|not))|.target]|join(" ")')
+                FIXIDX=$(cat /regsync.log | grep -e '^{"time":' | jq -rs '[.[]|select(.msg=="Image sync needed" and (.target|test("/stephanme/")|not))|.target]|join(" ")')
                 regctl registry set --tls=disabled registry.fritz.box
                 echo "Fix missing index manifests"
                 for target in $FIXIDX; do
                   set +e 
                   regctl manifest head $target >/dev/null 2>/dev/null
                   if [ $? -ne 0 ]; then
-                    echo regctl index create $target --platform linux/amd64 --platform linux/arm64 --platform unknown/unknown --ref ${target:19}
+                    # some targets have special platform support, see config.yaml
+                    if [[ "$target" == *ghcr.io/immich-app/immich-server* ]]; then
+                      platforms='--platform linux/arm64'
+                    else
+                      platforms='--platform linux/amd64 --platform linux/arm64 --platform unknown/unknown'
+                    fi
+                    echo regctl index create $target $platforms --ref ${target:19}
                     if [ "$regsynccmd" = "once" ]; then
                       set -e
-                      regctl index create $target --platform linux/amd64 --platform linux/arm64 --platform unknown/unknown --ref ${target:19}
+                      regctl index create $target $platforms --ref ${target:19}
                     fi
                   fi
                 done
