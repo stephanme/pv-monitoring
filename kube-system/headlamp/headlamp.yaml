@@ -13,10 +13,6 @@ spec:
   failurePolicy: abort
   valuesContent: |-
     # https://github.com/kubernetes-sigs/headlamp/blob/main/charts/headlamp/values.yaml
-    image:
-      # 0.36.0 doesn't work with baseUrl
-      # https://github.com/kubernetes-sigs/headlamp/issues/4014 
-      tag: v0.37.0
     config:
       baseURL: /headlamp
     ingress:
