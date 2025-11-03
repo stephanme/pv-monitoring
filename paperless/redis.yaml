@@ -34,7 +34,7 @@ spec:
 
       containers:
         - name: redis
-          image: redis:8.2.2-alpine
+          image: redis:8.2.3-alpine
           command:
             - redis-server
             - /etc/redis/redis.conf
