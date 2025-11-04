@@ -68,6 +68,17 @@
         "kopia/kopia"
       ],
       "allowedVersions": "!/^\\d{8}\\./"
+    },
+    {
+      "description": "Group updates for immich images",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "ghcr.io/immich-app/immich-machine-learning",
+        "ghcr.io/immich-app/immich-server"
+      ],
+      "groupName": "immich images"
     }
   ]
 }
