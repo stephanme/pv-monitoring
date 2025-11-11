@@ -7,7 +7,7 @@ spec:
   # renovate: HelmChart
   repo: https://kubernetes-sigs.github.io/headlamp/
   chart: headlamp
-  version: 0.37.0
+  version: 0.38.0
   targetNamespace: kube-system
   timeout: 10m
   failurePolicy: abort
