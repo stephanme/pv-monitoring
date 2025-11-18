@@ -27,7 +27,7 @@ spec:
       containers:
         - name: kopia
           # https://github.com/kopia/kopia/blob/master/tools/docker/Dockerfile
-          image: kopia/kopia:0.21.1
+          image: kopia/kopia:0.22.0
           args:
             - server
             - start
