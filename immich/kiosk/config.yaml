@@ -30,7 +30,7 @@ excluded_people: []
 ## ID(s) of album or albums to display
 albums: []
 # display album videos
-album_video: false
+show_videos: false
 # Album IDs to exclude from being shown. Albums in this list will be filtered from
 # appearing in the frame even if they are included in the 'album' list.
 album_order: random # random | newest | oldest
