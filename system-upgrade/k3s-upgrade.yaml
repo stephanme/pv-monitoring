@@ -31,7 +31,7 @@ spec:
   upgrade:
     image: rancher/k3s-upgrade
   #renovate: k3s
-  version: v1.34.1+k3s1
+  version: v1.34.2+k3s1
 ---
 # Agent plan (not used currently)
 apiVersion: upgrade.cattle.io/v1
@@ -59,7 +59,7 @@ spec:
   upgrade:
     image: rancher/k3s-upgrade
   #renovate: k3s
-  version: v1.34.1+k3s1
+  version: v1.34.2+k3s1
 ---
 # Script to migrate zot away from the node that shall be upgraded before it starts draining
 #
