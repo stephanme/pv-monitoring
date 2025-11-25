@@ -71,12 +71,12 @@ data:
           fallthrough
         }
         prometheus :9153
-        forward . {$DNSMASQ_SERVICE_SERVICE_HOST}
         cache 30
         loop
         reload
         loadbalance
         import /etc/coredns/custom/*.override
+        forward . {$DNSMASQ_SERVICE_SERVICE_HOST}
     }
     import /etc/coredns/custom/*.server
   NodeHosts: |
