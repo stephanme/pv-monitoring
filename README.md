@@ -12,9 +12,11 @@ Monitoring of a photovoltaic system, car charging and heat pump
   - inverter and wall box connected using [modbus_exporter](https://github.com/RichiH/modbus_exporter)
 - [k3s](https://k3s.io) lightweight Kubernetes cluster
   - 3 k3s servers using embedded etcd
-  - nasbox: Celeron G3900 (2 core), 32G RAM, 1T SSD, 4T raid1 disks
-  - pi1: Raspberry Pi 4, 8G RAM, 512G SSD
-  - pi2: Orange Pi 5 Max, 16G RAM, 1T SSD
+    - nasbox: Celeron G3900 (2 core), 32G RAM, 1T SSD, 4T raid1 disks
+    - pi1: Raspberry Pi 4, 8G RAM, 512G SSD
+    - pi2: Orange Pi 5 Max, 16G RAM, 1T SSD
+  - 1 k3s agent (for temporary workload only)
+    - pc02: Bosgame M5, Ryzen AI Max+ 395, 128G RAM, 2T SSD
 - [pv-control](https://github.com/stephanme/pv-control) for controlling electric car charger
   - charge car by solar power only
   - 1 and 3 phase charging to get a wide control range starting at 1.3 kW up to (theoretical) 11kW
@@ -65,7 +67,7 @@ k8s API is available via:
 - k3s.fritz.box:6443, MetalLB as Cluster Load Balancer -> Traefik -> `kubernetes` service in default namespace
 - port 6443 on every node
 
-WIP: OCI image registry: [zot](https://zotregistry.dev/)
+OCI image registry: [zot](https://zotregistry.dev/)
 - mirror for docker.io, ghcr.io etc. to avoid slow image downloads on e.g. node 
 
 ### k3s Server
@@ -123,7 +125,7 @@ Others:
 
 ### k3s Agent
 
-(currently no agents)
+One temporary agent: pc02
 
 ```
 # enable cgroups, see https://docs.k3s.io/installation/requirements?os=pi (not needed for Armbian)

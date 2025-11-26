@@ -83,6 +83,7 @@ data:
     192.168.178.10 nasbox
     192.168.178.11 pi1
     192.168.178.12 pi2
+    192.168.178.13 pc02
 ---
 apiVersion: apps/v1
 kind: DaemonSet
