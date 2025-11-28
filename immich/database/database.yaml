@@ -9,7 +9,7 @@ spec:
   enablePDB: false
 
   storage:
-    size: 1Gi
+    size: 2Gi
     storageClass: longhorn
 
   # check immich doc before updating, update regsync config as well
