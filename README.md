@@ -142,6 +142,10 @@ Config file `/etc/rancher/k3s/config.yaml`
 # https://github.com/k3s-io/k3s/discussions/10125
 kubelet-arg:
 - "config=/etc/rancher/k3s/kubelet-config.yaml"
+
+# node taints for temporary nodes
+node-taints:
+- temporary-node: pc02
 ```
 
 Kubelet config file `/etc/rancher/k3s/kubelet-config.yaml`: same as for server.
