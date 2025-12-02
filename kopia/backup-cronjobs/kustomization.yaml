@@ -5,7 +5,7 @@ namespace: kopia
 
 images:
 - name: kopia/kopia
-  newTag: 0.22.2
+  newTag: 0.22.3
 
 resources:
 - secrets.yaml
