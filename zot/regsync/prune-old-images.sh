@@ -58,8 +58,8 @@ echo "$images_deduped" | jq -c '.[]' | while read -r img_json; do
         fi
     done
 
-    # Only prune if more than 3 tags exist
-    if (( num_tags <= 3 )); then
+    # Only prune if more than 2 tags exist
+    if (( num_tags <= 2 )); then
         continue
     fi
 

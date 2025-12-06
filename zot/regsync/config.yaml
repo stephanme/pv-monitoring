@@ -375,6 +375,7 @@ sync:
       allow:
         - "2025\\.\\d+\\.\\d+"
       deny:
+        - "2025\\.12\\.1"
         - "2025\\.12\\.0"
         - "2025\\.1[0-1]\\.\\d+"
         - "2025\\.\\d\\.\\d+"
@@ -521,6 +522,9 @@ sync:
       allow:
         - "2\\.\\d+\\.\\d+"
       deny:
+        - "2\\.1\\.4"
+        - "2\\.1\\.3"
+        - "2\\.1\\.2"
         - "2\\.1\\.1"
         - "2\\.1\\.0"
         - "2\\.0\\.\\d+"
@@ -555,6 +559,9 @@ sync:
     tags:
       allow:
         # - "\\d+\\.\\d+\\.\\d+" - too many versions
+        - "10\\.4\\.1"
+      deny:
+        - "9\\.1\\.0"
         - "10\\.4\\.1"
   - source: quay.io/prometheus/alertmanager
     target: registry.fritz.box/quay.io/prometheus/alertmanager
@@ -628,18 +635,18 @@ sync:
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   # registry.k8s.io
-  - source: registry.k8s.io/descheduler/descheduler
-    target: registry.fritz.box/registry.k8s.io/descheduler/descheduler
-    type: repository
-    # platforms: *x-platforms
-    tags:
-      allow:
-        - "v0\\.\\d+\\.\\d+"
-      deny:
-        - "v0\\.34\\.0"
-        - "v0\\.3[0-3]\\.\\d+"
-        - "v0\\.[1-2]\\d\\.\\d+"
-        - "v0\\.\\d\\.\\d+"
+  # - source: registry.k8s.io/descheduler/descheduler
+  #   target: registry.fritz.box/registry.k8s.io/descheduler/descheduler
+  #   type: repository
+  #   # platforms: *x-platforms
+  #   tags:
+  #     allow:
+  #       - "v0\\.\\d+\\.\\d+"
+  #     deny:
+  #       - "v0\\.34\\.0"
+  #       - "v0\\.3[0-3]\\.\\d+"
+  #       - "v0\\.[1-2]\\d\\.\\d+"
+  #       - "v0\\.\\d\\.\\d+"
   - source: registry.k8s.io/kube-state-metrics/kube-state-metrics
     target: registry.fritz.box/registry.k8s.io/kube-state-metrics/kube-state-metrics
     type: repository
