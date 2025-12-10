@@ -9,7 +9,7 @@ spec:
   # renovate: HelmChart
   repo: https://cloudnative-pg.github.io/charts
   chart: cloudnative-pg
-  version: 0.26.1
+  version: 0.27.0
   targetNamespace: cnpg-system
   timeout: 1h
   failurePolicy: abort
