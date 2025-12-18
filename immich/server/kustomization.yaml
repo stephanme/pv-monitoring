@@ -5,7 +5,7 @@ namespace: immich
 
 images:
 - name: ghcr.io/immich-app/immich-server
-  newTag: v2.3.1
+  newTag: v2.4.0
 
 labels:
   - pairs:
