@@ -64,6 +64,7 @@ sync:
       allow:
         - "\\d\\d\\.\\d+\\.\\d+"
       deny: # <= 12.2.1
+        - "12\\.3\\.1"
         - "12\\.3\\.0"
         - "12\\.[0-2]\\.\\d+"
         - "1[01]\\.\\d+\\.\\d+"
@@ -155,6 +156,8 @@ sync:
       allow:
         - "v0\\.0\\.\\d+"
       deny:
+        - "v0\\.0\\.76"
+        - "v0\\.0\\.75"
         - "v0\\.0\\.71"
         - "v0\\.0\\.70"
         - "v0\\.0\\.[1-6]\\d"
@@ -257,6 +260,7 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+-build\\d+"
       deny:
+        - "v0\\.9\\.12-build20251215"
         - "v0\\.9\\.11-build20251210"
         - "v0\\.9\\.10-build20251111"
         - "v0\\.9\\.\\d-build\\d+"
@@ -357,10 +361,8 @@ sync:
       allow:
         - "4\\.1\\d\\d\\.\\d+"
       deny:
-        - "4\\.106\\.3"
-        - "4\\.106\\.2"
-        - "4\\.106\\.0"
-        - "4\\.10[0-5]\\.\\d+"
+        - "4\\.107\\.0"
+        - "4\\.10[0-6]\\.\\d+"
   - source: ghcr.io/hikhvar/mqtt2prometheus
     target: registry.fritz.box/ghcr.io/hikhvar/mqtt2prometheus
     type: repository
@@ -393,11 +395,8 @@ sync:
       allow:
         - "2\\.\\d+\\.\\d+"
       deny:
-        - "2\\.6\\.3"
-        - "2\\.6\\.2"
-        - "2\\.6\\.1"
-        - "2\\.6\\.0"
-        - "2\\.[0-5]\\.\\d+"
+        - "2\\.7\\.0"
+        - "2\\.[0-6]\\.\\d+"
   - source: ghcr.io/headlamp-k8s/headlamp
     target: registry.fritz.box/ghcr.io/headlamp-k8s/headlamp
     type: repository
@@ -406,8 +405,8 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny:
-        - "v0\\.38\\.0"
-        - "v0\\.3[0-7].\\d+"
+        - "v0\\.39\\.0"
+        - "v0\\.3[0-8].\\d+"
         - "v0\\.[1-2]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: ghcr.io/damongolding/immich-kiosk
@@ -418,12 +417,9 @@ sync:
       allow:
         - "0\\.\\d+\\.\\d+"
       deny:
-        - "0\\.28\\.4"
-        - "0\\.28\\.3"
-        - "0\\.28\\.2"
-        - "0\\.28\\.1"
-        - "0\\.28\\.0"
-        - "0\\.2[0-7]\\.\\d+"
+        - "0\\.29\\.1"
+        - "0\\.29\\.0"
+        - "0\\.2[0-8]\\.\\d+"
         - "0\\.1\\d\\.\\d+"
         - "0\\.\\d\\.\\d+"
   - source: ghcr.io/immich-app/immich-machine-learning
@@ -435,9 +431,8 @@ sync:
       allow:
         - "v2\\.\\d+\\.\\d+-rknn"
       deny:
-        - "v2\\.3\\.1-rknn"
-        - "v2\\.3\\.0-rknn"
-        - "v2\\.[0-2]\\.\\d+-rknn"
+        - "v2\\.4\\.0-rknn"
+        - "v2\\.[0-3]\\.\\d+-rknn"
   - source: ghcr.io/immich-app/immich-server
     target: registry.fritz.box/ghcr.io/immich-app/immich-server
     type: repository
@@ -447,9 +442,8 @@ sync:
       allow:
         - "v2\\.\\d+\\.\\d+"
       deny:
-        - "v2\\.3\\.1"
-        - "v2\\.3\\.0"
-        - "v2\\.[0-2]\\.\\d+"
+        - "v2\\.4\\.0"
+        - "v2\\.[0-3]\\.\\d+"
   - source: ghcr.io/tensorchord/cloudnative-vectorchord
     target: registry.fritz.box/ghcr.io/tensorchord/cloudnative-vectorchord
     type: repository
@@ -467,6 +461,7 @@ sync:
       allow:
         - "2\\.\\d+\\.\\d+"
       deny:
+        - "2\\.20\\.3"
         - "2\\.20\\.2"
         - "2\\.20\\.1"
         - "2\\.20\\.0"
@@ -536,6 +531,7 @@ sync:
         - "2\\.1\\.1"
         - "2\\.1\\.0"
         - "2\\.0\\.\\d+"
+        - "1\\.30\\.10"
   - source: quay.io/metallb/controller
     target: registry.fritz.box/quay.io/metallb/controller
     type: repository
@@ -579,10 +575,8 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny: # <= v0.28.1
-        - "v0\\.29\\.0"
-        - "v0\\.28\\.[0-1]"
-        - "v0\\.2[0-7]\\.\\d+"
-        - "v0\\.1\\d\\.\\d+"
+        - "v0\\.30\\.0"
+        - "v0\\.[1-2]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: quay.io/prometheus/blackbox-exporter
     target: registry.fritz.box/quay.io/prometheus/blackbox-exporter
@@ -616,6 +610,7 @@ sync:
       allow:
         - "v3\\.\\d+\\.\\d+"
       deny:
+        - "v3\\.8\\.1"
         - "v3\\.8\\.0"
         - "v3\\.[0-7]\\.\\d+"
   - source: quay.io/prometheus-operator/prometheus-config-reloader
@@ -675,9 +670,8 @@ sync:
       allow:
         - "v1\\.\\d+\\.\\d+"
       deny: # <= v1.34.1
-        - "v1\\.34\\.3"
-        - "v1\\.34\\.2"
-        - "v1\\.34\\.[0-1]"
+        - "v1\\.35\\.0"
+        - "v1\\.34\\.[0-3]"
         - "v1\\.3[0-3]\\.\\d+"
         - "v1\\.[1-2]\\d\\.\\d+"
         - "v1\\.\\d\\.\\d+"
