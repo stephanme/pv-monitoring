@@ -21,7 +21,7 @@ spec:
       containers:
         - name: homeassistant
           # https://github.com/home-assistant/core/pkgs/container/home-assistant
-          image: ghcr.io/home-assistant/home-assistant:2025.12.3
+          image: ghcr.io/home-assistant/home-assistant:2025.12.4
           ports:
             - containerPort: 8123
           volumeMounts:
