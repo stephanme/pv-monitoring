@@ -213,6 +213,11 @@ spec:
               #     source: grid
 
     grafana:
+      admin:
+        existingSecret: kube-prometheus-stack
+        userKey: grafana-admin-user
+        passwordKey: grafana-admin-password
+
       plugins:
         - grafana-piechart-panel
         - flant-statusmap-panel
@@ -246,6 +251,12 @@ spec:
       sidecar:
         dashboards:
           searchNamespace: ALL
+        datasources:
+          # https://github.com/prometheus-community/helm-charts/issues/5232
+          # https://github.com/grafana/helm-charts/issues/4023
+          skipReload: true
+          initDatasources: true
+          watchMethod: "LIST" 
         resources:
           requests:
             cpu: 5m
