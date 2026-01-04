@@ -17,6 +17,7 @@ spec:
       defaultClassReplicaCount: 2
       defaultDataLocality: best-effort
     defaultSettings:
+      createDefaultDiskLabeledNodes: "true"
       defaultReplicaCount: "2"
       defaultDataLocality: best-effort
       replicaAutoBalance: least-effort

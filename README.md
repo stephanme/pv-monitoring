@@ -48,7 +48,7 @@ Important release notes
 ### Prerequisites
 
 - kubectl
-- curl, yq
+- curl, yq, jq
 - [regctl](https://github.com/regclient/regclient)
   - `regctl registry set --tls=disabled registry.fritz.box`
 
@@ -90,6 +90,10 @@ tls-san:
 - k3s.fritz.box
 
 etcd-expose-metrics: true
+
+# use node for longhorn storage
+node-label:
+- "node.longhorn.io/create-default-disk=true"
 
 # https://github.com/k3s-io/k3s/issues/3619#issuecomment-993977516
 kube-controller-manager-arg:
