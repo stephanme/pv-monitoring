@@ -55,6 +55,7 @@ spec:
   task: "snapshot"
   groups:
   - default
+  - no-backup
   retain: 7
   concurrency: 2
   labels:

@@ -29,6 +29,7 @@ spec:
       allowCollectingLonghornUsageMetrics: false
       orphanResourceAutoDeletion: replica-data;instance
       offlineReplicaRebuilding: "true"
+      snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: "true"
     helmPreUpgradeCheckerJob:
       enabled: false
     csi:
