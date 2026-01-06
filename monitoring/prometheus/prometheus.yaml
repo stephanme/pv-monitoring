@@ -254,9 +254,7 @@ spec:
         datasources:
           # https://github.com/prometheus-community/helm-charts/issues/5232
           # https://github.com/grafana/helm-charts/issues/4023
-          skipReload: true
-          initDatasources: true
-          watchMethod: "LIST" 
+          watchMethod: "SLEEP" 
         resources:
           requests:
             cpu: 5m
