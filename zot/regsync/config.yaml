@@ -297,7 +297,8 @@ sync:
     tags:
       allow:
         - "1\\.\\d+\\.\\d+"
-      deny: # <= 1.13.1
+      deny:
+        - "1\\.13\\.2"
         - "1\\.13\\.[0-1]"
         - "1\\.1[0-2]\\.\\d+"
         - "1\\.\\d\\.\\d+"
@@ -319,6 +320,7 @@ sync:
       allow:
         - "3\\.\\d+\\.\\d+"
       deny:
+        - "3\\.6\\.6"
         - "3\\.6\\.4"
         - "3\\.6\\.2"
         - "3\\.6\\.1"
@@ -437,10 +439,9 @@ sync:
       allow:
         - "0\\.\\d+\\.\\d+"
       deny:
-        - "0\\.29\\.1"
-        - "0\\.29\\.0"
-        - "0\\.2[0-8]\\.\\d+"
-        - "0\\.1\\d\\.\\d+"
+        - "0\\.30\\.1"
+        - "0\\.30\\.0"
+        - "0\\.[1-2]\\d\\.\\d+"
         - "0\\.\\d\\.\\d+"
   - source: ghcr.io/immich-app/immich-machine-learning
     target: registry.fritz.box/ghcr.io/immich-app/immich-machine-learning
@@ -549,13 +550,10 @@ sync:
       allow:
         - "2\\.\\d+\\.\\d+"
       deny:
-        - "2\\.1\\.4"
-        - "2\\.1\\.3"
-        - "2\\.1\\.2"
-        - "2\\.1\\.1"
-        - "2\\.1\\.0"
-        - "2\\.0\\.\\d+"
-        - "1\\.30\\.10"
+        - "2\\.2\\.2"
+        - "2\\.2\\.1"
+        - "2\\.2\\.0"
+        - "2\\.[0-1]\\.\\d+"
   - source: quay.io/metallb/controller
     target: registry.fritz.box/quay.io/metallb/controller
     type: repository
