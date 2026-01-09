@@ -157,6 +157,7 @@ sync:
       allow:
         - "v0\\.0\\.\\d+"
       deny:
+        - "v0\\.0\\.78"
         - "v0\\.0\\.77"
         - "v0\\.0\\.76"
         - "v0\\.0\\.75"
@@ -286,6 +287,7 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny:
+        - "v0\\.0\\.34"
         - "v0\\.0\\.33"
         - "v0\\.0\\.3[0-2]"
         - "v0\\.0\\.[1-2]\\d"
@@ -298,9 +300,8 @@ sync:
       allow:
         - "1\\.\\d+\\.\\d+"
       deny:
-        - "1\\.13\\.2"
-        - "1\\.13\\.[0-1]"
-        - "1\\.1[0-2]\\.\\d+"
+        - "1\\.14\\.0"
+        - "1\\.1[0-3]\\.\\d+"
         - "1\\.\\d\\.\\d+"
   - source: docker.io/rancher/mirrored-metrics-server
     target: registry.fritz.box/docker.io/rancher/mirrored-metrics-server
@@ -377,8 +378,8 @@ sync:
       allow:
         - "4\\.1\\d\\d\\.\\d+"
       deny:
-        - "4\\.107\\.0"
-        - "4\\.10[0-6]\\.\\d+"
+        - "4\\.108\\.0"
+        - "4\\.10[0-7]\\.\\d+"
   - source: ghcr.io/hikhvar/mqtt2prometheus
     target: registry.fritz.box/ghcr.io/hikhvar/mqtt2prometheus
     type: repository
@@ -396,16 +397,10 @@ sync:
     tags:
       allow:
         - "2026\\.\\d+\\.\\d+"
-        - "2025\\.\\d+\\.\\d+"
       deny:
+        - "2026\\.1\\.1"
+        - "2026\\.1\\.0"
         - "2025\\.12\\.5"
-        - "2025\\.12\\.4"
-        - "2025\\.12\\.3"
-        - "2025\\.12\\.2"
-        - "2025\\.12\\.1"
-        - "2025\\.12\\.0"
-        - "2025\\.1[0-1]\\.\\d+"
-        - "2025\\.\\d\\.\\d+"
   - source: ghcr.io/music-assistant/server
     target: registry.fritz.box/ghcr.io/music-assistant/server
     type: repository
@@ -484,6 +479,7 @@ sync:
       allow:
         - "2\\.\\d+\\.\\d+"
       deny:
+        - "2\\.20\\.4"
         - "2\\.20\\.3"
         - "2\\.20\\.2"
         - "2\\.20\\.1"
@@ -506,8 +502,8 @@ sync:
       allow:
         - "latest"
         - "v\\d+"
-      deny: # <= v8
-        - "v[0-8]"
+      deny:
+        - "v\\d"
   - source: ghcr.io/stephanme/pv-control
     target: registry.fritz.box/ghcr.io/stephanme/pv-control
     type: repository
@@ -526,7 +522,7 @@ sync:
         - "latest"
         - "v\\d+"
       deny: # <= v4
-        - "v[0-4]"
+        - "v[0-5]"
   - source: ghcr.io/project-zot/zot
     target: registry.fritz.box/ghcr.io/project-zot/zot
     type: repository
@@ -550,6 +546,7 @@ sync:
       allow:
         - "2\\.\\d+\\.\\d+"
       deny:
+        - "2\\.2\\.3"
         - "2\\.2\\.2"
         - "2\\.2\\.1"
         - "2\\.2\\.0"
@@ -596,7 +593,8 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.28.1
+      deny:
+        - "v0\\.30\\.1"
         - "v0\\.30\\.0"
         - "v0\\.[1-2]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
@@ -607,7 +605,7 @@ sync:
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.27.0
+      deny:
         - "v0\\.28\\.0"
         - "v0\\.2[0-7]\\.\\d+"
         - "v0\\.1\\d\\.\\d+"
@@ -632,9 +630,9 @@ sync:
       allow:
         - "v3\\.\\d+\\.\\d+"
       deny:
-        - "v3\\.8\\.1"
-        - "v3\\.8\\.0"
-        - "v3\\.[0-7]\\.\\d+"
+        - "v3\\.9\\.1"
+        - "v3\\.9\\.0"
+        - "v3\\.[0-8]\\.\\d+"
   - source: quay.io/prometheus-operator/prometheus-config-reloader
     target: registry.fritz.box/quay.io/prometheus-operator/prometheus-config-reloader
     type: repository
@@ -643,9 +641,8 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny:
-        - "v0\\.87\\.1"
-        - "v0\\.87\\.0"
-        - "v0\\.8[0-6]\\.\\d+"
+        - "v0\\.88\\.0"
+        - "v0\\.8[0-7]\\.\\d+"
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: quay.io/prometheus-operator/prometheus-operator
@@ -656,9 +653,8 @@ sync:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny:
-        - "v0\\.87\\.1"
-        - "v0\\.87\\.0"
-        - "v0\\.8[0-6]\\.\\d+"
+        - "v0\\.88\\.0"
+        - "v0\\.8[0-7]\\.\\d+"
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   # registry.k8s.io
