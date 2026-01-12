@@ -147,9 +147,9 @@ Config file `/etc/rancher/k3s/config.yaml`
 kubelet-arg:
 - "config=/etc/rancher/k3s/kubelet-config.yaml"
 
-# node taints for temporary nodes
-node-taints:
-- temporary-node: pc02
+# node taints for temporary nodes - requires tolerations for many kube-system deployments
+#node-taints:
+#- temporary-node: pc02
 ```
 
 Kubelet config file `/etc/rancher/k3s/kubelet-config.yaml`: same as for server.
