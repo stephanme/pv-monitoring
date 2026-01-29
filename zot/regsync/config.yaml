@@ -469,9 +469,8 @@ sync:
       allow:
         - "v2\\.\\d+\\.\\d+"
       deny:
-        - "v2\\.4\\.1"
-        - "v2\\.4\\.0"
-        - "v2\\.[0-3]\\.\\d+"
+        - "v2\\.5\\.0"
+        - "v2\\.[0-4]\\.\\d+"
   - source: ghcr.io/tensorchord/cloudnative-vectorchord
     target: registry.fritz.box/ghcr.io/tensorchord/cloudnative-vectorchord
     type: repository
