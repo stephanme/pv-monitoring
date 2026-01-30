@@ -3,7 +3,9 @@ apiVersion: apps/v1
 metadata:
   name: immich-machine-learning-pc02
 spec:
-  replicas: 1
+  # rocm doesn't work yet on strix halo
+  # https://github.com/immich-app/immich/pull/25299
+  replicas: 0  
   strategy:
     type: Recreate
   selector:

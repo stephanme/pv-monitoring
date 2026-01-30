@@ -36,12 +36,15 @@ How to access DB:
 
 ### Immich Machine Learning
 
-- assigned to pi2
+- primary ML instance assigned to pi2
 - uses RKNN HW acceleration
 - uses pi2 SSD for model cache
   - models are ~8 GB on disk
   - download takes many h
 - requires lots of mem, ~4G for 1 RKNN thread
+
+- second (temporary) ML instance on pc02 (rocm)
+  - rocm doesn't work yet on strix halo, see [immich #25299](https://github.com/immich-app/immich/pull/25299)
 
 ### Immich Kiosk
 
