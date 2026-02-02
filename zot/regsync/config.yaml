@@ -115,10 +115,8 @@ sync:
       allow:
         - "2\\.\\d+\\.\\d+"
       deny:
-        - "2\\.7\\.2"
-        - "2\\.7\\.1"
-        - "2\\.7\\.0"
-        - "2\\.[0-6]\\.\\d"
+        - "2\\.8\\.0"
+        - "2\\.[0-7]\\.\\d"
   - source: docker.io/longhornio/longhorn-engine
     target: registry.fritz.box/docker.io/longhornio/longhorn-engine
     type: repository
@@ -490,6 +488,7 @@ sync:
       allow:
         - "2\\.\\d+\\.\\d+"
       deny:
+        - "2\\.20\\.6"
         - "2\\.20\\.5"
         - "2\\.20\\.4"
         - "2\\.20\\.3"

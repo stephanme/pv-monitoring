@@ -106,7 +106,7 @@ metadata:
 data:
   # https://github.com/Koenkk/zigbee2mqtt/blob/master/data/configuration.example.yaml
   configuration.yaml: |-
-    version: 4
+    version: 5
     permit_join: false
     # Home Assistant integration (MQTT discovery)
     homeassistant: 
