@@ -5,7 +5,7 @@ namespace: immich
 
 images:
 - name: ghcr.io/damongolding/immich-kiosk
-  newTag: "0.31.0"
+  newTag: "0.32.0"
 
 labels:
   - pairs:
