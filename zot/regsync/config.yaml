@@ -5,11 +5,12 @@ x-platforms: &x-platforms
   - unknown/unknown
 x-longhorn-main-tags: &x-longhorn-main-tags
   allow:
-    - "v1\\.\\d+\\.\\d+"
+    - "v\\d+\\.\\d+\\.\\d+"
   deny:
     - "v1\\.11\\.0"
     - "v1\\.10\\.\\d+"
     - "v1\\.\\d\\.\\d+"
+    - "v0\\..*"
 creds:
   - registry: registry.fritz.box
     tls: disabled
@@ -27,47 +28,51 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "3\\.\\d+\\.\\d+.\\d+"
-      deny: # <= 3.2.3.0
+        - "\\d+\\.\\d+\\.\\d+.\\d+"
+      deny:
         - "3\\.2\\.3\\.0"
         - "3\\.2\\.[0-2]\\.\\d+"
         - "3\\.[0-1]\\.\\d+.\\d+"
+        - "[0-2]\\..*"
   - source: eclipse-mosquitto
     target: registry.fritz.box/docker.io/library/eclipse-mosquitto
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "2\\.0\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+"
       deny: # <= 2.0.22
         - "2\\.0\\.2[0-2]"
         - "2\\.0\\.1\\d"
         - "2\\.0\\.\\d"
+        - "[0-1]\\..*"
   - source: docker.io/gotenberg/gotenberg
     target: registry.fritz.box/docker.io/gotenberg/gotenberg
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "8\\.\\d+\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+"
       deny:
         - "8\\.26\\.0"
         - "8\\.2[0-5]\\.\\d+"
         - "8\\.1\\d\\.\\d+"
         - "8\\.\\d\\.\\d+"
+        - "[0-7]\\..*"
   - source: docker.io/grafana/grafana
     target: registry.fritz.box/docker.io/grafana/grafana
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "\\d\\d\\.\\d+\\.\\d+"
-      deny: # <= 12.2.1
+        - "\\d+\\.\\d+\\.\\d+"
+      deny:
         - "12\\.3\\.2"
         - "12\\.3\\.1"
         - "12\\.3\\.0"
         - "12\\.[0-2]\\.\\d+"
         - "1[01]\\.\\d+\\.\\d+"
+        - "\\d\\..*"
   - source: docker.io/jaymedh/fritzbox_smarthome_exporter
     target: registry.fritz.box/docker.io/jaymedh/fritzbox_smarthome_exporter
     type: repository
@@ -75,7 +80,7 @@ sync:
     tags:
       allow:
         - "v\\d+\\.\\d+\\.\\d+"
-      deny: # <= v0.4.3
+      deny:
         - "v0\\.4\\.[0-3]"
         - "v0\\.[0-3]\\.\\d+"
   - source: docker.io/kopia/kopia
@@ -84,8 +89,8 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "0\\.\\d+\\.\\d+"
-      deny: # <= 0.21.1
+        - "\\d\\.\\d+\\.\\d+"
+      deny:
         - "0\\.22\\.3"
         - "0\\.22\\.2"
         - "0\\.22\\.1"
@@ -99,7 +104,7 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "1\\.\\d+\\.\\d+-alpine-slim"
+        - "\\d+\\.\\d+\\.\\d+-alpine-slim"
       deny:
         - "1\\.29\\.4-alpine-slim"
         - "1\\.29\\.3-alpine-slim"
@@ -107,16 +112,18 @@ sync:
         - "1\\.2[0-8]\\.\\d+-alpine-slim"
         - "1\\.1\\d\\.\\d+-alpine-slim"
         - "1\\.\\d\\.\\d+-alpine-slim"
+        - "0\\..*"
   - source: koenkk/zigbee2mqtt
     target: registry.fritz.box/docker.io/koenkk/zigbee2mqtt
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "2\\.\\d+\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+"
       deny:
         - "2\\.8\\.0"
         - "2\\.[0-7]\\.\\d"
+        - "[0-1]\\..*"
   - source: docker.io/longhornio/longhorn-engine
     target: registry.fritz.box/docker.io/longhornio/longhorn-engine
     type: repository
@@ -153,7 +160,7 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.0\\.\\d+"
+        - "v\\d+\\.0\\.\\d+"
       deny:
         - "v0\\.0\\.79"
         - "v0\\.0\\.78"
@@ -170,9 +177,8 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v4\\.\\d+\\.\\d+"
-        - "v4\\.\\d+\\.\\d+-2025\\d+"
-        - "v4\\.\\d+\\.\\d+-2026\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
+        - "v4\\d+\\.\\d+\\.\\d+-202[5-9]\\d+"
       deny:
         - "v4\\.10\\.0-20251226"
         - "v4\\.10\\.0-20251030"
@@ -181,15 +187,15 @@ sync:
         - "v4\\.9\\.0-20250709"
         - "v4\\.9\\.0"
         - "v4\\.[0-8]\\.\\d+"
+        - "v[0-3]\\..*"
   - source: docker.io/longhornio/csi-provisioner
     target: registry.fritz.box/docker.io/longhornio/csi-provisioner
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v5\\.\\d+\\.\\d+"
-        - "v5\\.\\d+\\.\\d+-2025\\d+"
-        - "v5\\.\\d+\\.\\d+-2026\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+-202[5-9]\\d+"
       deny:
         - "v5\\.3\\.0-20251226"
         - "v5\\.3\\.0-20251030"
@@ -197,15 +203,15 @@ sync:
         - "v5\\.3\\.0-20250709"
         - "v5\\.3\\.0"
         - "v5\\.[0-2]\\.\\d+"
+        - "v[0-4]\\..*"
   - source: docker.io/longhornio/csi-node-driver-registrar
     target: registry.fritz.box/docker.io/longhornio/csi-node-driver-registrar
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v2\\.\\d+\\.\\d+"
-        - "v2\\.\\d+\\.\\d+-2025\\d+"
-        - "v2\\.\\d+\\.\\d+-2026\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+-202[5-9]\\d+"
       deny:
         - "v2\\.15\\.0-20251226"
         - "v2\\.15\\.0-20251030"
@@ -215,32 +221,25 @@ sync:
         - "v2\\.14\\.0"
         - "v2\\.1[0-3]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
+        - "v[0-1]\\..*"
   - source: docker.io/longhornio/csi-resizer
     target: registry.fritz.box/docker.io/longhornio/csi-resizer
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v1\\.\\d+\\.\\d+"
-        - "v1\\.\\d+\\.\\d+-2025\\d+"
-        - "v1\\.\\d+\\.\\d+-2026\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+-202[5-9]\\d+"
       deny:
-        - "v1\\.14\\.0-20260119"
-        - "v1\\.14\\.0-20251030"
-        - "v1\\.14\\.0-20250826"
-        - "v1\\.14\\.0-20250709"
-        - "v1\\.14\\.0"
-        - "v1\\.1[0-3]\\.\\d+"
-        - "v1\\.\\d\\.\\d+"
+        - "v[0-1]\\..*"
   - source: docker.io/longhornio/csi-snapshotter
     target: registry.fritz.box/docker.io/longhornio/csi-snapshotter
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v8\\.\\d+\\.\\d+"
-        - "v8\\.\\d+\\.\\d+-2025\\d+"
-        - "v8\\.\\d+\\.\\d+-2026\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+-202[5-9]\\d+"
       deny:
         - "v8\\.4\\.0-20251226"
         - "v8\\.4\\.0-20251030"
@@ -248,16 +247,16 @@ sync:
         - "v8\\.3\\.0-20250709"
         - "v8\\.3\\.0"
         - "v8\\.[0-2]\\.\\d+"
+        - "v[0-7]\\..*"
   - source: docker.io/longhornio/livenessprobe
     target: registry.fritz.box/docker.io/longhornio/livenessprobe
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v2\\.\\d+\\.\\d+"
-        - "v2\\.\\d+\\.\\d+-2025\\d+"
-        - "v2\\.\\d+\\.\\d+-2026\\d+"
-      deny: #
+        - "v\\d+\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+-202[5-9]\\d+"
+      deny:
         - "v2\\.17\\.0-20251226"
         - "v2\\.17\\.0-20251030"
         - "v2\\.17\\.0"
@@ -266,13 +265,14 @@ sync:
         - "v2\\.16\\.0"
         - "v2\\.1[0-5]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
+        - "v[0-1]\\..*"
   - source: docker.io/rancher/klipper-helm
     target: registry.fritz.box/docker.io/rancher/klipper-helm
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+-build\\d+"
+        - "v\\d+\\.\\d+\\.\\d+-build\\d+"
       deny:
         - "v0\\.9\\.12-build20251215"
         - "v0\\.9\\.11-build20251210"
@@ -285,7 +285,7 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
         - "v0\\.0\\.34"
         - "v0\\.0\\.33"
@@ -298,20 +298,21 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "1\\.\\d+\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+"
       deny:
         - "1\\.14\\.1"
         - "1\\.14\\.0"
         - "1\\.1[0-3]\\.\\d+"
         - "1\\.\\d\\.\\d+"
+        - "0\\..*"
   - source: docker.io/rancher/mirrored-metrics-server
     target: registry.fritz.box/docker.io/rancher/mirrored-metrics-server
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.8.0
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
         - "v0\\.8\\.0"
         - "v0\\.[0-7]\\.\\d+"
   - source: docker.io/rancher/mirrored-library-traefik
@@ -320,7 +321,7 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "3\\.\\d+\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+"
       deny:
         - "3\\.6\\.7"
         - "3\\.6\\.6"
@@ -328,23 +329,25 @@ sync:
         - "3\\.6\\.2"
         - "3\\.6\\.1"
         - "3\\.[0-5]\\.\\d+"
+        - "[0-2]\\..*"
   - source: docker.io/rancher/mirrored-pause
     target: registry.fritz.box/docker.io/rancher/mirrored-pause
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "3\\.\\d+"
+        - "\\d+\\.\\d+"
       deny: # <= v3.10
         - "3\\.10"
         - "3\\.\\d"
+        - "[0-2]\\..*"
   - source: docker.io/rancher/system-upgrade-controller
     target: registry.fritz.box/docker.io/rancher/system-upgrade-controller
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
         - "v0\\.18\\.0"
         - "v0\\.1[0-7]\\.\\d+"
@@ -355,10 +358,11 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "8\\.\\d+\\.\\d+-alpine"
+        - "\\d+\\.\\d+\\.\\d+-alpine"
       deny:
         - "8\\.4\\.0-alpine"
         - "8\\.[0-2]\\.\\d+-alpine"
+        - "[0-7]\\..*"
   # ghcr.io
   - source: ghcr.io/cloudnative-pg/cloudnative-pg
     target: registry.fritz.box/ghcr.io/cloudnative-pg/cloudnative-pg
@@ -366,32 +370,36 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "1\\.\\d+\\.\\d+"
-      deny: # <= 1.27.1
+        - "\\d+\\.\\d+\\.\\d+"
+      deny:
         - "1\\.28\\.0"
         - "1\\.2[0-7]\\.\\d+"
         - "1\\.1\\d\\.\\d+"
         - "1\\.\\d\\.\\d+"
+        - "[0-1]\\..*"
   - source: ghcr.io/coder/code-server
     target: registry.fritz.box/ghcr.io/coder/code-server
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "4\\.1\\d\\d\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+"
       deny:
         - "4\\.108\\.2"
         - "4\\.108\\.1"
         - "4\\.108\\.0"
         - "4\\.10[0-7]\\.\\d+"
+        - "4\\.\\d\\d\\.\\d+"
+        - "4\\.\\d\\.\\d+"
+        - "[0-4]\\..*"
   - source: ghcr.io/hikhvar/mqtt2prometheus
     target: registry.fritz.box/ghcr.io/hikhvar/mqtt2prometheus
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.1.7
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
         - "v0\\.1\\.[0-7]"
         - "v0\\.0\\.\\d+"
   - source: ghcr.io/home-assistant/home-assistant
@@ -400,20 +408,20 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "2026\\.\\d+\\.\\d+"
+        - "202\\d\\.\\d+\\.\\d+"
       deny:
         - "2026\\.1\\.3"
         - "2026\\.1\\.2"
         - "2026\\.1\\.1"
         - "2026\\.1\\.0"
-        - "2025\\.12\\.5"
+        - "202[0-5]\\..*"
   - source: ghcr.io/music-assistant/server
     target: registry.fritz.box/ghcr.io/music-assistant/server
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "2\\.\\d+\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+"
       deny:
         - "2\\.7\\.6"
         - "2\\.7\\.5"
@@ -423,13 +431,14 @@ sync:
         - "2\\.7\\.1"
         - "2\\.7\\.0"
         - "2\\.[0-6]\\.\\d+"
+        - "[0-1]\\..*"
   - source: ghcr.io/headlamp-k8s/headlamp
     target: registry.fritz.box/ghcr.io/headlamp-k8s/headlamp
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
         - "v0\\.39\\.0"
         - "v0\\.3[0-8].\\d+"
@@ -441,10 +450,10 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "0\\.\\d+\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+"
       deny:
-        - "0\\.31\\.0"
-        - "0\\.3[0]\\.\\d+"
+        - "0\\.32\\.0"
+        - "0\\.3[0-1]\\.\\d+"
         - "0\\.[1-2]\\d\\.\\d+"
         - "0\\.\\d\\.\\d+"
   - source: ghcr.io/immich-app/immich-machine-learning
@@ -454,11 +463,13 @@ sync:
     #   - linux/arm64 - image is already platform specific
     tags:
       allow:
-        - "v2\\.\\d+\\.\\d+-rknn"
+        - "v\\d+\\.\\d+\\.\\d+-rknn"
       deny:
+        - "v2\\.5\\.3-rknn"
         - "v2\\.5\\.2-rknn"
         - "v2\\.5\\.0-rknn"
         - "v2\\.[0-4]\\.\\d+-rknn"
+        - "v[0-1]\\..*"
   - source: ghcr.io/immich-app/immich-server
     target: registry.fritz.box/ghcr.io/immich-app/immich-server
     type: repository
@@ -466,11 +477,13 @@ sync:
       - linux/arm64
     tags:
       allow:
-        - "v2\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
+        - "v2\\.5\\.3"
         - "v2\\.5\\.2"
         - "v2\\.5\\.0"
         - "v2\\.[0-4]\\.\\d+"
+        - "v[0-1]\\..*"
   - source: ghcr.io/tensorchord/cloudnative-vectorchord
     target: registry.fritz.box/ghcr.io/tensorchord/cloudnative-vectorchord
     type: repository
@@ -486,7 +499,7 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "2\\.\\d+\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+"
       deny:
         - "2\\.20\\.6"
         - "2\\.20\\.5"
@@ -497,15 +510,17 @@ sync:
         - "2\\.20\\.0"
         - "2\\.1[0-9]\\.\\d+"
         - "2\\.\\d\\.\\d+"
+        - "[0-1]\\..*"
   - source: ghcr.io/stephanme/dnsmasq
     target: registry.fritz.box/ghcr.io/stephanme/dnsmasq
     type: repository
     tags:
       allow:
         - "latest"
-        - "2\\.\\d+"
+        - "\\d+\\.\\d+"
       deny: # <= 2.91
         - "2\\.9[0-1]"
+        - "[0-1]\\..*"
   - source: ghcr.io/stephanme/modbus_exporter
     target: registry.fritz.box/ghcr.io/stephanme/modbus_exporter
     type: repository
@@ -540,7 +555,7 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v2\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
         - "v2\\.1\\.14"
         - "v2\\.1\\.13"
@@ -549,6 +564,7 @@ sync:
         - "v2\\.1\\.10"
         - "v2\\.1\\.\\d"
         - "v2\\.0\\.\\d+"
+        - "v[0-1]\\..*"
   # quay.io
   - source: quay.io/kiwigrid/k8s-sidecar
     target: registry.fritz.box/quay.io/kiwigrid/k8s-sidecar
@@ -556,7 +572,7 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "2\\.\\d+\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+"
       deny:
         - "2\\.5\\.0"
         - "2\\.4\\.0"
@@ -566,14 +582,15 @@ sync:
         - "2\\.2\\.1"
         - "2\\.2\\.0"
         - "2\\.[0-1]\\.\\d+"
+        - "[0-1]\\..*"
   - source: quay.io/metallb/controller
     target: registry.fritz.box/quay.io/metallb/controller
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.15.2
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
         - "v0\\.15\\.3"
         - "v0\\.15\\.[0-2]"
         - "v0\\.1[0-4]\\.\\d+"
@@ -584,8 +601,8 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.15.2
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
         - "v0\\.15\\.3"
         - "v0\\.15\\.[0-2]"
         - "v0\\.1[0-4]\\.\\d+"
@@ -607,8 +624,9 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
+        - "v0\\.31\\.0"
         - "v0\\.30\\.1"
         - "v0\\.30\\.0"
         - "v0\\.[1-2]\\d\\.\\d+"
@@ -619,7 +637,7 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
         - "v0\\.28\\.0"
         - "v0\\.2[0-7]\\.\\d+"
@@ -631,30 +649,32 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v1\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
         - "v1\\.10\\.2"
         - "v1\\.10\\.1"
         - "v1\\.10\\.0"
         - "v1\\.\\d\\.\\d+"
+        - "v0\\..*"
   - source: quay.io/prometheus/prometheus
     target: registry.fritz.box/quay.io/prometheus/prometheus
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v3\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
         - "v3\\.9\\.1"
         - "v3\\.9\\.0"
         - "v3\\.[0-8]\\.\\d+"
+        - "v[0-2]\\..*"
   - source: quay.io/prometheus-operator/prometheus-config-reloader
     target: registry.fritz.box/quay.io/prometheus-operator/prometheus-config-reloader
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
         - "v0\\.88\\.1"
         - "v0\\.88\\.0"
@@ -667,7 +687,7 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
       deny:
         - "v0\\.88\\.1"
         - "v0\\.88\\.0"
@@ -693,32 +713,34 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v2\\.\\d+\\.\\d+"
-      deny: # <= v2.17.0
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
         - "v2\\.18\\.0"
         - "v2\\.1[0-7]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
+        - "v[0-1]\\..*"
   - source: registry.k8s.io/kubectl
     target: registry.fritz.box/registry.k8s.io/kubectl
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v1\\.\\d+\\.\\d+"
-      deny: # <= v1.34.1
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
         - "v1\\.35\\.0"
         - "v1\\.34\\.[0-3]"
         - "v1\\.3[0-3]\\.\\d+"
         - "v1\\.[1-2]\\d\\.\\d+"
         - "v1\\.\\d\\.\\d+"
+        - "v0\\..*"
   - source: registry.k8s.io/nfd/node-feature-discovery
     target: registry.fritz.box/registry.k8s.io/nfd/node-feature-discovery
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v0\\.\\d+\\.\\d+"
-      deny: # <= v0.18.2
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
         - "v0\\.18\\.3"
         - "v0\\.18\\.[0-2]"
         - "v0\\.1[0-7]\\.\\d+"
@@ -729,51 +751,51 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v2\\.\\d+\\.\\d+"
-      deny: # <= v2.15.0
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
         - "v2\\.15\\.0"
         - "v2\\.1[0-4]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
+        - "v[0-1]\\..*"
   - source: registry.k8s.io/sig-storage/csi-provisioner
     target: registry.fritz.box/registry.k8s.io/sig-storage/csi-provisioner
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v5\\.\\d+\\.\\d+"
-      deny: # <= v5.3.0
-        - "v5\\.3\\.0"
-        - "v5\\.[0-2]\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
+        - "v[0-5]\\..*"
   - source: registry.k8s.io/sig-storage/csi-resizer
     target: registry.fritz.box/registry.k8s.io/sig-storage/csi-resizer
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v1\\.\\d+\\.\\d+"
-      deny: # <= v1.14.0
-        - "v1\\.14\\.0"
-        - "v1\\.1[0-3]\\.\\d+"
-        - "v1\\.\\d\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
+        - "v[0-1]\\..*"
   - source: registry.k8s.io/sig-storage/livenessprobe
     target: registry.fritz.box/registry.k8s.io/sig-storage/livenessprobe
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v2\\.\\d+\\.\\d+"
-      deny: # <= v2.17.0
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
         - "v2\\.17\\.0"
         - "v2\\.1[0-6]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
+        - "v[0-1]\\..*"
   - source: registry.k8s.io/sig-storage/smbplugin
     target: registry.fritz.box/registry.k8s.io/sig-storage/smbplugin
     type: repository
     platforms: *x-platforms
     tags:
       allow:
-        - "v1\\.\\d+\\.\\d+"
-      deny: # <= v1.19.1
-        - "v1\\.19\\.[0-1]"
-        - "v1\\.1[0-8]\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+"
+      deny:
+        - "v1\\.20\\.0"
+        - "v1\\.1\\d\\.\\d+"
         - "v1\\.\\d\\.\\d+"
+        - "v0\\..*"
