@@ -5,7 +5,7 @@ namespace: default
 
 images:
 - name: nginx
-  newTag: 1.29.4-alpine-slim
+  newTag: 1.29.5-alpine-slim
 
 labels:
   - pairs:
