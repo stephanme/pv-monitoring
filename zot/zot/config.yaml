@@ -9,6 +9,16 @@ storage:
     delay: 24h
     policies:
       - repositories:
+          - "docker.io/gotenberg/gotenberg"
+          - "ghcr.io/home-assistant/home-assistant"
+        deleteReferrers: true
+        deleteUntagged: true
+        keepTags:
+          - mostRecentlyPushedCount: 1
+            mostRecentlyPulledCount: 1
+            pulledWithin: 168h  # 7d
+            pushedWithin: 168h
+      - repositories:
           - "**"
         deleteReferrers: true
         deleteUntagged: true
