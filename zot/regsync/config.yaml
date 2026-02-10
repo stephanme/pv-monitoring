@@ -6,6 +6,7 @@ x-platforms: &x-platforms
 x-longhorn-main-tags: &x-longhorn-main-tags
   allow:
     - "v\\d+\\.\\d+\\.\\d+"
+    - "v1.11.0-hotfix-1"
   deny:
     - "v1\\.11\\.0"
     - "v1\\.10\\.\\d+"

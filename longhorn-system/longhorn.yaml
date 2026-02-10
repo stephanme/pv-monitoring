@@ -13,6 +13,16 @@ spec:
   failurePolicy: abort
   valuesContent: |-
     # https://github.com/longhorn/longhorn/blob/master/chart/values.yaml
+    # https://github.com/longhorn/longhorn/releases/tag/v1.11.0 hotfix, addresses memory leak
+    image:
+      longhorn:
+        manager:
+          tag: v1.11.0-hotfix-1
+        instanceManager:
+          tag: v1.11.0-hotfix-1
+    preUpgradeChecker:
+      upgradeVersionCheck: false
+
     persistence:
       defaultClassReplicaCount: 2
       defaultDataLocality: best-effort
