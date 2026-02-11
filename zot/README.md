@@ -16,14 +16,16 @@ Goal is to minimize image pull times during updates or node failures even with l
 ## Image Pruning
 
 zot is configured to prune unused tags: see [zot config.json](./zot/config.json). As this may interfere with mirroring, the tag deny lists should be updated after new tags have been mirrored.
-However image pruning by zot seems not to work.
 
 Helper scripts for image maintenance:
 - `maintain-deny-list.sh` - adds all mirrored tags to the deny list. This prevents that unused and pruned images are mirrored again.
 `maintain-deny-list.sh` doesn't try to optimize the deny list regexps.
 - `check-unmirrored-images.sh` - lists images deployed to k8s but are not mirrored
-- `prune-old-images.sh [-p]` - prunes old/unused image tags. Image tags deployed to k8s and one older tag are kept (or at least 3 tags). 
+- `list-used-images.sh` - lists the images currently used by pods
+- `prune-old-images.sh [-p]` - prunes old/unused image tags. Image tags deployed to k8s and one older tag are kept (or at least 3 tags). Should not be needed.
 
 ## HA
 
 Zot uses a persistent volume and is not HA in the sense that it can use multiple replicas. In order to keep the failover time short and avoid zot image pulls from ghcr.io, zot images are pre-fetched to all nodes by a cronjob (every 6d). The cronjob must re-run within the `imageMaximumGCAge` time configured at the kubelet (7d).
+
+Its important to drain a node only when zot is not running on it. Otherwise the local registry shuts down when needed the most. [k3s-upgrade.yaml](../system-upgrade/k3s-upgrade.yaml) takes care of moving zot to a different node before draining.

@@ -9,13 +9,20 @@ storage:
     delay: 24h
     policies:
       - repositories:
-          - "docker.io/gotenberg/gotenberg"
-          - "ghcr.io/home-assistant/home-assistant"
+          # 2 versions needed for migration
+          - "docker.io/longhornio/longhorn-instance-manager"
+          - "docker.io/longhornio/longhorn-engine"
+          # images known to have fast updates and slow consumption
+          - "registry.k8s.io/kubectl"
+          - "quay.io/kiwigrid/k8s-sidecar"
+          - "rancher/mirrored-coredns-coredns"
+          # own images with a latest tag
+          - "ghcr.io/stephanme/*"
         deleteReferrers: true
         deleteUntagged: true
         keepTags:
-          - mostRecentlyPushedCount: 1
-            mostRecentlyPulledCount: 1
+          - mostRecentlyPushedCount: 2
+            mostRecentlyPulledCount: 2
             pulledWithin: 168h  # 7d
             pushedWithin: 168h
       - repositories:
@@ -23,8 +30,8 @@ storage:
         deleteReferrers: true
         deleteUntagged: true
         keepTags:
-          - mostRecentlyPushedCount: 2
-            mostRecentlyPulledCount: 2
+          - mostRecentlyPushedCount: 1
+            mostRecentlyPulledCount: 1
             pulledWithin: 168h  # 7d
             pushedWithin: 168h
 
