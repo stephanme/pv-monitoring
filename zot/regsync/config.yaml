@@ -399,7 +399,7 @@ sync:
         - "4\\.10[0-7]\\.\\d+"
         - "4\\.\\d\\d\\.\\d+"
         - "4\\.\\d\\.\\d+"
-        - "[0-4]\\..*"
+        - "[0-3]\\..*"
   - source: ghcr.io/hikhvar/mqtt2prometheus
     target: registry.fritz.box/ghcr.io/hikhvar/mqtt2prometheus
     type: repository
@@ -418,6 +418,7 @@ sync:
       allow:
         - "202\\d\\.\\d+\\.\\d+"
       deny:
+        - "2026\\.2\\.2"
         - "2026\\.2\\.1"
         - "2026\\.2\\.0"
         - "2026\\.1\\.\\d+"
@@ -430,6 +431,7 @@ sync:
       allow:
         - "\\d+\\.\\d+\\.\\d+"
       deny:
+        - "2\\.7\\.7"
         - "2\\.7\\.6"
         - "2\\.7\\.5"
         - "2\\.7\\.4"
@@ -559,7 +561,7 @@ sync:
       allow:
         - "latest"
         - "v\\d+"
-      deny: # <= v4
+      deny:
         - "v[0-5]"
   - source: ghcr.io/project-zot/zot
     target: registry.fritz.box/ghcr.io/project-zot/zot
@@ -777,7 +779,9 @@ sync:
       allow:
         - "v\\d+\\.\\d+\\.\\d+"
       deny:
+        - "v6\\.1\\.1"
         - "v6\\.1\\.0"
+        - "v6\\.0\\.1"
         - "v6\\.0\\.0"
         - "v[0-5]\\..*"
   - source: registry.k8s.io/sig-storage/csi-resizer
@@ -788,6 +792,7 @@ sync:
       allow:
         - "v\\d+\\.\\d+\\.\\d+"
       deny:
+        - "v2\\.1\\.0"
         - "v2\\.0\\.0"
         - "v[0-1]\\..*"
   - source: registry.k8s.io/sig-storage/livenessprobe

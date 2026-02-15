@@ -46,6 +46,19 @@
     },
     {
       "customType": "regex",
+      "description": "Update system-upgrade-controller version in kustomization remote resources",
+      "managerFilePatterns": [
+        "/system-upgrade\\/kustomization\\.yaml$/"
+      ],
+      "matchStrings": [
+        "https:\\/\\/github\\.com\\/rancher\\/system-upgrade-controller\\/releases\\/download\\/(?<currentValue>v\\d+\\.\\d+\\.\\d+)\\/(?:crd|system-upgrade-controller)\\.yaml"
+      ],
+      "datasourceTemplate": "github-releases",
+      "packageNameTemplate": "rancher/system-upgrade-controller",
+      "versioningTemplate": "semver-coerced"
+    },
+    {
+      "customType": "regex",
       "description": "Update k3s version in upgrade plans",
       "managerFilePatterns": [
         "/\\/k3s-upgrade\\.yaml$/"

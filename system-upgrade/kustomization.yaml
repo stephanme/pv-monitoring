@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: system-upgrade
+
+resources:
+# version is maintained by renovate custom manager
+- https://github.com/rancher/system-upgrade-controller/releases/download/v0.18.0/crd.yaml
+- https://github.com/rancher/system-upgrade-controller/releases/download/v0.18.0/system-upgrade-controller.yaml
+- k3s-upgrade.yaml
+
+patches:
+  - path: patch-default-controller-env.yaml
