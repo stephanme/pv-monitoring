@@ -5,7 +5,7 @@ namespace: kube-system
 
 images:
 - name: ghcr.io/stephanme/dnsmasq
-  newTag: "2.91"
+  newTag: "2.92"
 
 labels:
   - pairs:
