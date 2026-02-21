@@ -107,10 +107,10 @@ udevadm test $(udevadm info -q path -n /dev/disk/by-uuid/4baeb9e1-2fbd-4985-9ea7
 # Manual mount
 sudo /usr/local/bin/usb-backup-mount.sh
 # Set ACTION environment variable
-sudo ACTION=add DEVNAME=/dev/disk/by-uuid/4baeb9e1-2fbd-4985-9ea7-93fbf9f25589 /usr/local/bin/usb-backup-mount.sh
+sudo ACTION=add /usr/local/bin/usb-backup-mount.sh
 
 # Manual unmount
-sudo ACTION=remove DEVNAME=/dev/disk/by-uuid/4baeb9e1-2fbd-4985-9ea7-93fbf9f25589 /usr/local/bin/usb-backup-mount.sh
+sudo ACTION=remove /usr/local/bin/usb-backup-mount.sh
 ```
 
 ### Check logs
