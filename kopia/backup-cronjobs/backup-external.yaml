@@ -1,0 +1,124 @@
+# secondary backup on externalUSB drive
+# sources: kopia backup and longhorn backup
+# - longhorn: /srv/samba-private/backup/longhorn
+# - kopia: /srv/kopia/backup-repo
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-external
+spec:
+  # manual trigger only
+  schedule: "0 0 1 1 *"
+  timeZone: Europe/Berlin
+  suspend: true
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 3600  # 1h
+      template:
+        spec:
+          nodeSelector:
+            kubernetes.io/hostname: nasbox
+          securityContext:
+            # nasbox: id backup
+            # uid=1001(backup) gid=1001(backup) groups=1001(backup)
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+          restartPolicy: Never
+          containers:
+            - name: backup
+              image: ghcr.io/stephanme/toolbox
+              command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                date
+
+                # Check if USB backup drive is mounted
+                BACKUP_MOUNT="/media/backup/4baeb9e1-2fbd-4985-9ea7-93fbf9f25589"
+                if [ ! -d "$BACKUP_MOUNT" ]; then
+                  echo "ERROR: USB backup drive not mounted at $BACKUP_MOUNT"
+                  echo "Please ensure the USB drive is plugged in and auto-mounted by udisks2"
+                  exit 1
+                fi
+
+                # Verify mount point is actually mounted (not just an empty directory)
+                if ! mountpoint -q "$BACKUP_MOUNT" 2>/dev/null; then
+                  echo "ERROR: $BACKUP_MOUNT exists but is not a mount point"
+                  echo "Please ensure the USB drive is plugged in and auto-mounted by udisks2"
+                  exit 1
+                fi
+
+                echo "USB backup drive verified at $BACKUP_MOUNT"
+
+                # Perform longhorn backup
+                echo "Starting longhorn backup..."
+                rsync -a --delete --stats /srv/samba-private/backup/longhorn/ "$BACKUP_MOUNT/longhorn/"
+                echo "Longhorn backup completed successfully"
+
+                # Perform kopia repository sync
+                echo ""
+                echo "Starting kopia repository sync..."
+                SOURCE_REPO="/srv/kopia/backup-repo"
+                DEST_REPO="$BACKUP_MOUNT/kopia/backup-repo"
+                mkdir -p "$DEST_REPO"
+
+                # Connect to source repository and sync to destination
+                echo "Connecting to source repository at $SOURCE_REPO"
+                kopia repository connect filesystem --path="$SOURCE_REPO" --password="$KOPIA_PASSWORD" --readonly
+
+                echo "Syncing to destination repository at $DEST_REPO"
+                kopia repository sync-to filesystem --path="$DEST_REPO" --parallel=8
+
+                echo "Kopia repository sync completed successfully"
+
+                # Show disk space usage
+                echo ""
+                echo "USB backup drive disk space:"
+                df -h "$BACKUP_MOUNT"
+              env:
+                - name: USER
+                  value: backup
+                - name: KOPIA_CONFIG_PATH
+                  value: /app/config/repository.config
+                - name: KOPIA_CACHE_DIRECTORY
+                  value: /app/cache
+                - name: KOPIA_LOG_DIR
+                  value: /app/logs
+                - name: KOPIA_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: kopia-secrets
+                      key: KOPIA_PASSWORD
+                - name: KOPIA_CHECK_FOR_UPDATES
+                  value: "false"
+              volumeMounts:
+                - name: srv
+                  mountPath: /srv
+                  readOnly: true
+                - name: media
+                  mountPath: /media
+                - name: config
+                  mountPath: /app/config
+                - name: logs
+                  mountPath: /app/logs
+                - name: cache
+                  mountPath: /app/cache
+          volumes:
+            - name: config
+              emptyDir: {}
+            - name: logs
+              emptyDir: {}
+            - name: cache
+              emptyDir: {}
+            - name: srv
+              hostPath:
+                path: /srv
+                type: Directory
+            - name: media
+              hostPath:
+                path: /media
+                type: Directory

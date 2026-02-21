@@ -393,10 +393,9 @@ sync:
       allow:
         - "\\d+\\.\\d+\\.\\d+"
       deny:
-        - "4\\.108\\.2"
-        - "4\\.108\\.1"
-        - "4\\.108\\.0"
-        - "4\\.10[0-7]\\.\\d+"
+        - "4\\.109\\.2"
+        - "4\\.109\\.0"
+        - "4\\.10[0-8]\\.\\d+"
         - "4\\.\\d\\d\\.\\d+"
         - "4\\.\\d\\.\\d+"
         - "[0-3]\\..*"
@@ -431,14 +430,7 @@ sync:
       allow:
         - "\\d+\\.\\d+\\.\\d+"
       deny:
-        - "2\\.7\\.7"
-        - "2\\.7\\.6"
-        - "2\\.7\\.5"
-        - "2\\.7\\.4"
-        - "2\\.7\\.3"
-        - "2\\.7\\.2"
-        - "2\\.7\\.1"
-        - "2\\.7\\.0"
+        - "2\\.7\\.[0-8]"
         - "2\\.[0-6]\\.\\d+"
         - "[0-1]\\..*"
   - source: ghcr.io/headlamp-k8s/headlamp
@@ -515,13 +507,7 @@ sync:
       allow:
         - "\\d+\\.\\d+\\.\\d+"
       deny:
-        - "2\\.20\\.6"
-        - "2\\.20\\.5"
-        - "2\\.20\\.4"
-        - "2\\.20\\.3"
-        - "2\\.20\\.2"
-        - "2\\.20\\.1"
-        - "2\\.20\\.0"
+        - "2\\.20\\.[0-7]"
         - "2\\.1[0-9]\\.\\d+"
         - "2\\.\\d\\.\\d+"
         - "[0-1]\\..*"
@@ -532,7 +518,8 @@ sync:
       allow:
         - "latest"
         - "\\d+\\.\\d+"
-      deny: # <= 2.91
+      deny:
+        - "2\\.92"
         - "2\\.9[0-1]"
         - "[0-1]\\..*"
   - source: ghcr.io/stephanme/modbus_exporter
@@ -707,18 +694,17 @@ sync:
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   # registry.k8s.io
-  # - source: registry.k8s.io/descheduler/descheduler
-  #   target: registry.fritz.box/registry.k8s.io/descheduler/descheduler
-  #   type: repository
-  #   # platforms: *x-platforms
-  #   tags:
-  #     allow:
-  #       - "v0\\.\\d+\\.\\d+"
-  #     deny:
-  #       - "v0\\.34\\.0"
-  #       - "v0\\.3[0-3]\\.\\d+"
-  #       - "v0\\.[1-2]\\d\\.\\d+"
-  #       - "v0\\.\\d\\.\\d+"
+  - source: registry.k8s.io/descheduler/descheduler
+    target: registry.fritz.box/registry.k8s.io/descheduler/descheduler
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "v0\\.\\d+\\.\\d+"
+      deny:
+        - "v0\\.3[0-4]\\.\\d+"
+        - "v0\\.[1-2]\\d\\.\\d+"
+        - "v0\\.\\d\\.\\d+"
   - source: registry.k8s.io/kube-state-metrics/kube-state-metrics
     target: registry.fritz.box/registry.k8s.io/kube-state-metrics/kube-state-metrics
     type: repository
