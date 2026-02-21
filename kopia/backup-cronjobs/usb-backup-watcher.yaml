@@ -1,0 +1,152 @@
+---
+# ServiceAccount for the USB backup watcher
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: usb-backup-watcher
+  namespace: kopia
+---
+# Role with permissions to manage Jobs
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: usb-backup-watcher
+  namespace: kopia
+rules:
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get", "list", "create"]
+  - apiGroups: ["batch"]
+    resources: ["cronjobs"]
+    verbs: ["get"]
+---
+# RoleBinding to grant permissions to ServiceAccount
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: usb-backup-watcher
+  namespace: kopia
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: usb-backup-watcher
+subjects:
+  - kind: ServiceAccount
+    name: usb-backup-watcher
+    namespace: kopia
+---
+# ConfigMap containing the watcher script
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: usb-backup-watcher-script
+  namespace: kopia
+data:
+  watcher.sh: |
+    #!/bin/sh
+    set -e
+
+    MOUNT_PATH="/media/backup/4baeb9e1-2fbd-4985-9ea7-93fbf9f25589"
+    STATE_FILE="/state/usb-backup-watcher-state"
+    POLL_INTERVAL=300
+
+    echo "USB Backup Watcher started"
+    echo "Watching mount path: $MOUNT_PATH"
+    echo "Poll interval: ${POLL_INTERVAL}s"
+    echo ""
+
+    while true; do
+      # Check if mounted using mountpoint command (validates actual mount, not just directory)
+      if mountpoint -q "$MOUNT_PATH" 2>/dev/null; then
+        # Only trigger once per mount cycle
+        if [ ! -f "$STATE_FILE" ]; then
+          echo "$(date '+%Y-%m-%d %H:%M:%S') - USB backup drive mounted at $MOUNT_PATH"
+          echo "$(date '+%Y-%m-%d %H:%M:%S') - Checking for existing backup Jobs..."
+
+          # Check if backup Job already running/completed recently
+          if kubectl get jobs -n kopia -l cronjob=backup-external \
+              --field-selector status.successful!=1,status.failed!=1 2>/dev/null | grep -q backup-external; then
+            echo "$(date '+%Y-%m-%d %H:%M:%S') - Backup Job already running, skipping trigger"
+          else
+            # Create Job from CronJob template
+            JOB_NAME="backup-external-usb-$(date +%Y%m%d-%H%M%S)"
+            echo "$(date '+%Y-%m-%d %H:%M:%S') - Creating backup Job: $JOB_NAME"
+
+            if kubectl create job -n kopia "$JOB_NAME" --from=cronjob/backup-external; then
+              echo "$(date '+%Y-%m-%d %H:%M:%S') - ✓ Backup Job created successfully"
+              touch "$STATE_FILE"
+            else
+              echo "$(date '+%Y-%m-%d %H:%M:%S') - ✗ Failed to create backup Job"
+            fi
+          fi
+        fi
+      else
+        # Mount not present, clear state to allow re-trigger on next mount
+        if [ -f "$STATE_FILE" ]; then
+          echo "$(date '+%Y-%m-%d %H:%M:%S') - USB backup drive unmounted, resetting state"
+          rm -f "$STATE_FILE"
+        fi
+      fi
+
+      sleep $POLL_INTERVAL
+    done
+---
+# DaemonSet running the watcher on nasbox
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: usb-backup-watcher
+  namespace: kopia
+  labels:
+    app: usb-backup-watcher
+spec:
+  selector:
+    matchLabels:
+      app: usb-backup-watcher
+  template:
+    metadata:
+      labels:
+        app: usb-backup-watcher
+    spec:
+      serviceAccountName: usb-backup-watcher
+      nodeSelector:
+        kubernetes.io/hostname: nasbox
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+      containers:
+        - name: watcher
+          image: ghcr.io/stephanme/toolbox
+          securityContext:
+            allowPrivilegeEscalation: false
+          command:
+            - /bin/sh
+            - /scripts/watcher.sh
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            - name: media
+              mountPath: /media
+              readOnly: true
+            - name: scripts
+              mountPath: /scripts
+            - name: state
+              mountPath: /state
+      volumes:
+        - name: media
+          hostPath:
+            path: /media
+            type: Directory
+        - name: scripts
+          configMap:
+            name: usb-backup-watcher-script
+            defaultMode: 0755
+        - name: state
+          emptyDir: {}
