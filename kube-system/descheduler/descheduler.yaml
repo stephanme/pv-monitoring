@@ -26,14 +26,15 @@ spec:
       additionalLabels:
         release: prometheus
     deschedulerPolicy:
-      # TODO: use metrics server?
       profiles:
         - name: default
           pluginConfig:
             - name: DefaultEvictor
               args:
-                evictLocalStoragePods: true
                 nodeFit: true
+                podProtections:
+                  defaultDisabled:
+                  - "PodsWithLocalStorage"
             - name: RemoveDuplicates
             - name: RemovePodsHavingTooManyRestarts
               args:

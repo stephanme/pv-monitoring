@@ -356,8 +356,8 @@ sync:
       allow:
         - "v\\d+\\.\\d+\\.\\d+"
       deny:
-        - "v0\\.18\\.0"
-        - "v0\\.1[0-7]\\.\\d+"
+        - "v0\\.19\\.0"
+        - "v0\\.1[0-8]\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   - source: redis
     target: registry.fritz.box/docker.io/library/redis
@@ -417,6 +417,7 @@ sync:
       allow:
         - "202\\d\\.\\d+\\.\\d+"
       deny:
+        - "2026\\.2\\.3"
         - "2026\\.2\\.2"
         - "2026\\.2\\.1"
         - "2026\\.2\\.0"
@@ -694,14 +695,16 @@ sync:
         - "v0\\.[1-7]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
   # registry.k8s.io
+  # how to fix regsync issues: 
+  # regctl image copy registry.k8s.io/descheduler/descheduler:v0.35.0 registry.fritz.box/registry.k8s.io/descheduler/descheduler:v0.35.0
   - source: registry.k8s.io/descheduler/descheduler
     target: registry.fritz.box/registry.k8s.io/descheduler/descheduler
     type: repository
-    platforms: *x-platforms
     tags:
       allow:
         - "v0\\.\\d+\\.\\d+"
       deny:
+        - "v0\\.35\\.0"
         - "v0\\.3[0-4]\\.\\d+"
         - "v0\\.[1-2]\\d\\.\\d+"
         - "v0\\.\\d\\.\\d+"
@@ -753,8 +756,8 @@ sync:
       allow:
         - "v\\d+\\.\\d+\\.\\d+"
       deny:
-        - "v2\\.15\\.0"
-        - "v2\\.1[0-4]\\.\\d+"
+        - "v2\\.16\\.0"
+        - "v2\\.1[0-5]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
         - "v[0-1]\\..*"
   - source: registry.k8s.io/sig-storage/csi-provisioner
@@ -789,8 +792,8 @@ sync:
       allow:
         - "v\\d+\\.\\d+\\.\\d+"
       deny:
-        - "v2\\.17\\.0"
-        - "v2\\.1[0-6]\\.\\d+"
+        - "v2\\.18\\.0"
+        - "v2\\.1[0-7]\\.\\d+"
         - "v2\\.\\d\\.\\d+"
         - "v[0-1]\\..*"
   - source: registry.k8s.io/sig-storage/smbplugin
