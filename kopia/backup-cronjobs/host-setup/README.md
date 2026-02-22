@@ -24,18 +24,24 @@ sudo cp usb-backup-mount.sh /usr/local/bin/
 sudo chmod +x /usr/local/bin/usb-backup-mount.sh
 ```
 
-### 2. Copy the udev rule
+### 2. Copy the systemd service
+```bash
+sudo cp usb-backup-mount@.service /etc/systemd/system/
+```
+
+### 3. Copy the udev rule
 ```bash
 sudo cp 99-usb-backup-mount.rules /etc/udev/rules.d/
 ```
 
-### 3. Reload udev rules
+### 4. Reload systemd and udev
 ```bash
+sudo systemctl daemon-reload
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 ```
 
-### 4. Install safe eject script (optional but recommended)
+### 5. Install safe eject script (optional but recommended)
 ```bash
 sudo cp safe-eject-backup-drive.sh /usr/local/bin/
 sudo chmod +x /usr/local/bin/safe-eject-backup-drive.sh

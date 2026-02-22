@@ -9,6 +9,13 @@ images:
 - name: ghcr.io/stephanme/toolbox
   newTag: latest
 
+configMapGenerator:
+- name: usb-backup-watcher-script
+  files:
+  - watcher.sh
+  options:
+    disableNameSuffixHash: false
+
 resources:
 - secrets.yaml
 - backup-nasbox.yaml

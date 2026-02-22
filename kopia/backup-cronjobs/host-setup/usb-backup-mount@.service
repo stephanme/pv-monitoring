@@ -1,0 +1,9 @@
+[Unit]
+Description=Auto-mount USB backup drive %I
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+Environment="ACTION=%I"
+ExecStart=/usr/local/bin/usb-backup-mount.sh
+RemainAfterExit=no

@@ -1,5 +1,7 @@
 # Udev rule for auto-mounting USB backup drive
 # Place this file in /etc/udev/rules.d/99-usb-backup-mount.rules
 
-# Trigger mount script when USB drive with specific UUID is added or removed
-ACTION=="add|remove", ENV{ID_FS_UUID}=="4baeb9e1-2fbd-4985-9ea7-93fbf9f25589", RUN+="/usr/local/bin/usb-backup-mount.sh"
+# Trigger systemd service when USB drive with specific UUID is added or removed
+# Using TAG+="systemd" and ENV{SYSTEMD_WANTS} ensures proper permissions and execution context
+ACTION=="add", ENV{ID_FS_UUID}=="4baeb9e1-2fbd-4985-9ea7-93fbf9f25589", TAG+="systemd", ENV{SYSTEMD_WANTS}="usb-backup-mount@add.service"
+ACTION=="remove", ENV{ID_FS_UUID}=="4baeb9e1-2fbd-4985-9ea7-93fbf9f25589", TAG+="systemd", ENV{SYSTEMD_WANTS}="usb-backup-mount@remove.service"
