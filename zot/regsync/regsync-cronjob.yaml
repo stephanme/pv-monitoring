@@ -15,7 +15,7 @@ spec:
         spec:
           containers:
             - name: regsync
-              image: ghcr.io/stephanme/toolbox:latest
+              image: ghcr.io/stephanme/toolbox
               command:
               - /bin/sh
               - -c
@@ -72,7 +72,7 @@ spec:
         spec:
           containers:
             - name: regsync-latest
-              image: ghcr.io/stephanme/toolbox:latest
+              image: ghcr.io/stephanme/toolbox
               command:
               - /bin/sh
               - -c

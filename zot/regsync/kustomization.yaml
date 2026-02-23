@@ -3,6 +3,10 @@ kind: Kustomization
 
 namespace: zot
 
+images:
+- name: ghcr.io/stephanme/toolbox
+  newTag: v6
+
 configMapGenerator:
 - name: regsync-config
   files:
