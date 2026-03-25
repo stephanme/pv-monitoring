@@ -5,7 +5,7 @@ namespace: immich
 
 images:
 - name: redis
-  newTag: 8.6.1-alpine 
+  newTag: 8.6.2-alpine 
 
 labels:
   - pairs:
