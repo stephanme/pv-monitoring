@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: homeassistant
+
+images:
+- name: ghcr.io/hikhvar/mqtt2prometheus
+  newTag: "v0.1.7"
+
+labels:
+  - pairs:
+      app.kubernetes.io/instance: mqtt-exporter
+      app.kubernetes.io/name: mqtt-exporter
+    includeSelectors: true
+
+configMapGenerator:
+  - name: mqtt-exporter-config
+    files:
+      - config-broker.yaml
+      - config-shelly.yaml
+      - config-shelly25.yaml
+      - config-zigbee2mqtt.yaml
+      - config-zigbee2mqtt-availability.yaml
+      - config-shellygen4.yaml
+      - config-shellypm2gen4.yaml
+
+resources:
+- deployment.yaml

@@ -7,3 +7,4 @@ kubectl apply -f namespace.yaml
 kubectl apply -f $scriptdir
 
 ${scriptdir}/music-assistant/deploy.sh
+${scriptdir}/mqtt-exporter/deploy.sh

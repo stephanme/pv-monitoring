@@ -1,0 +1,156 @@
+mqtt:
+  # The MQTT broker to connect to, credentials go via env vars
+  server: tcp://mosquitto.homeassistant.svc.cluster.local:1883
+  client_id: broker-exporter
+  # subscribe to mosquitto metrics
+  topic_path: $SYS/broker/#
+  # Optional: Regular expression to extract the device ID from the topic path. The default regular expression, assumes
+  # that the last "element" of the topic_path is the device id.
+  # The regular expression must contain a named capture group with the name deviceid
+  # !! yaml and regexp escaping !!
+  device_id_regex: "\\$SYS/(?P<deviceid>broker)/.*"
+  # The MQTT QoS level
+  qos: 0
+  # Configures mqtt2prometheus to expect a single metric to be published as the value on an mqtt topic.
+  metric_per_topic_config:
+    # A regex used for extracting the metric name from the topic. Must contain a named group for `metricname`.
+    # metric name =
+    metric_name_regex: "\\$SYS/broker/(?P<metricname>.*)"
+cache:
+  # Timeout. Each received metric will be presented for this time if no update is send via MQTT.
+  # Set the timeout to -1 to disable the deletion of metrics from the cache. The exporter presents the ingest timestamp
+  # to prometheus.
+  timeout: -1
+# This is a list of valid metrics. Only metrics listed here will be exported
+metrics:
+  - prom_name: mqtt_bytes_received_total
+    mqtt_name: bytes/received
+    type: counter
+  - prom_name: mqtt_bytes_sent_total
+    mqtt_name: bytes/sent
+    type: counter
+
+  - prom_name: mqtt_clients_expired
+    mqtt_name: clients/expired
+    type: gauge
+  - prom_name: mqtt_clients_connected
+    mqtt_name: clients/connected
+    type: gauge
+  - prom_name: mqtt_clients_maximum
+    mqtt_name: clients/maximum
+    type: gauge
+  - prom_name: mqtt_clients_total
+    mqtt_name: clients/total
+    type: gauge
+
+  - prom_name: mqtt_messages_inflight
+    mqtt_name: messages/inflight
+    type: gauge
+  - prom_name: mqtt_messages_received_total
+    mqtt_name: messages/received
+    type: counter
+  - prom_name: mqtt_messages_sent_total
+    mqtt_name: messages/sent
+    type: counter
+
+  - prom_name: mqtt_publish_messages_dropped_total
+    mqtt_name: publish/messages/dropped
+    type: counter
+  - prom_name: mqtt_publish_messages_received_total
+    mqtt_name: publish/messages/received
+    type: counter
+  - prom_name: mqtt_publish_messages_sent_total
+    mqtt_name: publish/messages/sent
+    type: counter
+
+  - prom_name: mqtt_retained_messages_count
+    mqtt_name: "retained messages/count"
+    type: gauge
+
+  - prom_name: mqtt_store_messages_count
+    mqtt_name: store/messages/count
+    type: gauge
+  - prom_name: mqtt_store_messages_bytes
+    mqtt_name: store/messages/bytes
+    type: gauge
+
+  - prom_name: mqtt_subscriptions_count
+    mqtt_name: subscriptions/count
+    type: gauge
+
+  - prom_name: mqtt_load_messages_received_1min
+    mqtt_name: load/messages/received/1min
+    type: gauge
+  - prom_name: mqtt_load_messages_received_5min
+    mqtt_name: load/messages/received/5min
+    type: gauge
+  - prom_name: mqtt_load_messages_received_15min
+    mqtt_name: load/messages/received/15min
+    type: gauge
+  - prom_name: mqtt_load_messages_sent_1min
+    mqtt_name: load/messages/sent/1min
+    type: gauge
+  - prom_name: mqtt_load_messages_sent_5min
+    mqtt_name: load/messages/sent/5min
+    type: gauge
+  - prom_name: mqtt_load_messages_sent_15min
+    mqtt_name: load/messages/sent/15min
+    type: gauge
+
+  - prom_name: mqtt_load_publish_received_1min
+    mqtt_name: load/publish/received/1min
+    type: gauge
+  - prom_name: mqtt_load_publish_received_5min
+    mqtt_name: load/publish/received/5min
+    type: gauge
+  - prom_name: mqtt_load_publish_received_15min
+    mqtt_name: load/publish/received/15min
+    type: gauge
+  - prom_name: mqtt_load_publish_sent_1min
+    mqtt_name: load/publish/sent/1min
+    type: gauge
+  - prom_name: mqtt_load_publish_sent_5min
+    mqtt_name: load/publish/sent/5min
+    type: gauge
+  - prom_name: mqtt_load_publish_sent_15min
+    mqtt_name: load/publish/sent/15min
+    type: gauge
+
+  - prom_name: mqtt_load_bytes_received_1min
+    mqtt_name: load/bytes/received/1min
+    type: gauge
+  - prom_name: mqtt_load_bytes_received_5min
+    mqtt_name: load/bytes/received/5min
+    type: gauge
+  - prom_name: mqtt_load_bytes_received_15min
+    mqtt_name: load/bytes/received/15min
+    type: gauge
+  - prom_name: mqtt_load_bytes_sent_1min
+    mqtt_name: load/bytes/sent/1min
+    type: gauge
+  - prom_name: mqtt_load_bytes_sent_5min
+    mqtt_name: load/bytes/sent/5min
+    type: gauge
+  - prom_name: mqtt_load_bytes_sent_15min
+    mqtt_name: load/bytes/sent/15min
+    type: gauge
+
+  - prom_name: mqtt_load_connections_1min
+    mqtt_name: load/connections/1min
+    type: gauge
+  - prom_name: mqtt_load_connections_5min
+    mqtt_name: load/connections/5min
+    type: gauge
+  - prom_name: mqtt_load_connections_15min
+    mqtt_name: load/connections/15min
+    type: gauge
+
+  - prom_name: mqtt_load_sockets_1min
+    mqtt_name: load/sockets/1min
+    type: gauge
+  - prom_name: mqtt_load_sockets_5min
+    mqtt_name: load/sockets/5min
+    type: gauge
+  - prom_name: mqtt_load_sockets_15min
+    mqtt_name: load/sockets/15min
+    type: gauge

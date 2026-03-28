@@ -1,0 +1,288 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt-exporter-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+  template:
+    metadata:
+      labels:
+    spec:
+      containers:
+        - &mqtt-container
+          name: broker-exporter
+          # https://github.com/hikhvar/mqtt2prometheus/pkgs/container/mqtt2prometheus
+          image: ghcr.io/hikhvar/mqtt2prometheus
+          command:
+            - /mqtt2prometheus
+            - -listen-port
+            - "9641"
+            - -config
+            - /config/config-broker.yaml
+          env:
+            - name: MQTT2PROM_MQTT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mqtt-secrets
+                  key: user
+            - name: MQTT2PROM_MQTT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mqtt-secrets
+                  key: password
+          ports:
+            - containerPort: 9641
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+        - <<: *mqtt-container
+          name: shelly-exporter
+          command:
+            - /mqtt2prometheus
+            - -listen-port
+            - "9642"
+            - -config
+            - /config/config-shelly.yaml
+          ports:
+            - containerPort: 9642
+        - <<: *mqtt-container
+          name: shelly25-exporter
+          command:
+            - /mqtt2prometheus
+            - -listen-port
+            - "9643"
+            - -config
+            - /config/config-shelly25.yaml
+          ports:
+            - containerPort: 9643
+        - <<: *mqtt-container
+          name: zigbee2mqtt-exporter
+          command:
+            - /mqtt2prometheus
+            - -listen-port
+            - "9644"
+            - -config
+            - /config/config-zigbee2mqtt.yaml
+          ports:
+            - containerPort: 9644
+        - <<: *mqtt-container
+          name: zigbee2mqtt-availability-exporter
+          command:
+            - /mqtt2prometheus
+            - -listen-port
+            - "9645"
+            - -config
+            - /config/config-zigbee2mqtt-availability.yaml
+          ports:
+            - containerPort: 9645
+        - <<: *mqtt-container
+          name: shellygen4-exporter
+          command:
+            - /mqtt2prometheus
+            - -listen-port
+            - "9646"
+            - -config
+            - /config/config-shellygen4.yaml
+          ports:
+            - containerPort: 9646
+        - <<: *mqtt-container
+          name: shellypm2gen4-exporter
+          command:
+            - /mqtt2prometheus
+            - -listen-port
+            - "9647"
+            - -config
+            - /config/config-shellypm2gen4.yaml
+          ports:
+            - containerPort: 9647
+      volumes:
+        - name: config
+          configMap:
+            name: mqtt-exporter-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mqtt-exporter
+  labels:
+spec:
+  type: ClusterIP
+  selector:
+  ports:
+    - name: broker-metrics
+      protocol: TCP
+      port: 9641
+      targetPort: 9641
+    - name: shelly-metrics
+      protocol: TCP
+      port: 9642
+      targetPort: 9642
+    - name: shelly25-metrics
+      protocol: TCP
+      port: 9643
+      targetPort: 9643
+    - name: zigbee2mqtt-metrics
+      protocol: TCP
+      port: 9644
+      targetPort: 9644
+    - name: zigbee2mqtt-availability-metrics
+      protocol: TCP
+      port: 9645
+      targetPort: 9645
+    - name: shelly-metrics
+      protocol: TCP
+      port: 9642
+      targetPort: 9642
+    - name: shelly25-metrics
+      protocol: TCP
+      port: 9643
+      targetPort: 9643
+    - name: shellygen4-metrics
+      protocol: TCP
+      port: 9646
+      targetPort: 9646
+    - name: shellypm2gen4-metrics
+      protocol: TCP
+      port: 9647
+      targetPort: 9647
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: prometheus
+  name: mqtt-exporter
+spec:
+  selector:
+    matchLabels:
+  endpoints:
+    - path: /metrics
+      port: broker-metrics
+      # drop instance and pod from mqtt metrics (but not from other metrics)
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "mqtt_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "mqtt_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod
+    - path: /metrics
+      port: shelly-metrics
+      # drop instance and pod from shelly metrics
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod
+    - path: /metrics
+      port: shelly25-metrics
+      # drop instance and pod from shelly metrics
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod
+    - path: /metrics
+      port: zigbee2mqtt-metrics
+      # drop instance and pod from zigbee2mqtt metrics
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "z2m_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "z2m_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod
+    - path: /metrics
+      port: zigbee2mqtt-availability-metrics
+      # drop instance and pod from zigbee2mqtt metrics
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "z2m_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "z2m_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod
+    - path: /metrics
+      port: shellygen4-metrics
+      # drop instance and pod from shelly metrics
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod
+    - path: /metrics
+      port: shellypm2gen4-metrics
+      # drop instance and pod from shelly metrics
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+            - instance
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: instance
+        - sourceLabels:
+            - __name__
+            - pod
+          regex: "shelly_\\w*;.*"
+          action: replace
+          replacement: ""
+          targetLabel: pod

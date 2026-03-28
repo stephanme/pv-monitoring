@@ -1,0 +1,31 @@
+mqtt:
+  # The MQTT broker to connect to, credentials go via env vars
+  server: tcp://mosquitto.homeassistant.svc.cluster.local:1883
+  client_id: shelly25-exporter
+  # subscribe to mosquitto metrics
+  topic_path: shellies/+/roller/0/+
+  # Optional: Regular expression to extract the device ID from the topic path. The default regular expression, assumes
+  # that the last "element" of the topic_path is the device id.
+  # The regular expression must contain a named capture group with the name deviceid
+  # !! yaml and regexp escaping !!
+  device_id_regex: "shellies/(?P<deviceid>[^/]+)/.*"
+  # The MQTT QoS level
+  qos: 0
+  # Configures mqtt2prometheus to expect a single metric to be published as the value on an mqtt topic.
+  metric_per_topic_config:
+    # A regex used for extracting the metric name from the topic. Must contain a named group for `metricname`.
+    # metric name =
+    metric_name_regex: "shellies/(?P<deviceid>[^/]+)/roller/0/(?P<metricname>.*)"
+cache:
+  # Timeout. Each received metric will be presented for this time if no update is send via MQTT.
+  # Set the timeout to -1 to disable the deletion of metrics from the cache. The exporter presents the ingest timestamp
+  # to prometheus.
+  timeout: -1
+# This is a list of valid metrics. Only metrics listed here will be exported
+metrics:
+  - prom_name: shelly_position
+    mqtt_name: pos
+    type: gauge
+  - prom_name: shelly_power
+    mqtt_name: power
+    type: gauge

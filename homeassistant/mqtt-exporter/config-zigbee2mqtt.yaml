@@ -1,0 +1,39 @@
+mqtt:
+  # The MQTT broker to connect to, credentials go via env vars
+  server: tcp://mosquitto.homeassistant.svc.cluster.local:1883
+  client_id: zigbee2mqtt-exporter
+  # subscribe to zigbee2mqtt device topics
+  topic_path: zigbee2mqtt/+
+  # The MQTT QoS level
+  qos: 0
+cache:
+  # Timeout. Each received metric will be presented for this time if no update is send via MQTT.
+  # Set the timeout to -1 to disable the deletion of metrics from the cache. The exporter presents the ingest timestamp
+  # to prometheus.
+  timeout: -1
+# This is a list of valid metrics. Only metrics listed here will be exported
+metrics:
+  - prom_name: z2m_linkquality
+    mqtt_name: linkquality
+    omit_timestamp: true
+    type: gauge
+  - prom_name: z2m_temperature_celsius
+    mqtt_name: temperature
+    sensor_name_filter: "^thermometer_.*$"
+    omit_timestamp: true
+    type: gauge
+  - prom_name: z2m_humidity_percent
+    mqtt_name: humidity
+    sensor_name_filter: "^thermometer_.*$"
+    omit_timestamp: true
+    type: gauge
+  - prom_name: z2m_cover_position_percent
+    mqtt_name: position
+    sensor_name_filter: "^cover_.*$"
+    omit_timestamp: true
+    type: gauge
+  - prom_name: z2m_cover_tilt_percent
+    mqtt_name: tilt
+    sensor_name_filter: "^cover_.*$"
+    omit_timestamp: true
+    type: gauge
