@@ -20,4 +20,5 @@ configMapGenerator:
     disableNameSuffixHash: true
 
 resources:
+- secrets.yaml
 - regsync-cronjob.yaml

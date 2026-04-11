@@ -48,6 +48,9 @@ spec:
               volumeMounts:
                 - mountPath: "/etc/regsync"
                   name: regsync-config
+              envFrom:
+                - secretRef:
+                    name: regsync-secrets
           restartPolicy: Never
           volumes:
             - name: regsync-config
@@ -85,6 +88,9 @@ spec:
               volumeMounts:
                 - mountPath: "/etc/regsync"
                   name: regsync-config-latest
+              envFrom:
+                - secretRef:
+                    name: regsync-secrets
           restartPolicy: Never
           volumes:
             - name: regsync-config-latest

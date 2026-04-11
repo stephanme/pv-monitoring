@@ -16,6 +16,12 @@ x-longhorn-main-tags: &x-longhorn-main-tags
 creds:
   - registry: registry.fritz.box
     tls: disabled
+  - registry: ghcr.io
+    user: stephanme
+    pass: "${{ env:GHCR_TOKEN }}"
+  - registry: docker.io
+    user: stephanme
+    pass: "${{ env:DOCKERHUB_TOKEN }}"
 defaults:
   ratelimit:
     min: 10
