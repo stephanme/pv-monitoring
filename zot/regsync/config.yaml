@@ -18,10 +18,10 @@ creds:
     tls: disabled
   - registry: ghcr.io
     user: stephanme
-    pass: "${{ env:GHCR_TOKEN }}"
+    pass: '{{ env "GHCR_TOKEN" }}'
   - registry: docker.io
     user: stephanme
-    pass: "${{ env:DOCKERHUB_TOKEN }}"
+    pass: '{{ env "DOCKERHUB_TOKEN" }}'
 defaults:
   ratelimit:
     min: 10
@@ -406,6 +406,7 @@ sync:
       allow:
         - "202\\d\\.\\d+\\.\\d+"
       deny:
+        - "2026\\.4\\.2"
         - "2026\\.4\\.1"
         - "2026\\.4\\.0"
         - "2026\\.[1-3]\\.\\d+"
@@ -473,6 +474,7 @@ sync:
       allow:
         - "v\\d+\\.\\d+\\.\\d+"
       deny:
+        - "v2\\.7\\.4"
         - "v2\\.7\\.3"
         - "v2\\.7\\.2"
         - "v2\\.7\\.1"
