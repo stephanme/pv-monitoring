@@ -34,12 +34,13 @@ spec:
               value: '3003'
             - name: TZ
               value: Europe/Berlin
-            # Keeps image recognition and search model in memory for faster response times
-            - name: MACHINE_LEARNING_PRELOAD__CLIP
-              value: immich-app/ViT-L-16-SigLIP-384__webli
-            # Keeps face recognition model in memory for faster response times
-            - name: MACHINE_LEARNING_PRELOAD__FACIAL_RECOGNITION
-              value: immich-app/buffalo_l
+            # pi2 has 8 cores
+            - name: MACHINE_LEARNING_REQUEST_THREADS
+              value: "4"
+            # Keeps image search model in memory for faster response times
+            - name: MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL
+              # value: immich-app/ViT-L-16-SigLIP-384__webli
+              value: immich-app/ViT-SO400M-16-SigLIP2-384__webli
             - name: MACHINE_LEARNING_RKNN
               value: "true"
             - name: MACHINE_LEARNING_RKNN_THREADS 
@@ -55,10 +56,6 @@ spec:
             periodSeconds: 10
             # Allows up to 6h = 2160*10s for downloading new models (several GB)
             failureThreshold: 2160
-          readinessProbe:
-            httpGet:
-              port: http
-              path: /ping
           livenessProbe:
             httpGet:
               port: http
