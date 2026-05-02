@@ -1,0 +1,33 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: open-webui
+  namespace: ai
+spec:
+  # renovate: HelmChart
+  repo: https://helm.openwebui.com/
+  chart: open-webui
+  version: 14.2.0
+  targetNamespace: ai
+  timeout: 1h
+  failurePolicy: abort
+  valuesContent: |-
+    # https://github.com/open-webui/helm-charts/blob/main/charts/open-webui/values.yaml
+    ollama:
+      enabled: false
+    pipelines:
+      enabled: false
+    websocket:
+      enabled: false
+    image:
+      useSlim: true
+    ingress:
+      enabled: true
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+      host: open-webui.fritz.box
+    openaiBaseApiUrl: "http://pc02.fritz.box:13305/v1"
+    copyAppData:
+      # -- Open WebUI copy-app-data init container command (overrides default)
+      command: ["sh"]
+      args: ["-c", "echo \"copyAppData:  skipped\""]

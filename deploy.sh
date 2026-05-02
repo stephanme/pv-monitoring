@@ -16,3 +16,4 @@ $scriptdir/kopia/deploy.sh
 $scriptdir/default/deploy.sh
 $scriptdir/cnpg-system/deploy.sh
 $scriptdir/immich/deploy.sh
+$scriptdir/ai/deploy.sh

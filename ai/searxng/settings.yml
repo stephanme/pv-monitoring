@@ -1,0 +1,13 @@
+use_default_settings: true
+
+server:
+  # generate with: openssl rand -hex 32
+  secret_key: "changeme"
+  limiter: false
+  image_proxy: true
+  base_url: "http://search.fritz.box"
+
+search:
+  formats:
+    - html
+    - json

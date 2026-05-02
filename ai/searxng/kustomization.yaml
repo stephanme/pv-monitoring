@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: ai
+
+images:
+  # https://github.com/searxng/searxng/pkgs/container/searxng
+  - name: ghcr.io/searxng/searxng
+    newTag: 2026.5.2-cd75013c9
+
+labels:
+  - pairs:
+      app.kubernetes.io/name: searxng
+      app.kubernetes.io/instance: searxng
+    includeSelectors: true
+
+configMapGenerator:
+  - name: searxng-config
+    files:
+      - settings.yml
+
+resources:
+  - searxng.yaml
