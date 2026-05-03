@@ -27,7 +27,37 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: web
       host: open-webui.fritz.box
     openaiBaseApiUrl: "http://pc02.fritz.box:13305/v1"
+    extraEnvVars:
+      # prevent any local model downloads from Hugging Face
+      - name: OFFLINE_MODE
+        value: "true"
+      - name: HF_HUB_OFFLINE
+        value: "1"
+      # no timeout for model response
+      - name: AIOHTTP_CLIENT_TIMEOUT
+        value: ""
+      # STT via OpenAI-compatible API
+      - name: AUDIO_STT_ENGINE
+        value: "openai"
+      - name: AUDIO_STT_OPENAI_API_BASE_URL
+        value: "http://pc02.fritz.box:13305/v1"
+      - name: AUDIO_STT_OPENAI_API_KEY
+        value: "none"
+      # TTS via OpenAI-compatible API
+      - name: AUDIO_TTS_ENGINE
+        value: "openai"
+      - name: AUDIO_TTS_OPENAI_API_BASE_URL
+        value: "http://pc02.fritz.box:13305/v1"
+      - name: AUDIO_TTS_OPENAI_API_KEY
+        value: "none"
+      # RAG embedding via OpenAI-compatible API
+      - name: RAG_EMBEDDING_ENGINE
+        value: "openai"
+      - name: RAG_OPENAI_API_BASE_URL
+        value: "http://pc02.fritz.box:13305/v1"
+      - name: RAG_OPENAI_API_KEY
+        value: "none"
     copyAppData:
       # -- Open WebUI copy-app-data init container command (overrides default)
       command: ["sh"]
-      args: ["-c", "echo \"copyAppData:  skipped\""]
+      args: ["-c", "echo \"copyAppData: skipped\""]
