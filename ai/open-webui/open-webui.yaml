@@ -57,6 +57,8 @@ spec:
         value: "http://pc02.fritz.box:13305/v1"
       - name: RAG_OPENAI_API_KEY
         value: "none"
+      - name: RAG_SYSTEM_CONTEXT
+        value: "True"
     copyAppData:
       # -- Open WebUI copy-app-data init container command (overrides default)
       command: ["sh"]

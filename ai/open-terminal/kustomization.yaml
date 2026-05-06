@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: ai
+
+images:
+  # https://github.com/open-webui/open-terminal/pkgs/container/open-terminal
+  - name: ghcr.io/open-webui/open-terminal
+    newTag: 0.11.34-slim
+
+labels:
+  - pairs:
+      app.kubernetes.io/name: open-terminal
+      app.kubernetes.io/instance: open-terminal
+    includeSelectors: true
+
+resources:
+  - secrets.yaml
+  - open-terminal.yaml
