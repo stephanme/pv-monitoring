@@ -80,6 +80,7 @@ spec:
           name: kube-prometheus-stack-alertmanagerconfig
 
         externalUrl: "http://k3s.fritz.box/alertmanager/"
+        routePrefix: /alertmanager
         #    replicas: 3
         #    podAntiAffinity: "soft"
         storage:

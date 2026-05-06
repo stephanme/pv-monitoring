@@ -44,7 +44,6 @@ spec:
   - kind: Rule
     match: PathPrefix(`/alertmanager`)
     middlewares:
-    - name: prometheus-stripprefix
     - name: prometheus-compress
     services:
     - name: prometheus-kube-prometheus-alertmanager
@@ -76,7 +75,6 @@ spec:
     prefixes:
       - /prometheus-lt
       - /prometheus
-      - /alertmanager
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
