@@ -73,6 +73,16 @@
   ],
   "packageRules": [
     {
+      "description": "searxng uses date+commithash tags — compare only the date portion",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "ghcr.io/searxng/searxng"
+      ],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)"
+    },
+    {
       "description": "Ignore kopia versions that look like dates",
       "matchDatasources": [
         "docker"
