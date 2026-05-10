@@ -21,7 +21,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: open-terminal
-          image: ghcr.io/open-webui/open-terminal
+          image: ghcr.io/stephanme/custom-open-terminal
           ports:
             - name: http
               containerPort: 8000
@@ -32,6 +32,8 @@ spec:
                 secretKeyRef:
                   name: open-terminal-secrets
                   key: api-key
+            - name: OPEN_TERMINAL_MULTI_USER
+              value: "false"
           resources:
             requests:
               cpu: 10m
@@ -128,6 +130,7 @@ rules:
       - discovery.k8s.io
       - events.k8s.io
       - flowcontrol.apiserver.k8s.io
+      - helm.cattle.io
       - metrics.k8s.io
       - networking.k8s.io
       - node.k8s.io

@@ -5,8 +5,8 @@ namespace: ai
 
 images:
   # https://github.com/open-webui/open-terminal/pkgs/container/open-terminal
-  - name: ghcr.io/open-webui/open-terminal
-    newTag: 0.11.34-slim
+  - name: stephanme/custom-open-terminal
+    newTag: latest
 
 labels:
   - pairs:

@@ -34,3 +34,9 @@ sync:
     tags:
       allow:
         - "latest"
+  - source: ghcr.io/stephanme/custom-open-terminal
+    target: registry.fritz.box/ghcr.io/stephanme/custom-open-terminal
+    type: repository
+    tags:
+      allow:
+        - "latest"
