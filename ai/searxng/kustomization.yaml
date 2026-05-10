@@ -6,7 +6,7 @@ namespace: ai
 images:
   # https://github.com/searxng/searxng/pkgs/container/searxng
   - name: ghcr.io/searxng/searxng
-    newTag: 2026.5.7-ef6290c8c
+    newTag: 2026.5.10-df1f24fb7
 
 labels:
   - pairs:
