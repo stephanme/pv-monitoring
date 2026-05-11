@@ -22,6 +22,7 @@ spec:
       containers:
         - name: open-terminal
           image: ghcr.io/stephanme/custom-open-terminal
+          imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 8000
