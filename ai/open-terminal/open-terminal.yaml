@@ -35,6 +35,11 @@ spec:
                   key: api-key
             - name: OPEN_TERMINAL_MULTI_USER
               value: "false"
+            - name: GH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: open-terminal-secrets
+                  key: github-token
           resources:
             requests:
               cpu: 10m
