@@ -30,6 +30,7 @@ spec:
             - RaspiPhaseRelay
             - --car
             - SkodaCar
+            - --mqtt
             - --config
             - |-
               {
@@ -55,6 +56,11 @@ spec:
                   "user": "$(car_user)",
                   "password": "$(car_password)",
                   "vin": "$(car_vin)"
+                },
+                "mqtt": {
+                  "broker": "mosquitto.homeassistant.svc.cluster.local",
+                  "username": "$(mqtt_user)",
+                  "password": "$(mqtt_password)"
                 }
               }
             - --hostname
@@ -79,6 +85,16 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName              
+            - name: mqtt_user
+              valueFrom:
+                secretKeyRef:
+                  name: pvcontrol
+                  key: mqtt_user
+            - name: mqtt_password
+              valueFrom:
+                secretKeyRef:
+                  name: pvcontrol
+                  key: mqtt_password
           ports:
             - containerPort: 8080
           securityContext:
