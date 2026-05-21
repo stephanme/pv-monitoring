@@ -7,12 +7,14 @@ spec:
   # renovate: HelmChart
   repo: https://metallb.github.io/metallb
   chart: metallb
-  version: 0.15.3
+  version: 0.16.0
   targetNamespace: kube-system
   timeout: 10m
   failurePolicy: abort
   valuesContent: |-
     # https://github.com/metallb/metallb/blob/main/charts/metallb/values.yaml
+    frrk8s:
+      enabled: false
     prometheus:
       rbacPrometheus: false
       serviceMonitor:
