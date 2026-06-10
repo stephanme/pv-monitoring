@@ -8,11 +8,7 @@ x-longhorn-main-tags: &x-longhorn-main-tags
     - "v\\d+\\.\\d+\\.\\d+"
   deny:
     - "v1\\.12\\.0"
-    - "v1\\.11\\.2"
-    - "v1\\.11\\.1"
-    - "v1\\.11\\.0-hotfix-1"
-    - "v1\\.11\\.0"
-    - "v1\\.10\\.\\d+"
+    - "v1\\.1[0-1]\\.\\d+"
     - "v1\\.\\d\\.\\d+"
     - "v0\\..*"
 creds:
@@ -76,11 +72,12 @@ sync:
     tags:
       allow:
         - "\\d+\\.\\d+\\.\\d+"
+        - "\\d+\\.\\d+\\.\\d+-security-\\d+"
       deny:
         - "13\\.0\\.2"
         - "13\\.0\\.1"
         - "13\\.0\\.0"
-        - "1[0-2]\\.\\d+\\.\\d+"
+        - "1[0-2]\\.\\d+\\..*"
         - "\\d\\..*"
   - source: docker.io/jaymedh/fritzbox_smarthome_exporter
     target: registry.fritz.box/docker.io/jaymedh/fritzbox_smarthome_exporter
@@ -126,8 +123,8 @@ sync:
       allow:
         - "\\d+\\.\\d+\\.\\d+"
       deny:
-        - "2\\.11\\.0"
-        - "2\\.10\\.\\d+"
+        - "2\\.12\\.0"
+        - "2\\.1[0-1]\\.\\d+"
         - "2\\.\\d\\.\\d+"
         - "[0-1]\\..*"
   - source: docker.io/longhornio/longhorn-engine
@@ -186,11 +183,7 @@ sync:
         - "v\\d+\\.\\d+\\.\\d+-202[5-9]\\d+"
       deny:
         - "v4\\.12\\.0"
-        - "v4\\.11\\.0-20260514"
-        - "v4\\.11\\.0-20260428"
-        - "v4\\.11\\.0-20260401"
-        - "v4\\.11\\.0"
-        - "v4\\.10\\..*"
+        - "v4\\.1[0-1]\\..*"
         - "v4\\.\\d\\..*"
         - "v[0-3]\\..*"
   - source: docker.io/longhornio/csi-provisioner
@@ -224,12 +217,7 @@ sync:
         - "v\\d+\\.\\d+\\.\\d+-202[5-9]\\d+"
       deny:
         - "v2\\.17\\.0"
-        - "v2\\.16\\.0-20260514"
-        - "v2\\.16\\.0-20260508"
-        - "v2\\.16\\.0-20260428"
-        - "v2\\.16\\.0-20260401"
-        - "v2\\.16\\.0"
-        - "v2\\.1[0-5]\\..*"
+        - "v2\\.1[0-6]\\..*"
         - "v2\\.\\d\\..*"
         - "v[0-1]\\..*"
   - source: docker.io/longhornio/csi-resizer
@@ -272,12 +260,7 @@ sync:
         - "v\\d+\\.\\d+\\.\\d+-202[5-9]\\d+"
       deny:
         - "v2\\.19\\.0"
-        - "v2\\.18\\.0-20260514"
-        - "v2\\.18\\.0-20260508"
-        - "v2\\.18\\.0-20260428"
-        - "v2\\.18\\.0-20260401"
-        - "v2\\.18\\.0"
-        - "v2\\.1[0-7]\\..*"
+        - "v2\\.1[0-8]\\..*"
         - "v2\\.\\d\\..*"
         - "v[0-1]\\..*"
   - source: docker.io/rancher/klipper-helm
@@ -432,6 +415,7 @@ sync:
       allow:
         - "202\\d\\.\\d+\\.\\d+"
       deny:
+        - "2026\\.6\\.2"
         - "2026\\.6\\.1"
         - "2026\\.6\\.0"
         - "2026\\.[1-5]\\.\\d+"
@@ -696,12 +680,11 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v\\d+\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+-distroless"
       deny:
-        - "v1\\.11\\.1"
-        - "v1\\.11\\.0"
-        - "v1\\.10\\.\\d+"
-        - "v1\\.\\d\\.\\d+"
+        - "v1\\.11\\.0-distroless"
+        - "v1\\.10\\..*"
+        - "v1\\.\\d\\..*"
         - "v0\\..*"
   - source: quay.io/prometheus/prometheus
     target: registry.fritz.box/quay.io/prometheus/prometheus
@@ -709,11 +692,12 @@ sync:
     platforms: *x-platforms
     tags:
       allow:
-        - "v\\d+\\.\\d+\\.\\d+"
+        - "v\\d+\\.\\d+\\.\\d+-distroless"
       deny:
         - "v3\\.12\\.0"
-        - "v3\\.1[0-1]\\.\\d+"
-        - "v3\\.\\d\\.\\d+"
+        - "v3\\.12\\.0-distroless"
+        - "v3\\.1[0-1]\\..*"
+        - "v3\\.\\d\\..*"
         - "v[0-2]\\..*"
   - source: quay.io/prometheus-operator/prometheus-config-reloader
     target: registry.fritz.box/quay.io/prometheus-operator/prometheus-config-reloader
