@@ -151,6 +151,7 @@ spec:
               - 'nibegw_relay_state'
               - 'z2m_temperature_celsius'
               - 'z2m_humidity_percent'
+              - 'fritzbox_temperature'
 
     additionalPrometheusRulesMap:
       prometheus-lt.rules:
@@ -168,7 +169,7 @@ spec:
         - name: scrape.rules
           rules:
           - alert: ScrapeError
-            expr: scrape_samples_scraped{service="prometheus-kube-prometheus-prometheus"} < 125
+            expr: scrape_samples_scraped{service="prometheus-kube-prometheus-prometheus"} < 200
             for: 30m
             labels:
               severity: critical
