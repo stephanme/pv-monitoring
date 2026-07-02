@@ -51,6 +51,9 @@ spec:
               envFrom:
                 - secretRef:
                     name: regsync-secrets
+              env:
+                - name: GODEBUG
+                  value: "http2client=0"
           restartPolicy: Never
           volumes:
             - name: regsync-config
@@ -91,6 +94,9 @@ spec:
               envFrom:
                 - secretRef:
                     name: regsync-secrets
+              env:
+                - name: GODEBUG
+                  value: "http2client=0"
           restartPolicy: Never
           volumes:
             - name: regsync-config-latest

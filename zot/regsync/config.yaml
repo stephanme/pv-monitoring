@@ -2,7 +2,6 @@ version: 1
 x-platforms: &x-platforms
   - linux/amd64
   - linux/arm64
-  - unknown/unknown
 x-longhorn-main-tags: &x-longhorn-main-tags
   allow:
     - "v\\d+\\.\\d+\\.\\d+"
@@ -14,6 +13,9 @@ x-longhorn-main-tags: &x-longhorn-main-tags
 creds:
   - registry: registry.fritz.box
     tls: disabled
+    # prevent giant blobs uploaded with one PUT, runs into zot http timeout
+    blobChunk: 10485760 # 10 MiB per PATCH
+    blobMax: 52428800 # >50 MiB goes chunked from the start
   - registry: ghcr.io
     user: stephanme
     pass: '{{ env "GHCR_TOKEN" }}'
@@ -234,6 +236,7 @@ sync:
         - "v\\d+\\.\\d+\\.\\d+"
         - "v\\d+\\.\\d+\\.\\d+-202[5-9]\\d+"
       deny:
+        - "v2\\.2\\.1"
         - "v2\\.2\\.0"
         - "v2\\.1\\.0-20260514"
         - "v2\\.1\\.0-20260428"
@@ -416,12 +419,8 @@ sync:
       allow:
         - "202\\d\\.\\d+\\.\\d+"
       deny:
-        - "2026\\.6\\.4"
-        - "2026\\.6\\.3"
-        - "2026\\.6\\.2"
-        - "2026\\.6\\.1"
-        - "2026\\.6\\.0"
-        - "2026\\.[1-5]\\.\\d+"
+        - "2026\\.7\\.0"
+        - "2026\\.[1-6]\\.\\d+"
         - "202[0-5]\\..*"
   - source: ghcr.io/music-assistant/server
     target: registry.fritz.box/ghcr.io/music-assistant/server
@@ -431,6 +430,7 @@ sync:
       allow:
         - "\\d+\\.\\d+\\.\\d+"
       deny:
+        - "2\\.9\\.5"
         - "2\\.9\\.4"
         - "2\\.9\\.3"
         - "2\\.9\\.2"
@@ -516,6 +516,8 @@ sync:
       allow:
         - "\\d+\\.\\d+\\.\\d+-slim"
       deny:
+        - "0\\.10\\.2-slim"
+        - "0\\.10\\.1-slim"
         - "0\\.10\\.0-slim"
         - "0\\.\\d\\.\\d+-slim"
   - source: ghcr.io/stephanme/custom-open-terminal
@@ -613,6 +615,7 @@ sync:
       allow:
         - "\\d+\\.\\d+\\.\\d+"
       deny:
+        - "2\\.8\\.1"
         - "2\\.8\\.0"
         - "2\\.[0-7]\\.\\d+"
         - "[0-1]\\..*"
@@ -686,8 +689,8 @@ sync:
       allow:
         - "v\\d+\\.\\d+\\.\\d+-distroless"
       deny:
-        - "v3\\.12\\.0-distroless"
-        - "v3\\.1[0-1]\\..*"
+        - "v3\\.13\\.0-distroless"
+        - "v3\\.1[0-2]\\..*"
         - "v3\\.\\d\\..*"
         - "v[0-2]\\..*"
   - source: quay.io/prometheus-operator/prometheus-config-reloader
