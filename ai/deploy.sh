@@ -4,6 +4,7 @@ set -ex
 scriptdir=$(dirname "$0")
 
 kubectl apply -f $scriptdir/namespace.yaml
+kubectl apply -f $scriptdir/lemonade.yaml
 
 $scriptdir/open-terminal/deploy.sh
 $scriptdir/open-webui/deploy.sh

@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: lemonade
+  namespace: ai
+  labels:
+    release: prometheus
+spec:
+  staticConfigs:
+    - targets:
+        - pc02.fritz.box:13305
+  metricsPath: /metrics
