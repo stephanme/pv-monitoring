@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: paperless-ngx
-        image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
+        image: ghcr.io/paperless-ngx/paperless-ngx:3.0.4
 
         env:
         - name: TZ
@@ -33,9 +33,9 @@ spec:
           value: Europe/Berlin
         - name: PAPERLESS_OCR_LANGUAGE
           value: deu+eng
-        - name: PAPERLESS_OCR_SKIP_ARCHIVE_FILE
-          value: always
-        - name: PAPERLESS_CONSUMER_POLLING  # inotify seems not working with samba
+        - name: PAPERLESS_ARCHIVE_FILE_GENERATION
+          value: never
+        - name: CONSUMER_POLLING_INTERVAL  # inotify seems not working with samba
           value: "10"
         - name: PAPERLESS_CONSUMER_ENABLE_ASN_BARCODE
           value: "1"
