@@ -7,7 +7,7 @@ spec:
   # renovate: HelmChart
   repo: https://helm.openwebui.com/
   chart: open-webui
-  version: 15.2.1
+  version: 16.0.0
   targetNamespace: ai
   timeout: 1h
   failurePolicy: abort
