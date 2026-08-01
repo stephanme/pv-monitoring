@@ -73,6 +73,41 @@ spec:
       - 192.168.178.11
       - 192.168.178.12
 
+    # kubelet monitoring - drop IPv6 targets (fix for non dual-stack clusters with k3s)
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        # Default relabeling to preserve metrics_path label (required for upstream rules/dashboards)
+        # Drop IPv6 targets - they show up=0 as kubelet doesn't listen on IPv6
+        relabelings:
+          - action: replace
+            sourceLabels: [__metrics_path__]
+            targetLabel: metrics_path
+          - action: drop
+            sourceLabels: [__address__]
+            regex: '\[.*\].*'
+        cAdvisorRelabelings:
+          - action: replace
+            sourceLabels: [__metrics_path__]
+            targetLabel: metrics_path
+          - action: drop
+            sourceLabels: [__address__]
+            regex: '\[.*\].*'
+        probesRelabelings:
+          - action: replace
+            sourceLabels: [__metrics_path__]
+            targetLabel: metrics_path
+          - action: drop
+            sourceLabels: [__address__]
+            regex: '\[.*\].*'
+        resourceRelabelings:
+          - action: replace
+            sourceLabels: [__metrics_path__]
+            targetLabel: metrics_path
+          - action: drop
+            sourceLabels: [__address__]
+            regex: '\[.*\].*'
+
     alertmanager:
       alertmanagerSpec:
         # see alertmanagerconfig.yml
