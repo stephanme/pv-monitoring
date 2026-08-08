@@ -52,7 +52,7 @@ spec:
           startupProbe:
             initialDelaySeconds: 5
             periodSeconds: 10
-            failureThreshold: 3
+            failureThreshold: 6
             httpGet:
               path: /v2/
               port: 5000
