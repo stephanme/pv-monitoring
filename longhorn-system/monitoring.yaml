@@ -16,6 +16,30 @@ spec:
   endpoints:
   - port: manager
 ---
+# needed for longhorn v1.12.1: https://longhorn.io/docs/1.12.1/important-notes/#internal-network-policies
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-prometheus-to-longhorn-manager
+  namespace: longhorn-system
+spec:
+  podSelector:
+    matchLabels:
+      app: longhorn-manager
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: monitoring
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: prometheus
+      ports:
+        - protocol: TCP
+          port: 9500
+---
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
