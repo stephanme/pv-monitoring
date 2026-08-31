@@ -20,6 +20,19 @@ spec:
         app.kubernetes.io/name: zot
         app.kubernetes.io/instance: zot
     spec:
+      affinity:
+        nodeAffinity:
+          # prefer nodes with pre-fetched zot image
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - nasbox
+                      - pi1
+                      - pi2
       containers:
         - name: zot
           image: ghcr.io/project-zot/zot
