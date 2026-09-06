@@ -40,3 +40,9 @@ sync:
     tags:
       allow:
         - "latest"
+  - source: ghcr.io/searxng/searxng
+    target: registry.fritz.box/ghcr.io/searxng/searxng
+    type: repository
+    tags:
+      allow:
+        - "latest"

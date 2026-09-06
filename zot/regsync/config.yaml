@@ -555,7 +555,7 @@ sync:
   - source: ghcr.io/searxng/searxng
     target: registry.fritz.box/ghcr.io/searxng/searxng
     type: repository
-    platforms: *x-platforms
+    # platforms: *x-platforms
     tags:
       allow:
         - "latest"
