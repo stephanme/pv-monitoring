@@ -53,6 +53,14 @@ sync:
         - "2\\.0\\.1\\d"
         - "2\\.0\\.\\d"
         - "[0-1]\\..*"
+  - source: docker.io/library/busybox
+    target: registry.fritz.box/docker.io/library/busybox
+    type: repository
+    platforms: *x-platforms
+    tags:
+      allow:
+        - "latest"
+      deny: []
   - source: docker.io/gotenberg/gotenberg
     target: registry.fritz.box/docker.io/gotenberg/gotenberg
     type: repository
