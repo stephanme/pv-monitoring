@@ -36,10 +36,15 @@ Exit codes: `0` = mergeable, `1` = NOT mergeable, `2` = tooling/usage error.
      extracts the resulting `image:` references (this is what actually gets
      deployed, including default tags derived from `appVersion`).
    - **plain manifests**: extracts every `image:` key with `yq`.
-3. Normalizes each image (default registry `docker.io`, `library/` prefix,
-   `latest` fallback) and checks the mirror path
+3. Normalizes each image (default registry `docker.io`, `library/` prefix for
+   Docker official images, `latest` fallback) and checks the mirror path
    `registry.fritz.box/<registry>/<repo>:<tag>` with
    `regctl manifest head --platform <arch>`.
+   - Docker official images: a bare name under `docker.io` implicitly means
+     `library/`, so `docker.io/busybox:latest` **is** `docker.io/library/busybox:latest`.
+     The script checks the normalised `library/` path first and also tries the
+     bare path as an alias; if either has all required arches the image is `OK`.
+     Never report a bare/`library/` mismatch as a missing mirror.
 4. Reports `OK` / `MISSING` per image and a final `MERGEABLE` / `NOT mergeable`
    verdict.
 

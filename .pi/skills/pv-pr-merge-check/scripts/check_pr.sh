@@ -57,11 +57,36 @@ normalize_image() {
   else
     registry="docker.io"
     repo="${img%%:*}"
-    [[ "$repo" != */* ]] && repo="library/$repo"
   fi
+  # Docker official images: a bare name under docker.io implicitly means library/,
+  # i.e. docker.io/busybox and docker.io/library/busybox are the same image.
+  case "$registry" in
+    docker.io|index.docker.io|registry-1.docker.io)
+      [[ "$repo" != */* ]] && repo="library/$repo"
+      ;;
+  esac
   tag="${img##*:}"
   [[ "$img" == "$tag" ]] && tag="latest"
   echo "$registry $repo:$tag"
+}
+
+# mirror_candidates <image> -> one mirror path per line to try.
+# The normalised path first; for docker.io official images also the bare
+# (non-library/) path, so a mirror stored either way counts as present.
+mirror_candidates() {
+  local img="$1" registry repo_tag bare
+  read -r registry repo_tag <<< "$(normalize_image "$img")"
+  if [[ "$registry" == "$MIRROR" ]]; then
+    echo "$img"
+    return
+  fi
+  echo "$MIRROR/$registry/$repo_tag"
+  case "$registry" in
+    docker.io|index.docker.io|registry-1.docker.io)
+      bare="${repo_tag#library/}"
+      [[ "$bare" != "$repo_tag" ]] && echo "$MIRROR/$registry/$bare"
+      ;;
+  esac
 }
 
 # ------------------------------------------------------------------- PR ----
@@ -156,25 +181,37 @@ echo "Checking mirror $MIRROR (arches: $ARCHES) ..."
 missing=0
 checked=0
 while read -r img; do
-  read -r registry repo_tag <<< "$(normalize_image "$img")"
-  if [[ "$registry" == "$MIRROR" ]]; then
-    mirror_img="$img"          # already pointing at the mirror
-  else
-    mirror_img="$MIRROR/$registry/$repo_tag"
-  fi
-  arch_missing=()
-  for arch in $ARCHES; do
-    checked=$((checked+1))
-    if ! regctl manifest head --platform "$arch" "$mirror_img" >/dev/null 2>&1; then
-      arch_missing+=("$arch")
+  mapfile -t candidates < <(mirror_candidates "$img")
+  checked=$((checked+1))
+  found="" tried="" best_hit="" best_missing=999 best_missing_list=""
+  for cand in "${candidates[@]}"; do
+    arch_missing=()
+    for arch in $ARCHES; do
+      if ! regctl manifest head --platform "$arch" "$cand" >/dev/null 2>&1; then
+        arch_missing+=("$arch")
+      fi
+    done
+    if [[ ${#arch_missing[@]} -eq 0 ]]; then
+      found="$cand"
+      break
+    fi
+    tried="$tried $cand"
+    if (( ${#arch_missing[@]} < best_missing )); then
+      best_missing=${#arch_missing[@]}
+      best_hit="$cand"
+      best_missing_list="${arch_missing[*]}"
     fi
   done
-  if [[ ${#arch_missing[@]} -gt 0 ]]; then
+  if [[ -n "$found" ]]; then
+    echo "  OK       $img  ->  $found"
+  else
     missing=$((missing+1))
     echo "  MISSING  $img"
-    echo "           -> $mirror_img  [${arch_missing[*]}]"
-  else
-    echo "  OK       $img  ->  $mirror_img"
+    echo "           -> $best_hit  [missing: $best_missing_list]"
+    for cand in $tried; do
+      [[ "$cand" == "$best_hit" ]] && continue
+      echo "           (also tried $cand)"
+    done
   fi
 done <<< "$images"
 
@@ -184,6 +221,6 @@ if [[ $missing -gt 0 ]]; then
   echo "Trigger the regsync job (zot namespace) or mirror them manually first."
   exit 1
 else
-  echo "RESULT: MERGEABLE — all $checked image/arch checks passed on $MIRROR."
+  echo "RESULT: MERGEABLE — all $checked image(s) present on $MIRROR for all required architectures."
   exit 0
 fi
