@@ -75,6 +75,9 @@ Exit codes: `0` = mergeable, `1` = NOT mergeable, `2` = tooling/usage error.
 - A differing top-level index digest between mirror and upstream is normal here
   (the regsync job recreates index manifests via `regctl index create`);
   per-architecture manifest digests are what must match upstream.
+- Mirrored image versions are usually denied in `zot/regsync/config.yaml` so that regsync
+  doesn't mirror them again once a version was gc'ed. regsync garbage collects
+  image versions and keeps only the latest pushed and pulled image version.
 
 ## Rules
 

@@ -24,6 +24,16 @@ spec:
         forceConflicts: true
 
     # etcd monitoring. See https://github.com/cablespaghetti/k3s-monitoring/issues/4
+    #
+    # k3s serves its merged metrics registry on every component port (6443, 2381, 10249, 10250,
+    # 10257, 10259), so every component port exposes the union of all component metrics.
+    # The drop_* anchors below are per-component deny-lists: a metric family is dropped from every
+    # k3s job except the job of the component that provably emits it. Families that are genuinely
+    # emitted by several components (workqueue_*, rest_client_*, go_*, process_*, leaderelection_*,
+    # component-base counters, k3s_*, ...) are kept on every job.
+    # Verified against installed Grafana dashboards and alert/recording rules: every job-filtered
+    # consumer keeps its data (e.g. scheduler recording rules use job="kube-scheduler",
+    # KubeAggregatedAPIErrors/KubeClientErrors use job="apiserver", kubelet rules use job="kubelet").
     kubeEtcd:
       enabled: true
       endpoints:
@@ -33,7 +43,64 @@ spec:
       service:
         enabled: true
         port: 2381
-        targetPort: 2381      
+        targetPort: 2381
+      serviceMonitor:
+        metricRelabelings:
+          # kube-apiserver metrics - kept only in the apiserver job
+          - &drop_apiserver_metrics
+            action: drop
+            sourceLabels: [__name__]
+            regex: 'apiserver_.*'
+          # unused etcd client histograms emitted by kube-apiserver - dropped everywhere (not even kept in the apiserver job)
+          - &drop_unused_etcd_histograms
+            action: drop
+            sourceLabels: [__name__]
+            regex: 'etcd_request_duration_seconds.*'
+          # metrics emitted by the kube-apiserver library layers (authn/authz, aggregator, watch cache,
+          # embedded etcd client, ...) - kept only in the apiserver job
+          - &drop_apiserver_layer_metrics
+            action: drop
+            sourceLabels: [__name__]
+            regex: 'aggregator_.*|authentication_.*|authorization_.*|authenticated_user_requests|session_server_.*|etcd_requests_total|etcd_bookmark_total|etcd_admission_.*|watch_cache_.*|kubernetes_feature_enabled|apiextensions_.*|field_validation_request_duration_seconds.*|node_authorizer_.*'
+          # kube-scheduler metrics - kept only in the kube-scheduler job
+          - &drop_scheduler_metrics
+            action: drop
+            sourceLabels: [__name__]
+            regex: 'scheduler_.*'
+          # kube-proxy metrics (kube-router is k3s' kube-proxy) - kept only in the kube-proxy job
+          - &drop_kube_proxy_metrics
+            action: drop
+            sourceLabels: [__name__]
+            regex: 'kubeproxy_.*|kube_router_.*'
+          # kubelet metrics - kept only in the kubelet job
+          - &drop_kubelet_metrics
+            action: drop
+            sourceLabels: [__name__]
+            regex: 'kubelet_.*|volume_manager_.*|plugin_manager_.*|storage_operation_duration_seconds.*|csi_operations.*|volume_operation_total_seconds.*'
+          # kube-controller-manager metrics - kept only in the kube-controller-manager job
+          - &drop_kube_controller_manager_metrics
+            action: drop
+            sourceLabels: [__name__]
+            regex: '(attachdetach_controller|cloud_node_lifecycle_controller|cronjob_controller|daemonset_controller|device_taint_eviction_controller|endpoint_slice_controller|endpoint_slice_mirroring_controller|ephemeral_volume_controller|garbagecollector_controller|horizontal_pod_autoscaler_controller|job_controller|node_controller|node_ipam_controller|replicaset_controller|statefulset_controller|ttl_after_finished_controller|taint_eviction_controller)_.*|pod_gc_collector_.*|pv_collector_.*|node_collector_.*|root_ca_cert_publisher_.*|clustertrustbundle_publisher_.*|retroactive_storageclass.*|force_cleaned_failed_volume_operation.*|reconstruct_volume_operation.*|storage_count_attachable_volumes_in_use|running_managed_controllers|kube_apiserver_nodeport_allocator_.*'
+
+    # kube-apiserver metrics are scraped once, via this monitor only.
+    # This job keeps apiserver_* and the apiserver-owned etcd/aggregator/authn-authz families and
+    # drops everything the other k3s components emit (see drop_* anchors on kubeEtcd above).
+    # etcd_request_duration_seconds_* is the biggest family in the TSDB (132k series) and is referenced by
+    # no dashboard, no alert rule and no recording rule here, so it is dropped everywhere.
+    kubeApiServer:
+      serviceMonitor:
+        metricRelabelings:
+          # chart default - must be re-declared when overriding ("drop excessively noisy apiserver buckets")
+          - &drop_noisy_apiserver_buckets
+            action: drop
+            sourceLabels: [__name__, le]
+            regex: '(etcd_request|apiserver_request_slo|apiserver_request_sli|apiserver_request)_duration_seconds_bucket;(0\.15|0\.2|0\.3|0\.35|0\.4|0\.45|0\.6|0\.7|0\.8|0\.9|1\.25|1\.5|1\.75|2|3|3\.5|4|4\.5|6|7|8|9|15|20|40|45|50)(\.0)?'
+          - *drop_unused_etcd_histograms
+          - *drop_scheduler_metrics
+          - *drop_kube_proxy_metrics
+          - *drop_kubelet_metrics
+          - *drop_kube_controller_manager_metrics
 
     # Need special config for controller, scheduler and proxy for k3s
     # https://github.com/k3s-io/k3s/issues/3619#issuecomment-973188304
@@ -52,6 +119,14 @@ spec:
         enabled: true
         https: true
         insecureSkipVerify: true
+        # k3s serves the merged control-plane registry on 10257 -> drop every other component's metrics
+        metricRelabelings:
+          - *drop_apiserver_metrics
+          - *drop_unused_etcd_histograms
+          - *drop_apiserver_layer_metrics
+          - *drop_scheduler_metrics
+          - *drop_kube_proxy_metrics
+          - *drop_kubelet_metrics
     kubeScheduler:
       enabled: true
       endpoints:
@@ -66,17 +141,48 @@ spec:
         enabled: true
         https: true
         insecureSkipVerify: true
+        # k3s serves the merged control-plane registry on 10259 -> drop every other component's metrics
+        metricRelabelings:
+          - *drop_apiserver_metrics
+          - *drop_unused_etcd_histograms
+          - *drop_apiserver_layer_metrics
+          - *drop_kube_proxy_metrics
+          - *drop_kubelet_metrics
+          - *drop_kube_controller_manager_metrics
     kubeProxy:
       enabled: true
       endpoints:
       - 192.168.178.10
       - 192.168.178.11
       - 192.168.178.12
+      serviceMonitor:
+        # k3s serves the merged control-plane registry on 10249 -> drop every other component's metrics
+        # (kubeproxy_*/kube_router_* are owned here and must NOT go through drop_kube_proxy_metrics)
+        metricRelabelings:
+          - *drop_apiserver_metrics
+          - *drop_unused_etcd_histograms
+          - *drop_apiserver_layer_metrics
+          - *drop_scheduler_metrics
+          - *drop_kubelet_metrics
+          - *drop_kube_controller_manager_metrics
 
     # kubelet monitoring - drop IPv6 targets (fix for non dual-stack clusters with k3s)
     kubelet:
       enabled: true
       serviceMonitor:
+        metricRelabelings:
+          # chart default - must be re-declared when overriding (kubelet storage operation buckets)
+          - action: drop
+            sourceLabels: [__name__, le]
+            regex: '(csi_operations|storage_operation_duration)_seconds_bucket;(0.25|2.5|15|25|120|600)(\.0)?'
+          # k3s serves the merged control-plane registry on 10250 -> drop every other component's metrics
+          # (kubelet-owned families stay in this job)
+          - *drop_apiserver_metrics
+          - *drop_unused_etcd_histograms
+          - *drop_apiserver_layer_metrics
+          - *drop_scheduler_metrics
+          - *drop_kube_proxy_metrics
+          - *drop_kube_controller_manager_metrics
         # Default relabeling to preserve metrics_path label (required for upstream rules/dashboards)
         # Drop IPv6 targets - they show up=0 as kubelet doesn't listen on IPv6
         relabelings:
