@@ -9,7 +9,10 @@
 # Handles:
 #   * rancher HelmChart resources (helm.cattle.io/v1): resolves the images the
 #     new chart version pulls by rendering the chart with the PR's valuesContent.
-#   * plain manifests / kustomizations with explicit `image:` keys.
+#   * kustomization.yaml changes: runs `kustomize build` on the PR head copy of
+#     the changed overlay and extracts the rendered `image:` references
+#     (catches `images: name/newTag` patches, which have no literal `image:` key).
+#   * plain manifests with explicit `image:` keys.
 #
 # Usage:  check_pr.sh <PR-number> [--mirror <registry>] [--arches "a b"]
 #
@@ -42,7 +45,17 @@ if [[ -z "$ARCHES" ]]; then
 fi
 
 TMPDIR=$(mktemp -d)
-trap 'rm -rf "$TMPDIR"; helm repo remove pvprcheck >/dev/null 2>&1 || true' EXIT
+trap 'git worktree remove --force "$TMPDIR/head" >/dev/null 2>&1; rm -rf "$TMPDIR"; helm repo remove pvprcheck >/dev/null 2>&1 || true' EXIT
+
+# Pick a kustomize renderer. `kubectl kustomize` preferred so the check renders
+# with the same (kubectl-pinned) kustomize version the deploy scripts use;
+# standalone kustomize is only a fallback.
+KUSTOMIZE=()
+if kubectl kustomize --help >/dev/null 2>&1; then
+  KUSTOMIZE=(kubectl kustomize)
+elif command -v kustomize >/dev/null 2>&1; then
+  KUSTOMIZE=(kustomize build)
+fi
 
 # ---------------------------------------------------------------- helpers ----
 
@@ -114,6 +127,15 @@ fi
 HEAD_SHA="origin/$head"
 git rev-parse -q --verify "$HEAD_SHA" >/dev/null || HEAD_SHA="origin/pr-$PR"
 
+# Working tree at PR head, so kustomize build can resolve bases/overlays.
+WORKTREE="$TMPDIR/head"
+if [[ ${#KUSTOMIZE[@]} -gt 0 ]]; then
+  git worktree add -q --detach "$WORKTREE" "$HEAD_SHA" 2>/dev/null || {
+    echo "WARNING: could not create PR-head worktree; kustomization rendering disabled" >&2
+    WORKTREE=""
+  }
+fi
+
 files=$(git diff --name-only "$BASE_SHA...$HEAD_SHA" -- '*.yaml' '*.yml')
 if [[ -z "$files" ]]; then
   echo "  No YAML files changed -> no image changes. MERGEABLE (nothing to mirror)."
@@ -130,6 +152,28 @@ for f in $files; do
 
   # plain `image:` keys anywhere in the changed manifests
   direct=$(echo "$content" | yq -N -r '[.. | select(has("image")) | .image] | .[]' 2>/dev/null | grep -v '^$' || true)
+
+  # ---- kustomization.yaml overlays ----
+  if [[ "$(basename "$f")" == kustomization.yaml || "$(basename "$f")" == kustomization.yml ]]; then
+    kdir=$(dirname "$f")
+    kustom_imgs=""
+    if [[ -n "$WORKTREE" ]]; then
+      if rendered=$("${KUSTOMIZE[@]}" "$WORKTREE/$kdir" 2>"$TMPDIR/kustomize.err"); then
+        kustom_imgs=$(echo "$rendered" | yq -N -r '[.. | select(has("image")) | .image] | .[]' 2>/dev/null | grep -v '^$' || true)
+      else
+        echo "  WARNING: kustomize build failed for $kdir:" >&2
+        sed 's/^/    /' "$TMPDIR/kustomize.err" >&2
+      fi
+    fi
+    if [[ -z "$kustom_imgs" ]]; then
+      # fallback: the `images:` patches declared in the changed file itself
+      kustom_imgs=$(echo "$content" | yq -N -r '.images[]? | .name + ":" + (.newTag // "latest")' 2>/dev/null | grep -v '^$' || true)
+    fi
+    if [[ -n "$kustom_imgs" ]]; then
+      echo "  checking kustomization images [$f]: $(echo "$kustom_imgs" | sort -u | tr '\n' ' ')"
+      direct="$direct"$'\n'"$kustom_imgs"
+    fi
+  fi
 
   # ---- rancher HelmChart resources ----
   charts=$(echo "$content" | yq -o=json -N '.' 2>/dev/null \

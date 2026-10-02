@@ -35,6 +35,14 @@ Exit codes: `0` = mergeable, `1` = NOT mergeable, `2` = tooling/usage error.
      chart version with the PR's `valuesContent` via `helm template` and
      extracts the resulting `image:` references (this is what actually gets
      deployed, including default tags derived from `appVersion`).
+   - **`kustomization.yaml` changes**: runs `kustomize build` on the PR-head
+     copy of the changed overlay directory (via a temporary git worktree) and
+     extracts the rendered `image:` references. This catches `images:` name
+     and `newTag` patches, which contain no literal `image:` key. Prefers
+     `kubectl kustomize` (same kustomize version the deploy scripts use);
+     standalone `kustomize build` is the fallback. If rendering fails, it
+     degrades to extracting the overlay's own `images:` entries
+     (`name:newTag`) instead of silently reporting no images.
    - **plain manifests**: extracts every `image:` key with `yq`.
 3. Normalizes each image (default registry `docker.io`, `library/` prefix for
    Docker official images, `latest` fallback) and checks the mirror path
@@ -67,13 +75,11 @@ Exit codes: `0` = mergeable, `1` = NOT mergeable, `2` = tooling/usage error.
 - A differing top-level index digest between mirror and upstream is normal here
   (the regsync job recreates index manifests via `regctl index create`);
   per-architecture manifest digests are what must match upstream.
-- If `zot/regsync/config.yaml` *denies* a tag (auto-maintained old-version deny
-  list), note it: the tag may exist on the mirror but will never be (re)synced
-  in the future. Flag such PRs for the user rather than assuming long-term
-  availability.
 
 ## Rules
 
 - **Report only. Never merge** the PR yourself unless the user explicitly asks.
 - If `kubectl` cannot reach the cluster, still run the check but say the
   architecture list was assumed (amd64+arm64).
+- **Never start a regsync job yourself**; it should be managed by the CronJob in the `zot` namespace.
+  Just report that the image is not yet mirrored.
