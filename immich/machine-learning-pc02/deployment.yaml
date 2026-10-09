@@ -36,6 +36,8 @@ spec:
               value: '3003'
             - name: TZ
               value: Europe/Berlin
+            - name: MACHINE_LEARNING_MODEL_REVISION
+              value: v2
             # pc02 has 16 cores / 32 threads
             - name: MACHINE_LEARNING_REQUEST_THREADS
               value: "16"
