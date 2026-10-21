@@ -12,6 +12,27 @@ CPU architectures present in the cluster** (the scan covers all images in each
 changed YAML file, not just the bumped tag — conservative on purpose, since a
 missing image means pods get stuck in `ImagePullBackOff`).
 
+### Architecture policy exceptions
+
+Some images are intentionally not mirrored for every cluster architecture. The
+script applies these per-image exceptions (implemented in `required_arches`):
+
+- **`ghcr.io/immich-app/immich-machine-learning:*-rocm`** — never mirrored
+  (the rocm ML build is pulled directly, outside the mirror path). The check
+  **ignores these images entirely** (`SKIP`); they are never a merge blocker.
+- **`docker.io/bats/bats`** — used only by the kube-prometheus-stack
+  `grafana-test` Pod (`helm.sh/hook: test`, runs only via `helm test`). Not
+  configured in regsync and never mirrored. The check **ignores it entirely**
+  (`SKIP`); it is never a merge blocker.
+- **`ghcr.io/immich-app/immich-machine-learning:*-rknn`** and
+  **`ghcr.io/immich-app/immich-server`** — deployed on **arm64 nodes only**,
+  so they are mirrored for `linux/arm64` only. The check requires
+  `linux/arm64` only for these images; a missing `linux/amd64` variant is not
+  a blocker (it also doesn't exist for the `-rknn` tags upstream).
+
+New exceptions belong in `required_arches` in `scripts/check_pr.sh` — keep the
+skill documentation and the script in sync.
+
 ## How to check a PR
 
 Run the bundled script from anywhere inside the pv-monitoring repo:
@@ -53,8 +74,8 @@ Exit codes: `0` = mergeable, `1` = NOT mergeable, `2` = tooling/usage error.
      The script checks the normalised `library/` path first and also tries the
      bare path as an alias; if either has all required arches the image is `OK`.
      Never report a bare/`library/` mismatch as a missing mirror.
-4. Reports `OK` / `MISSING` per image and a final `MERGEABLE` / `NOT mergeable`
-   verdict.
+4. Reports `OK` / `SKIP` / `MISSING` per image (respecting the architecture
+   policy exceptions above) and a final `MERGEABLE` / `NOT mergeable` verdict.
 
 ## Interpreting results
 

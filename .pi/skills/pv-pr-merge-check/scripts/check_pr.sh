@@ -14,6 +14,17 @@
 #     (catches `images: name/newTag` patches, which have no literal `image:` key).
 #   * plain manifests with explicit `image:` keys.
 #
+# Per-image architecture policy exceptions (see required_arches):
+#   * ghcr.io/immich-app/immich-machine-learning:<ver>-rocm
+#       never mirrored -> ignored entirely by the merge check.
+#   * docker.io/bats/bats (kube-prometheus-stack grafana-test Pod,
+#     helm.sh/hook: test)
+#       test-only image, never mirrored -> ignored entirely.
+#   * ghcr.io/immich-app/immich-machine-learning:<ver>-rknn and
+#     ghcr.io/immich-app/immich-server
+#       mirrored linux/arm64 only (deployed on arm64 nodes only) -> only
+#       linux/arm64 is required.
+#
 # Usage:  check_pr.sh <PR-number> [--mirror <registry>] [--arches "a b"]
 #
 # Exit codes: 0 = mergeable (all images mirrored), 1 = NOT mergeable,
@@ -99,6 +110,28 @@ mirror_candidates() {
       bare="${repo_tag#library/}"
       [[ "$bare" != "$repo_tag" ]] && echo "$MIRROR/$registry/$bare"
       ;;
+  esac
+}
+
+# required_arches <image> -> "skip" (excluded from the check) or the space-
+# separated architectures this image must be mirrored for (subset of $ARCHES).
+# Workload exceptions: images that are intentionally never mirrored or only
+# mirrored for a subset of cluster architectures.
+required_arches() {
+  local img="$1"
+  case "$img" in
+    # rocm ML build runs outside the mirrored path and is never mirrored.
+    ghcr.io/immich-app/immich-machine-learning:*-rocm)
+      echo "skip" ;;
+    # grafana-test test hook Pod (helm.sh/hook: test, runs only via `helm
+    # test`); never mirrored -> never a merge blocker.
+    docker.io/bats/bats:*|bats/bats:*)
+      echo "skip" ;;
+    # rknn + immich-server run on arm64 nodes only; mirrored arm64-only.
+    ghcr.io/immich-app/immich-machine-learning:*-rknn|ghcr.io/immich-app/immich-server:*)
+      echo "linux/arm64" ;;
+    *)
+      echo "$ARCHES" ;;
   esac
 }
 
@@ -225,12 +258,17 @@ echo "Checking mirror $MIRROR (arches: $ARCHES) ..."
 missing=0
 checked=0
 while read -r img; do
+  req_arches=$(required_arches "$img")
+  if [[ "$req_arches" == "skip" ]]; then
+    echo "  SKIP     $img  (never mirrored by design -> excluded from merge check)"
+    continue
+  fi
   mapfile -t candidates < <(mirror_candidates "$img")
   checked=$((checked+1))
   found="" tried="" best_hit="" best_missing=999 best_missing_list=""
   for cand in "${candidates[@]}"; do
     arch_missing=()
-    for arch in $ARCHES; do
+    for arch in $req_arches; do
       if ! regctl manifest head --platform "$arch" "$cand" >/dev/null 2>&1; then
         arch_missing+=("$arch")
       fi
@@ -247,7 +285,11 @@ while read -r img; do
     fi
   done
   if [[ -n "$found" ]]; then
-    echo "  OK       $img  ->  $found"
+    if [[ "$req_arches" != "$ARCHES" ]]; then
+      echo "  OK       $img  ->  $found  [arch policy: $req_arches]"
+    else
+      echo "  OK       $img  ->  $found"
+    fi
   else
     missing=$((missing+1))
     echo "  MISSING  $img"
@@ -261,10 +303,10 @@ done <<< "$images"
 
 echo
 if [[ $missing -gt 0 ]]; then
-  echo "RESULT: NOT mergeable — $missing of $(echo "$images" | wc -l | tr -d ' ') image(s) not mirrored to $MIRROR."
+  echo "RESULT: NOT mergeable — $missing of $checked checked image(s) not mirrored to $MIRROR."
   echo "Trigger the regsync job (zot namespace) or mirror them manually first."
   exit 1
 else
-  echo "RESULT: MERGEABLE — all $checked image(s) present on $MIRROR for all required architectures."
+  echo "RESULT: MERGEABLE — all $checked checked image(s) present on $MIRROR for all required architectures."
   exit 0
 fi
