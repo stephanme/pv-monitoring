@@ -7,7 +7,7 @@ images:
 - name: kopia/kopia
   newTag: 0.23.1
 - name: ghcr.io/stephanme/toolbox
-  newTag: v6
+  newTag: v7
 
 configMapGenerator:
 - name: usb-backup-watcher-script
