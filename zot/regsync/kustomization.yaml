@@ -5,7 +5,7 @@ namespace: zot
 
 images:
 - name: ghcr.io/stephanme/toolbox
-  newTag: v6
+  newTag: v7
 
 configMapGenerator:
 - name: regsync-config
