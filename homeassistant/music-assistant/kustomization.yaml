@@ -5,7 +5,7 @@ namespace: homeassistant
 
 images:
 - name: ghcr.io/music-assistant/server
-  newTag: "2.10.8"
+  newTag: "2.10.9"
 
 labels:
   - pairs:
