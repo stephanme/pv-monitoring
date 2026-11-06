@@ -53,8 +53,7 @@ spec:
                 },
                 "car": {
                   "disabled": false,
-                  "user": "$(car_user)",
-                  "password": "$(car_password)",
+                  "api_key": "$(car_api_key)",
                   "vin": "$(car_vin)"
                 },
                 "mqtt": {
@@ -66,16 +65,11 @@ spec:
             - --hostname
             - $(node_name)
           env:
-            - name: car_user
+            - name: car_api_key
               valueFrom:
                 secretKeyRef:
                   name: pvcontrol
-                  key: car_user
-            - name: car_password
-              valueFrom:
-                secretKeyRef:
-                  name: pvcontrol
-                  key: car_password
+                  key: car_api_key
             - name: car_vin
               valueFrom:
                 secretKeyRef:
