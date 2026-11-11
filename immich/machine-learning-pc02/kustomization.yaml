@@ -5,7 +5,7 @@ namespace: immich
 
 images:
 - name: ghcr.io/immich-app/immich-machine-learning
-  newTag: v3.3.6-rocm
+  newTag: v3.4.0-rocm
 
 labels:
   - pairs:
