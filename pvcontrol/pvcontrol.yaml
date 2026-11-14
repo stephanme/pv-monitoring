@@ -207,3 +207,15 @@ spec:
       record: pvcontrol:total_charged_energy_wh_total
     - expr: max(pvcontrol_controller_charged_energy_wh_total) by (job, source)
       record: pvcontrol:charged_energy_wh_total
+    # Alert when the Skoda API key expires in less than 2 weeks.
+    # After a pvcontrol restart the metric reports -1 (unknown) until the first
+    # Skoda API request; a short -1 is ignored by the long "for" period, while a
+    # permanent -1 (e.g. bad API key) correctly alerts after 6h.
+    - alert: PvControlCarApiKeyExpiring
+      expr: pvcontrol_car_api_key_remaining_lifetime_seconds < (14 * 24 * 3600)
+      for: 6h
+      labels:
+        severity: warning
+      annotations:
+        summary: "Skoda API key for pvcontrol expires in less than 2 weeks"
+        description: "The pvcontrol Skoda car API key expires in less than 2 weeks. Renew the key in the Skoda app and update the pvcontrol secret before it expires, otherwise car integration stops working."
