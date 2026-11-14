@@ -21,8 +21,56 @@ spec:
               - -c
               - |
                 set -e
-                date
                 regsynccmd=once  # check|once
+                
+                START_TS=$(date +%s)
+                echo "start: $(date -u +%FT%TZ)"
+                FIXEDIDX=""  # index manifests created in this run
+                # summary is logged at the end of the run, built from /regsync.log
+                summary() {
+                  rc=$?
+                  sleep 1  # give tee time to flush /regsync.log
+                  echo
+                  echo "==================== regsync summary ===================="
+                  echo "duration: $(( $(date +%s) - START_TS ))s"
+                  jq -Rsr '
+                    def lvl: ((.level // "") | ascii_upcase);
+                    def bad: lvl == "ERROR" or lvl == "FATAL" or (.msg | test("^Failed"));
+                    def warn: lvl == "WARN" or lvl == "WARNING";
+                    def subj: (.target // .ref // .source // "?");
+                    def detail(p): "  " + p + " " + subj + ": " + .msg + (if .error then " (" + .error + ")" else "" end);
+                    def section($items; $title):
+                      ($items | length) as $n
+                      | ($title + ($n | tostring) + "\n")
+                        + (if $n == 0 then "" else ($items | .[0:25] | join("\n")) + "\n" end)
+                        + (if $n > 25 then "  ... and " + (($n - 25) | tostring) + " more\n" else "" end);
+                    [ splits("\n") | fromjson? | select(.msg) ] as $e
+                    | ($e | map(select(bad) | subj)) as $failed
+                    | ($e | map(select(.msg == "Image sync needed" and .target))
+                          | map(select(.target as $t | ($failed | index($t)) | not))
+                          | map("  + " + .target + "  <-  " + (.source // "?")) | unique) as $updated
+                    | ($e | map(select(.msg == "Image refreshing" and .target) | "  ~ " + .target) | unique) as $refreshed
+                    | ($e | map(select(.msg == "Skipping unsupported media type") | detail(">")) | unique) as $skipped
+                    | ($e | map(select(bad) | detail("!")) | unique) as $errors
+                    | ($e | map(select(warn) | detail("-")) | unique) as $warnings
+                    | (section($updated; "images updated: ")
+                      + (if ($refreshed | length) > 0 then section($refreshed; "images refreshed: ") else "" end)
+                      + (if ($skipped | length) > 0 then section($skipped; "images skipped: ") else "" end)
+                      + section($errors; "errors: ")
+                      + (if ($warnings | length) > 0 then section($warnings; "warnings: ") else "" end)
+                      + "log entries: " + ($e | length | tostring))
+                  ' /regsync.log || echo "  no regsync log entries in /regsync.log"
+                  if [ -n "$FIXEDIDX" ]; then
+                    set -- $FIXEDIDX
+                    echo "index manifests created: $#"
+                    for t in $FIXEDIDX; do echo "  # $t"; done
+                  else
+                    echo "index manifests created: 0"
+                  fi
+                  echo "exit code: $rc"
+                  echo "========================================================="
+                }
+                trap summary EXIT
                 echo regsync ${regsynccmd}
                 regsync ${regsynccmd} --config /etc/regsync/config.yaml --logopt json 2> >(tee -a /regsync.log >&2) || true
                 FIXIDX=$(cat /regsync.log | grep -e '^{"time":' | jq -rs '[.[]|select(.msg=="Image sync needed" and (.target|test("/stephanme/")|not))|.target]|join(" ")')
@@ -42,6 +90,7 @@ spec:
                     if [ "$regsynccmd" = "once" ]; then
                       set -e
                       regctl index create $target $platforms --ref ${target:19}
+                      FIXEDIDX="${FIXEDIDX} ${target}"
                     fi
                   fi
                 done
