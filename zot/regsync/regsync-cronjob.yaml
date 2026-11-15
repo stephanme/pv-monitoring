@@ -32,11 +32,14 @@ spec:
                   sleep 1  # give tee time to flush /regsync.log
                   echo
                   echo "==================== regsync summary ===================="
-                  echo "duration: $(( $(date +%s) - START_TS ))s"
+                  DUR=$(( $(date +%s) - START_TS ))
+                  echo "duration: $(( DUR / 60 )).$(( (DUR % 60) * 10 / 60 )) min"
                   jq -Rsr '
                     def lvl: ((.level // "") | ascii_upcase);
                     def bad: lvl == "ERROR" or lvl == "FATAL" or (.msg | test("^Failed"));
-                    def warn: lvl == "WARN" or lvl == "WARNING";
+                    # expected conditions that are not worth reporting
+                    def ignored: ((.msg // "") | test("^No matching tags found$"));
+                    def warn: (lvl == "WARN" or lvl == "WARNING") and (ignored | not);
                     def subj: (.target // .ref // .source // "?");
                     def detail(p): "  " + p + " " + subj + ": " + .msg + (if .error then " (" + .error + ")" else "" end);
                     def section($items; $title):
@@ -57,8 +60,8 @@ spec:
                       + (if ($refreshed | length) > 0 then section($refreshed; "images refreshed: ") else "" end)
                       + (if ($skipped | length) > 0 then section($skipped; "images skipped: ") else "" end)
                       + section($errors; "errors: ")
-                      + (if ($warnings | length) > 0 then section($warnings; "warnings: ") else "" end)
-                      + "log entries: " + ($e | length | tostring))
+                      + (if ($warnings | length) > 0 then section($warnings; "warnings: ") else "" end))
+                    | rtrimstr("\n")
                   ' /regsync.log || echo "  no regsync log entries in /regsync.log"
                   if [ -n "$FIXEDIDX" ]; then
                     set -- $FIXEDIDX
