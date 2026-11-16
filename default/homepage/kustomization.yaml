@@ -29,3 +29,4 @@ configMapGenerator:
 
 resources:
 - deployment.yaml
+- ingress.yaml

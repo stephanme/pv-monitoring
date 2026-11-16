@@ -14,3 +14,9 @@ spec:
   valuesContent: |-
     # https://artifacthub.io/packages/helm/cert-manager/cert-manager
     installCRDs: true
+    # propagation-check resolvers:
+    # skip /etc/resolv.conf (dnsmasq intercepts stephanme.de)
+    # use Cloudflare + Quad9 explicitly
+    extraArgs:
+      - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
+      - --dns01-recursive-nameservers-only=true

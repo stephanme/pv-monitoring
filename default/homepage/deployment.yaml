@@ -43,17 +43,3 @@ spec:
     protocol: TCP
     targetPort: 80
   selector:
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: homepage
-spec:
-  entryPoints:
-  - web
-  routes:
-  - kind: Rule
-    match: Host(`k3s.fritz.box`) && (Path(`/`) || PathPrefix(`/homepage/`))
-    services:
-    - name: homepage
-      port: 80
