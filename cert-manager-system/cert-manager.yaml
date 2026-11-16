@@ -1,0 +1,16 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: cert-manager
+  namespace: cert-manager-system
+spec:
+  # renovate: HelmChart
+  repo: https://charts.jetstack.io
+  chart: cert-manager
+  version: 1.21.3
+  targetNamespace: cert-manager-system
+  timeout: 10m
+  failurePolicy: abort
+  valuesContent: |-
+    # https://artifacthub.io/packages/helm/cert-manager/cert-manager
+    installCRDs: true

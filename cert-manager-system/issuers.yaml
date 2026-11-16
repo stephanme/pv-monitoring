@@ -1,0 +1,45 @@
+# ClusterIssuers are cluster-scoped: every namespace can reference them
+# from its own Certificate (per-namespace certificate pattern).
+#
+# Solver: DNS-01 via the netcup webhook. The webhook reads the secret
+# netcup-api-credentials (created manually from secrets.yaml.template)
+# and only manages _acme-challenge TXT records in the netcup zone.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    # staging endpoint: not trusted in browsers, but no production rate limits
+    # use for testing, then switch Certificates to letsencrypt-prod
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: merker.stephan@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-staging-account-key
+    solvers:
+      - dns01:
+          webhook:
+            groupName: com.netcup.webhook
+            solverName: netcup
+            config:
+              secretRef: netcup-api-credentials
+              secretNamespace: cert-manager-system
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: merker.stephan@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-prod-account-key
+    solvers:
+      - dns01:
+          webhook:
+            groupName: com.netcup.webhook
+            solverName: netcup
+            config:
+              secretRef: netcup-api-credentials
+              secretNamespace: cert-manager-system
