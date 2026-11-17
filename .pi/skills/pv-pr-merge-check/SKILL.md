@@ -1,16 +1,23 @@
 ---
 name: pv-pr-merge-check
-description: Check whether a pv-monitoring PR (e.g. a Renovate dependency PR) can be merged by verifying that every container image introduced or changed by the PR is already mirrored to registry.fritz.box. Use when asked if a PR can be merged, before merging Renovate/helm chart bumps in the pv-monitoring repo, or to audit image mirroring.
+description: Check whether a pv-monitoring PR (e.g. a Renovate dependency PR) can be merged by verifying that every container image introduced or changed by the PR is already cached in the local zot registry (registry.fritz.box). Use when asked if a PR can be merged, before merging Renovate/helm chart bumps in the pv-monitoring repo, or to audit image caching.
 compatibility: Requires gh (authenticated to the pv-monitoring GitHub repo), kubectl (cluster context), regctl, helm, yq, jq, git.
 ---
 
 # pv-monitoring PR merge check
 
 A PR in this repo is only mergeable when **every container image referenced by
-the changed manifests is already mirrored to `registry.fritz.box`** for **all
-CPU architectures present in the cluster** (the scan covers all images in each
-changed YAML file, not just the bumped tag — conservative on purpose, since a
-missing image means pods get stuck in `ImagePullBackOff`).
+the changed manifests is already cached in `registry.fritz.box`** for **all CPU
+architectures present in the cluster** (the scan covers all images in each
+changed YAML file, not just the bumped tag — conservative on purpose).
+
+`registry.fritz.box` (zot) is a **pull-through cache**, not a hard gate: k3s
+falls back to the upstream registry when a tag is missing locally (containerd
+tries the origin registry after all mirror endpoints fail), so an uncached
+image still starts — it just pulls over the WAN, and it fails if the upstream
+registry rate-limits (docker.io anonymous pulls) or has dropped the tag.
+Caching before merging is a policy for predictable, fast, offline-safe deploys
+— not a way to prevent `ImagePullBackOff`.
 
 ### Architecture policy exceptions
 
@@ -81,9 +88,12 @@ Exit codes: `0` = mergeable, `1` = NOT mergeable, `2` = tooling/usage error.
 
 - **MERGEABLE** — all required image/arch combos exist on the mirror. Report the
   verdict; do not merge unless the user explicitly asks.
-- **NOT mergeable** — list the missing images. Typical fix: run the regsync
-  CronJob in the `zot` namespace (or `regsync once` with the repo config),
-  then re-check.
+- **NOT mergeable** — list the missing images and say what a miss costs: the pods
+  would pull those layers from upstream instead of the LAN (slow on this link,
+  docker.io rate-limit exposure, and a hard failure if upstream has since
+  garbage-collected the tag). Typical fix: the nightly regsync CronJob in the
+  `zot` namespace mirrors them once the config allows it — only the user should
+  trigger a run early.
 - Before reporting NOT mergeable, classify each missing image by checking the
   rendered chart (`helm template ... | yq`): is it a normal container, a
   **hook** Job (`helm.sh/hook: pre-install,pre-upgrade` — these DO run on
@@ -92,18 +102,20 @@ Exit codes: `0` = mergeable, `1` = NOT mergeable, `2` = tooling/usage error.
   `helm test`, usually NOT a merge blocker)? Report the distinction.
 - If a missing image is also **denied** in `zot/regsync/config.yaml`, regsync
   will never mirror it — flag that a deny-list/allow-list change or manual
-  mirror is required, not just a sync run.
+  mirror is required, not just waiting for the next sync.
 - A differing top-level index digest between mirror and upstream is normal here
   (the regsync job recreates index manifests via `regctl index create`);
   per-architecture manifest digests are what must match upstream.
-- Mirrored image versions are usually denied in `zot/regsync/config.yaml` so that regsync
-  doesn't mirror them again once a version was gc'ed. regsync garbage collects
-  image versions and keeps only the latest pushed and pulled image version.
+- Cached image versions are usually denied in `zot/regsync/config.yaml` so that
+  regsync doesn't mirror them again once a version was gc'ed. regsync garbage
+  collects image versions and keeps only the latest pushed and pulled image
+  version.
 
 ## Rules
 
 - **Report only. Never merge** the PR yourself unless the user explicitly asks.
 - If `kubectl` cannot reach the cluster, still run the check but say the
   architecture list was assumed (amd64+arm64).
-- **Never start a regsync job yourself**; it should be managed by the CronJob in the `zot` namespace.
-  Just report that the image is not yet mirrored.
+- **Never start a regsync job yourself**; it is owned by the CronJob in the `zot`
+  namespace. Just report that the image is not yet cached, and let the user
+  decide whether to trigger a sync.

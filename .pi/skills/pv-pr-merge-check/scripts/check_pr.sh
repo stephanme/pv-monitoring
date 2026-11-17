@@ -3,8 +3,13 @@
 # check_pr.sh — Check whether a pv-monitoring PR can be merged.
 #
 # A PR is mergeable only if every container image that the PR introduces or
-# changes is already mirrored to the local registry (registry.fritz.box)
+# changes is already cached in the local registry (registry.fritz.box)
 # for all cluster architectures (linux/amd64 + linux/arm64).
+#
+# registry.fritz.box (zot) is a pull-through cache: an uncached tag still pulls
+# from upstream over the WAN. So a MISSING image is a policy/performance finding
+# (slow first pull, docker.io rate-limit exposure, hard failure if upstream has
+# dropped the tag) - not a guaranteed ImagePullBackOff.
 #
 # Handles:
 #   * rancher HelmChart resources (helm.cattle.io/v1): resolves the images the
@@ -27,7 +32,7 @@
 #
 # Usage:  check_pr.sh <PR-number> [--mirror <registry>] [--arches "a b"]
 #
-# Exit codes: 0 = mergeable (all images mirrored), 1 = NOT mergeable,
+# Exit codes: 0 = mergeable (all images cached), 1 = NOT mergeable,
 #             2 = usage/tooling error.
 #
 set -uo pipefail
@@ -171,7 +176,7 @@ fi
 
 files=$(git diff --name-only "$BASE_SHA...$HEAD_SHA" -- '*.yaml' '*.yml')
 if [[ -z "$files" ]]; then
-  echo "  No YAML files changed -> no image changes. MERGEABLE (nothing to mirror)."
+  echo "  No YAML files changed -> no image changes. MERGEABLE (nothing to cache)."
   exit 0
 fi
 
@@ -245,7 +250,7 @@ done
 
 images=$(sort -u "$images_file" | grep -v '^$' || true)
 if [[ -z "$images" ]]; then
-  echo "  No container images found in the changed YAML. MERGEABLE (no mirroring needed)."
+  echo "  No container images found in the changed YAML. MERGEABLE (nothing to cache)."
   exit 0
 fi
 
@@ -303,10 +308,12 @@ done <<< "$images"
 
 echo
 if [[ $missing -gt 0 ]]; then
-  echo "RESULT: NOT mergeable — $missing of $checked checked image(s) not mirrored to $MIRROR."
-  echo "Trigger the regsync job (zot namespace) or mirror them manually first."
+  echo "RESULT: NOT mergeable — $missing of $checked checked image(s) not cached on $MIRROR."
+  echo "        Uncached images fall back to upstream: WAN pull, docker.io rate limits, and a"
+  echo "        hard failure if upstream no longer serves the tag."
+  echo "        Let the regsync CronJob (zot namespace) cache them, or ask the user to run it."
   exit 1
 else
-  echo "RESULT: MERGEABLE — all $checked checked image(s) present on $MIRROR for all required architectures."
+  echo "RESULT: MERGEABLE — all $checked checked image(s) cached on $MIRROR for all required architectures."
   exit 0
 fi
