@@ -1,4 +1,4 @@
-# HTTP serving of the homepage on k3s.fritz.box
+# Homepage: http on k3s.fritz.box, https on stephanme.de and home.stephanme.de
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -13,7 +13,11 @@ spec:
     - name: homepage
       port: 80
 ---
-# HTTPS serving of the homepage on home.stephanme.de
+# HTTPS serving of the homepage on stephanme.de and home.stephanme.de
+# One certificate for both names (single DNS-01 round). The apex is solvable by
+# the netcup webhook: _acme-challenge.stephanme.de -> scope "@" in the zone.
+# name/secretName intentionally keep the old home-stephanme-de name: renaming
+# would leave the old Certificate behind (kubectl apply -k does not prune).
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -24,9 +28,10 @@ spec:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
+    - stephanme.de
     - home.stephanme.de
 ---
-# 301 redirect http://home.stephanme.de -> https (LAN clients)
+# 301 redirect http:// -> https for both stephanme.de names (LAN clients)
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
@@ -44,7 +49,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`home.stephanme.de`)
+    - match: Host(`stephanme.de`) || Host(`home.stephanme.de`)
       kind: Rule
       middlewares:
         - name: homepage-https-redirect
@@ -60,7 +65,8 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`home.stephanme.de`) && (Path(`/`) || PathPrefix(`/homepage/`))
+    # traefik v3: Host() takes exactly one value, so one Host() per hostname
+    - match: (Host(`stephanme.de`) || Host(`home.stephanme.de`)) && (Path(`/`) || PathPrefix(`/homepage/`))
       kind: Rule
       services:
         - name: homepage

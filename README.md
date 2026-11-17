@@ -58,6 +58,7 @@ Standard installation as described in https://rancher.com/docs/k3s/latest/en/qui
 
 All http and tcp workloads are exposed via [Traefik v2](https://traefik.io/) which is deployed as daemon set on all nodes:
 - k3s.fritz.box - via MetalLB
+- stephanme.de, *.stephanme.de - https only, Let's Encrypt cert via cert-manager netcup DNS-01, resolved in the LAN by dnsmasq
 - nasbox.fritz.box, pi1.fritz.box, pi2.fritz.box - via node ports
 - additional DNS names like homeassistant.fritz.box - translated to node IPs or MetalLB IP via dnsmasq + customized coredns
 
