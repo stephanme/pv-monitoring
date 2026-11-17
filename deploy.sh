@@ -8,7 +8,7 @@ $scriptdir/kube-system/deploy.sh
 $scriptdir/cert-manager-system/deploy.sh
 $scriptdir/smb-csi-system/deploy.sh
 $scriptdir/longhorn-system/deploy.sh
-$scriptdir/default/zot.sh
+$scriptdir/zot/deploy.sh
 $scriptdir/monitoring/deploy.sh
 $scriptdir/pvcontrol/deploy.sh
 $scriptdir/homeassistant/deploy.sh
