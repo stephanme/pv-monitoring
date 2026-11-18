@@ -23,6 +23,8 @@ spec:
         - name: server
           image: ghcr.io/immich-app/immich-server
           env:
+            - name: IMMICH_HOST  # https://github.com/immich-app/immich/issues/33466
+              value: 0.0.0.0
             - name: IMMICH_PORT
               value: '2283'
             - name: TZ
