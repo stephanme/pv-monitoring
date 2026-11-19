@@ -1,0 +1,111 @@
+# Alerts for stuck/expiring certificates.
+#
+# cert-manager exposes its metrics on :9402 without extra flags; this cluster has
+# no ServiceMonitor for it yet, so without the first document every alert below
+# would be blind (that is what CertManagerMetricsMissing guards against).
+#
+# Scrape interval 2m is plenty: all of these gauges only move once per renewal.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cert-manager
+  namespace: cert-manager-system
+  labels:
+    release: prometheus # selector of prometheus-kube-prometheus-prometheus
+    app: cert-manager
+spec:
+  namespaceSelector:
+    matchNames:
+    - cert-manager-system
+  selector:
+    matchLabels:
+      app: cert-manager # the controller service (cainjector/webhook have no cert metrics)
+  endpoints:
+  - port: http-metrics
+    path: /metrics
+    interval: 2m
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: certmanager-rules
+  namespace: cert-manager-system
+  labels:
+    release: prometheus # selector of prometheus-kube-prometheus-prometheus
+    role: alert-rules
+spec:
+  groups:
+  - name: certmanager.rules
+    rules:
+    # A Certificate that is not Ready: issuance or renewal is failing (stuck
+    # DNS-01 challenge, broken issuer, ...). netcup DNS-01 needs ~5 minutes per
+    # round, so a fresh certificate stays not-ready for a while - hence for: 15m.
+    - alert: CertManagerCertificateNotReady
+      expr: certmanager_certificate_ready_status{condition!="True"} == 1
+      for: 15m
+      labels:
+        severity: warning
+      annotations:
+        summary: 'Certificate {{ $labels.namespace }}/{{ $labels.name }} is not ready'
+        description: 'cert-manager reports condition "{{ $labels.condition }}" for {{ $labels.namespace }}/{{ $labels.name }} (issuer {{ $labels.issuer_kind }}/{{ $labels.issuer_name }}) for more than 15 minutes. Have a look with: kubectl -n {{ $labels.namespace }} get certificate,order,challenge -o wide && kubectl -n {{ $labels.namespace }} describe certificate {{ $labels.name }}'
+    # Issuers/ClusterIssuers go NotReady when the ACME account key or the netcup
+    # API credentials stop working, i.e. every certificate using them fails.
+    - alert: CertManagerClusterIssuerNotReady
+      expr: certmanager_clusterissuer_ready_status{condition!="True"} == 1
+      for: 15m
+      labels:
+        severity: critical
+      annotations:
+        summary: 'ClusterIssuer {{ $labels.name }} is not ready'
+        description: 'ClusterIssuer {{ $labels.name }} has condition "{{ $labels.condition }}". Check kubectl -n cert-manager-system describe clusterissuer {{ $labels.name }} and kubectl -n cert-manager-system logs deploy/cert-manager; usually the netcup API credentials in secret netcup-api-credentials are wrong or expired.'
+    # cert-manager already wanted to renew this one (renewalTime = 2/3 of the
+    # certificate lifetime) but is still failing. Catches a broken renewal loop
+    # days before the certificate itself becomes a problem.
+    # The "> 0" guard ignores certificates that were never issued (timestamp 0).
+    - alert: CertManagerCertificateRenewalOverdue
+      expr: (time() - certmanager_certificate_renewal_timestamp_seconds > 3 * 86400) and (certmanager_certificate_renewal_timestamp_seconds > 0)
+      for: 1h
+      labels:
+        severity: warning
+      annotations:
+        summary: 'Certificate {{ $labels.namespace }}/{{ $labels.name }} was not renewed'
+        description: 'cert-manager scheduled the renewal of {{ $labels.namespace }}/{{ $labels.name }} {{ $value | humanizeDuration }} ago and has not issued a replacement since.'
+    # A healthy Let's Encrypt certificate always has ~30 days left (renewal at 2/3
+    # of the lifetime, also after the LE switch to 64 day certificates in
+    # 2027-02), so these only fire when renewals have been failing for a while.
+    - alert: CertManagerCertificateExpiringSoon
+      expr: (certmanager_certificate_expiration_timestamp_seconds - time() < 14 * 86400) and (certmanager_certificate_expiration_timestamp_seconds > 0)
+      for: 1h
+      labels:
+        severity: warning
+      annotations:
+        summary: 'Certificate {{ $labels.namespace }}/{{ $labels.name }} expires in {{ $value | humanizeDuration }}'
+        description: 'No renewal succeeded although {{ $labels.namespace }}/{{ $labels.name }} expires in {{ $value | humanizeDuration }}.'
+    - alert: CertManagerCertificateNearlyExpired
+      expr: (certmanager_certificate_expiration_timestamp_seconds - time() < 7 * 86400) and (certmanager_certificate_expiration_timestamp_seconds > 0)
+      for: 10m
+      labels:
+        severity: critical
+      annotations:
+        summary: 'Certificate {{ $labels.namespace }}/{{ $labels.name }} expires in {{ $value | humanizeDuration }}'
+        description: '{{ $labels.namespace }}/{{ $labels.name }} expires in {{ $value | humanizeDuration }} and is still not renewed - clients will start rejecting the TLS connection.'
+    # Let's Encrypt answering with 429 (rate limit hit) or 5xx. Plain 4xx such as
+    # 400/403 are part of normal ACME order handling, so they are not alerted on.
+    # See https://letsencrypt.org/docs/rate-limits/
+    - alert: CertManagerACMEAPIFailing
+      expr: sum by (host, status) (rate(certmanager_http_acme_client_request_count{status=~"429|5.."}[15m])) > 0
+      for: 15m
+      labels:
+        severity: warning
+      annotations:
+        summary: 'ACME API {{ $labels.host }} is failing ({{ $labels.status }})'
+        description: '{{ $value | humanize }} requests/s to {{ $labels.host }} answered {{ $labels.status }} for 15 minutes. 429 means the Let''s Encrypt rate limits are being exhausted by this cluster.'
+    # Keeps the alerting honest: if the metrics are gone, nothing above can fire.
+    - alert: CertManagerMetricsMissing
+      expr: absent(certmanager_certificate_ready_status)
+      for: 30m
+      labels:
+        severity: warning
+      annotations:
+        summary: cert-manager metrics are not scraped
+        description: No certmanager_certificate_ready_status samples, so all other certificate alerts are blind. Check the ServiceMonitor cert-manager-system/cert-manager and kubectl -n cert-manager-system get pods.

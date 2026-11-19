@@ -56,6 +56,28 @@ and reference `secretName` from that namespace's IngressRoute `tls.secretName`.
 Start new certificates against `letsencrypt-staging` first, then switch the
 issuer to `letsencrypt-prod` to avoid production rate limits while debugging.
 
+## Monitoring
+
+`monitoring.yaml` adds:
+
+| Resource | Purpose |
+|---|---|
+| ServiceMonitor `cert-manager` | scrapes the controller's `:9402/metrics` (cert-manager serves them without extra flags) |
+| PrometheusRule `certmanager-rules` | `CertManagerCertificateNotReady` (>15 min not ready, e.g. a stuck DNS-01 round), `CertManagerClusterIssuerNotReady`, `CertManagerCertificateRenewalOverdue` (renewal due for >3 days), `CertManagerCertificateExpiringSoon`/`NearlyExpired` (<14 / <7 days left), `CertManagerACMEAPIFailing` (429/5xx from the ACME API), `CertManagerMetricsMissing` (scrape dead -> all others blind) |
+
+Both need the label `release: prometheus` to be picked up by the Prometheus in
+`monitoring`. That namespace is deployed **after** `cert-manager-system`, so on a
+fresh cluster bootstrap `./cert-manager-system/deploy.sh` fails once with "no
+matches for kind PrometheusRule" - re-run it after `./monitoring/deploy.sh`.
+
+Thresholds assume a healthy Let's Encrypt certificate always keeps ~30 days of
+validity (renewal at 2/3 of the lifetime). Do not set a fixed `renewBefore` on
+Certificates: Let's Encrypt shortens lifetimes to 64 days in Feb 2027 and 45 days
+in Feb 2028, and a fixed value larger than the lifetime causes a renewal loop
+(each re-issue for the same names is limited to 5 per 7 days, without override).
+A DNS-01 round through netcup takes ~5 minutes; see the `_acme-challenge` TTL
+note below if it takes much longer.
+
 ## Troubleshooting
 
 ```sh
