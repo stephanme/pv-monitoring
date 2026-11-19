@@ -1,3 +1,4 @@
+# Paperless: http on paperless.fritz.box, https on paperless.stephanme.de
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -13,3 +14,62 @@ spec:
     services:
     - name: paperless-ngx
       port: 8000
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: paperless-stephanme-de
+  namespace: paperless
+spec:
+  secretName: paperless-stephanme-de
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - paperless.stephanme.de
+---
+# 301 redirect http:// -> https for stephanme.de names (LAN clients)
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: paperless-https-redirect
+  namespace: paperless
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: paperless-http-redirect
+  namespace: paperless
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`paperless.stephanme.de`)
+      kind: Rule
+      middlewares:
+        - name: paperless-https-redirect
+      services:
+        - name: paperless-ngx
+          port: 8000
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: paperless-tls
+  namespace: paperless
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    # traefik v3: Host() takes exactly one value, so one Host() per hostname
+    - match: Host(`paperless.stephanme.de`)
+      kind: Rule
+      services:
+        - name: paperless-ngx
+          port: 8000
+  tls:
+    secretName: paperless-stephanme-de
