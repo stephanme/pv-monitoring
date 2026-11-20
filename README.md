@@ -25,6 +25,7 @@ Monitoring of a photovoltaic system, car charging and heat pump
 - [Music Assistant](https://www.music-assistant.io/)
 - [Paperless-ngx](https://docs.paperless-ngx.com/) for taming the bureaucracy
 - [Immich](https://immich.app/) for managing photos
+- [Pocket ID](https://github.com/pocket-id/pocket-id) for single sign-on (OIDC) with passkeys
 - [Kopia](https://kopia.io/) for backups
 
 ## Deploy
@@ -43,6 +44,7 @@ Important release notes
 - [longhorn](https://github.com/longhorn/longhorn/tree/master/CHANGELOG)
 - [metallb](https://metallb.universe.tf/release-notes/)
 - [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx/releases)
+- [pocket-id](https://pocket-id.org/changelog)
 - [zot](https://github.com/project-zot/zot/releases)
 
 ### Prerequisites
