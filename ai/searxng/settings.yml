@@ -11,3 +11,19 @@ search:
   formats:
     - html
     - json
+
+# With use_default_settings: true, entries here are merged into the built-in
+# engine list by name, so this only switches one engine off.
+engines:
+  # The brave engine hands back SearXNG /go/v1/... redirect links instead of the
+  # real URL, and this build emits them with an empty host ("http:///go/v1/...").
+  # Machine clients reading the JSON API cannot follow those, and brave is the only
+  # engine doing it (measured on the live instance: 20 of 26 brave results wrapped,
+  # 0 of 10 for duckduckgo, 0 for google cse). Remove this entry if upstream fixes it.
+  - name: brave
+    disabled: true
+
+outgoing:
+  # Default 3.0s drops slower engines and shrinks agent result sets; engines with
+  # their own timeout: value still override this.
+  request_timeout: 6.0
