@@ -1,3 +1,7 @@
+# Immich Kiosk: http on immich-kiosk.fritz.box, https on immich-kiosk.stephanme.de
+# TLS secret immich-stephanme-de is issued by the Certificate in ../server/ingress.yaml
+# (one cert for both hostnames). TLS secrets are namespace-local, so this works only
+# because the kiosk is deployed in the same namespace (immich) as immich-server.
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -12,3 +16,46 @@ spec:
     services:
     - name: immich-kiosk
       port: 3000
+---
+# 301 redirect http:// -> https for stephanme.de names (LAN clients)
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: immich-kiosk-https-redirect
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: immich-kiosk-http-redirect
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`immich-kiosk.stephanme.de`)
+      kind: Rule
+      middlewares:
+        - name: immich-kiosk-https-redirect
+      services:
+        - name: immich-kiosk
+          port: 3000
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: immich-kiosk-tls
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    # traefik v3: Host() takes exactly one value, so one Host() per hostname
+    - match: Host(`immich-kiosk.stephanme.de`)
+      kind: Rule
+      services:
+        - name: immich-kiosk
+          port: 3000
+  tls:
+    secretName: immich-stephanme-de

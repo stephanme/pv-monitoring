@@ -1,7 +1,7 @@
 # Immich
 
-- http://immich.fritz.box
-- http://immich-kiosk.fritz.box
+- https://immich.stephanme.de
+- https://immich-kiosk.stephanme.de
 - [Documentation](https://docs.immich.app/overview/quick-start)
 - [Release Notes](https://github.com/immich-app/immich/releases)
 
@@ -33,6 +33,8 @@ How to access DB:
 ### Immich Server
 
 - assigned to pi2 so that `immich-library` can be accessed as `hostPath`
+- authentication with Pocket ID: https://pocket-id.org/docs/client-examples/immich
+- Note: Immich needs to be configured in the Admin UI to a large extend.
 
 ### Immich Machine Learning
 
@@ -41,10 +43,9 @@ How to access DB:
 - uses pi2 SSD for model cache
   - models are ~8 GB on disk
   - download takes many h
-- requires lots of mem, ~4G for 1 RKNN thread
+- requires lots of mem, ~3G for 1 RKNN thread
 
 - second (temporary) ML instance on pc02 (rocm)
-  - rocm doesn't work yet on strix halo, see [immich #25299](https://github.com/immich-app/immich/pull/25299)
 
 ### Immich Kiosk
 

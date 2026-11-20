@@ -28,7 +28,7 @@ spec:
               value: "http://immich-server:2283"
             # External url for image links/QR codes, see ingress.yaml
             - name: KIOSK_IMMICH_EXTERNAL_URL
-              value: "http://immich-kiosk.fritz.box"
+              value: "https://immich-kiosk.stephanme.de"
             - name: KIOSK_BEHIND_PROXY
               value: "true"
             - name: KIOSK_WATCH_CONFIG

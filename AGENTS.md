@@ -11,7 +11,7 @@ asked; read-only kubectl is fine. Never merge a PR yourself — report only.
 - nodes: `nasbox` amd64 (storage/Samba host), `pi1` arm64 (RPi 4), `pi2` arm64 (Orange Pi 5
   Max — its RK NPU is why `immich-machine-learning` has an arm64-only `-rknn` build), `pc02`
   amd64 (temporary agent). 3 embedded-etcd servers, API `k3s.fritz.box:6443`.
-- `*.fritz.box` resolves via dnsmasq + patched coredns; ingress is Traefik v2 (DaemonSet);
+- `*.fritz.box` resolves via dnsmasq + patched coredns; ingress is Traefik v3 (DaemonSet);
   `*.stephanme.de` certs come from cert-manager netcup **DNS-01** (`cert-manager-system/README.md`).
 - Storage: Longhorn, 2 replicas, disks only on nodes labelled `node.longhorn.io/create-default-disk=true`.
 - k3s upgrades are automated; version pinned in `system-upgrade/k3s-upgrade.yaml`.

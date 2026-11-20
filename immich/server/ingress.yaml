@@ -1,3 +1,4 @@
+# Immich: http on immich.fritz.box, https on immich.stephanme.de
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -12,3 +13,61 @@ spec:
     services:
     - name: immich-server
       port: 2283
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: immich-stephanme-de
+spec:
+  secretName: immich-stephanme-de
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  # one certificate for the server and the kiosk (single DNS-01 round); both are served
+  # in this namespace, so kiosk/ingress.yaml reuses this secret (see there)
+  dnsNames:
+    - immich.stephanme.de
+    - immich-kiosk.stephanme.de
+---
+# 301 redirect http:// -> https for stephanme.de names (LAN clients)
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: immich-https-redirect
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: immich-http-redirect
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`immich.stephanme.de`)
+      kind: Rule
+      middlewares:
+        - name: immich-https-redirect
+      services:
+        - name: immich-server
+          port: 2283
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: immich-tls
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    # traefik v3: Host() takes exactly one value, so one Host() per hostname
+    - match: Host(`immich.stephanme.de`)
+      kind: Rule
+      services:
+        - name: immich-server
+          port: 2283
+  tls:
+    secretName: immich-stephanme-de
