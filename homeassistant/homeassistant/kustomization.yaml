@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: homeassistant
+
+images:
+- name: ghcr.io/home-assistant/home-assistant
+  newTag: "2026.11.2"
+- name: ghcr.io/coder/code-server
+  newTag: "4.146.0"
+
+# no app.kubernetes.io/* labels block here (unlike music-assistant/immich):
+# includeSelectors would add matchLabels to the existing selector and kubectl
+# cannot change a Deployment selector in place ("field is immutable")
+
+resources:
+- deployment.yaml
+- ingress.yaml

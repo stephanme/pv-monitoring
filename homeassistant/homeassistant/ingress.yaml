@@ -1,0 +1,97 @@
+---
+# Home Assistant: http on homeassistant.fritz.box (kept, LAN clients), https on homeassistant.stephanme.de
+# codeserver is served under /codeserver/ on both (see codeserver-stripprefix)
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homeassistant
+spec:
+  entryPoints:
+    - web
+  routes:
+  - kind: Rule
+    match: Host(`homeassistant.fritz.box`)
+    services:
+    - name: homeassistant
+      port: 8123
+  - kind: Rule
+    match: Host(`homeassistant.fritz.box`) && PathPrefix(`/codeserver/`)
+    middlewares:
+    - name: codeserver-stripprefix
+    services:
+    - name: homeassistant-codeserver
+      port: 12321
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: codeserver-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /codeserver/
+---
+# Let's Encrypt cert via netcup DNS-01 (see cert-manager-system/README.md).
+# homeassistant.stephanme.de already resolves in the LAN: dnsmasq serves
+# address=/stephanme.de/<traefik VIP>, so no DNS change is needed here.
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: homeassistant-stephanme-de
+spec:
+  secretName: homeassistant-stephanme-de
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - homeassistant.stephanme.de
+---
+# 301 redirect http:// -> https for the stephanme.de name (LAN clients)
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: homeassistant-https-redirect
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homeassistant-http-redirect
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`homeassistant.stephanme.de`)
+      kind: Rule
+      middlewares:
+        - name: homeassistant-https-redirect
+      services:
+        - name: homeassistant
+          port: 8123
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homeassistant-tls
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    # traefik v3: Host() takes exactly one value, so one Host() per hostname
+    - match: Host(`homeassistant.stephanme.de`)
+      kind: Rule
+      services:
+        - name: homeassistant
+          port: 8123
+    - match: Host(`homeassistant.stephanme.de`) && PathPrefix(`/codeserver/`)
+      kind: Rule
+      middlewares:
+        - name: codeserver-stripprefix
+      services:
+        - name: homeassistant-codeserver
+          port: 12321
+  tls:
+    secretName: homeassistant-stephanme-de
