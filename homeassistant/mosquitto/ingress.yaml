@@ -1,0 +1,14 @@
+---
+# see /k3s/traefik-config.yaml for mqtt entrypoint
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: mosquitto
+spec:
+  entryPoints:
+    - mqtt
+  routes:
+  - match: HostSNI(`*`)
+    services:
+    - name: mosquitto
+      port: 1883
