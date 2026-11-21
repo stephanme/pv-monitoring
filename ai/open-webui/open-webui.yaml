@@ -21,13 +21,18 @@ spec:
       enabled: false
     image:
       useSlim: true
+    # ingress is not configured here: all routes live in ingress.yaml
     ingress:
-      enabled: true
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-      host: open-webui.fritz.box
+      enabled: false
     openaiBaseApiUrl: "http://pc02.fritz.box:13305/v1"
     extraEnvVars:
+      # without a stable key Open WebUI regenerates one on every pod start and logs out
+      # every session (see secrets.yaml.template)
+      - name: WEBUI_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: open-webui-secrets
+            key: WEBUI_SECRET_KEY
       # prevent any local model downloads from Hugging Face
       - name: OFFLINE_MODE
         value: "true"
@@ -59,6 +64,61 @@ spec:
         value: "none"
       - name: RAG_SYSTEM_CONTEXT
         value: "True"
+      # SSO via Pocket ID (https://pocket-id.org/docs/client-examples/open-webui):
+      # client id/secret come from the gitignored secrets.yaml (secrets.yaml.template).
+      - name: ENABLE_OAUTH_SIGNUP
+        value: "true"
+      - name: OAUTH_PROVIDER_NAME
+        value: "Pocket ID"
+      - name: OPENID_PROVIDER_URL
+        value: "https://pocketid.stephanme.de/.well-known/openid-configuration"
+      - name: OAUTH_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: open-webui-secrets
+            key: OAUTH_CLIENT_ID
+      - name: OAUTH_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: open-webui-secrets
+            key: OAUTH_CLIENT_SECRET
+      # existing local accounts are reused when the e-mail matches (the IdP is the
+      # only source of identities in this LAN, so the claim is trusted)
+      - name: OAUTH_MERGE_ACCOUNTS_BY_EMAIL
+        value: "true"
+      # roles and groups are taken from the Pocket ID "groups" claim; the groups used in
+      # OAUTH_ALLOWED_ROLES / OAUTH_ADMIN_ROLES must already exist in Open WebUI
+      - name: ENABLE_OAUTH_ROLE_MANAGEMENT
+        value: "true"
+      - name: ENABLE_OAUTH_GROUP_MANAGEMENT
+        value: "true"
+      # off on purpose: with creation enabled every Pocket ID group is mirrored into
+      # Open WebUI on sign-in (a "paperless" group appeared that way), not just the role groups
+      - name: ENABLE_OAUTH_GROUP_CREATION
+        value: "false"
+      - name: OAUTH_ALLOWED_ROLES
+        value: "family,admins"
+      - name: OAUTH_ADMIN_ROLES
+        value: "admins"
+      - name: OAUTH_ROLES_CLAIM
+        value: "groups"
+      - name: OAUTH_SCOPES
+        value: "openid email profile groups"
+      # OIDC users are created directly instead of "pending"
+      - name: DEFAULT_USER_ROLE
+        value: "user"
+      # Pocket ID is the source of truth for profile pictures
+      - name: OAUTH_UPDATE_PICTURE_ON_LOGIN
+        value: "true"
+      # pocketid.stephanme.de resolves to the Traefik VIP (RFC1918), and the fetch guard
+      # rejects every non-global address, so the profile picture would never load.
+      # Needed for OAUTH_UPDATE_PICTURE_ON_LOGIN; tradeoff: logged-in users can also make
+      # the server fetch internal addresses via RAG "from website".
+      - name: ENABLE_LOCAL_WEB_FETCH
+        value: "true"
+      # password login stays enabled as break-glass; set to "false" to force SSO only
+      - name: ENABLE_LOGIN_FORM
+        value: "true"
     copyAppData:
       # -- Open WebUI copy-app-data init container command (overrides default)
       command: ["sh"]

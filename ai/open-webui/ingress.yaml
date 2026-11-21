@@ -1,0 +1,82 @@
+# Open WebUI: all ingress config in this file (see open-webui.yaml, where the
+# HelmChart's own ingress is disabled)
+#
+#   http://open-webui.fritz.box        plain http, LAN name
+#   http://open-webui.stephanme.de     301 -> https
+#   https://open-webui.stephanme.de    TLS via cert-manager
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: open-webui
+  namespace: ai
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`open-webui.fritz.box`)
+      services:
+        - name: open-webui
+          port: 80
+---
+# Let's Encrypt cert via netcup DNS-01 (see cert-manager-system/README.md).
+# open-webui.stephanme.de already resolves in the LAN: dnsmasq serves
+# address=/stephanme.de/<traefik VIP>, so no DNS change is needed here.
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: open-webui-stephanme-de
+  namespace: ai
+spec:
+  secretName: open-webui-stephanme-de
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - open-webui.stephanme.de
+---
+# 301 redirect http:// -> https for the stephanme.de name (LAN clients)
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: open-webui-https-redirect
+  namespace: ai
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: open-webui-http-redirect
+  namespace: ai
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`open-webui.stephanme.de`)
+      kind: Rule
+      middlewares:
+        - name: open-webui-https-redirect
+      services:
+        - name: open-webui
+          port: 80
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: open-webui-tls
+  namespace: ai
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`open-webui.stephanme.de`)
+      kind: Rule
+      services:
+        - name: open-webui
+          port: 80
+  tls:
+    secretName: open-webui-stephanme-de
