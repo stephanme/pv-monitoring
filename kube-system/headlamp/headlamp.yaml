@@ -14,15 +14,33 @@ spec:
   valuesContent: |-
     # https://github.com/kubernetes-sigs/headlamp/blob/main/charts/headlamp/values.yaml
     config:
-      baseURL: /headlamp
-      # Bypasses: https://github.com/kubernetes-sigs/headlamp/issues/4883
-      sessionTTL: null      
-    ingress:
-      enabled: true
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web
-      hosts:
-        - host: k3s.fritz.box
-          paths:
-            - path: /headlamp/
-              type: Prefix
+      oidc:
+        # Headlamp must not create/own the OIDC secret. Use ../secrets.yaml instead.
+        secret:
+          create: false
+        # autoLogin stays unset on purpose: without -oidc-auto-login Headlamp still shows the
+        # "paste token" field, which is the break-glass login when Pocket ID is down.
+    env:
+      # Headlamp reads HEADLAMP_CONFIG_<FLAG> as an alternative to the command line flag
+      # (https://headlamp.dev/docs/latest/installation/in-cluster/oidc/), so nothing secret is
+      # templated through valuesContent and the chart renders no -oidc-* args at all.
+      - name: HEADLAMP_CONFIG_OIDC_IDP_ISSUER_URL
+        value: https://pocketid.stephanme.de
+      - name: HEADLAMP_CONFIG_OIDC_SCOPES
+        # Pocket ID only adds the groups claim when the groups scope is requested
+        value: openid profile email groups
+      - name: HEADLAMP_CONFIG_OIDC_CALLBACK_URL
+        # must match the redirect URI of the Pocket ID client exactly
+        value: https://headlamp.stephanme.de/oidc-callback
+      # the k3s Kubernetes API OIDC client, same client id as oidc-client-id on the nodes
+      - name: HEADLAMP_CONFIG_OIDC_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: k3s-oidc-client
+            key: client_id
+      - name: HEADLAMP_CONFIG_OIDC_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: k3s-oidc-client
+            key: client_secret
+    # ingress stays disabled (chart default): all routes defined in headlamp-ingress.yaml

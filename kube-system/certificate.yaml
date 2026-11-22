@@ -1,0 +1,26 @@
+---
+# Namespace-level Let's Encrypt certificates for the kube-system frontends, issued through
+# the netcup DNS-01 webhook (see cert-manager-system/README.md). One certificate per
+# namespace is enough: the TLS Secret is namespace-local anyway, so everything running in
+# kube-system (Headlamp today, the Traefik dashboard later) shares Secret
+# kube-system-stephanme-de.
+#
+# headlamp.stephanme.de already resolves inside the LAN: dnsmasq serves
+# address=/stephanme.de/<traefik VIP> for every subdomain, so no DNS change is needed here.
+#
+# Extend this Certificate by adding dnsNames when the next kube-system frontend needs https:
+# that triggers one fresh DNS-01 round (Let's Encrypt caps re-issues of an identical name
+# set at 5 per 7 days). A frontend with a name set that has nothing to do with the others can
+# get its own Certificate resource in this file.
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kube-system-stephanme-de
+  namespace: kube-system
+spec:
+  secretName: kube-system-stephanme-de
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - headlamp.stephanme.de

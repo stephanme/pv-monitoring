@@ -26,6 +26,7 @@ Monitoring of a photovoltaic system, car charging and heat pump
 - [Paperless-ngx](https://docs.paperless-ngx.com/) for taming the bureaucracy
 - [Immich](https://immich.app/) for managing photos
 - [Pocket ID](https://github.com/pocket-id/pocket-id) for single sign-on (OIDC) with passkeys
+  - also the identity provider of the [Kubernetes API itself](./kube-system/README.md)
 - [Kopia](https://kopia.io/) for backups
 
 ## Deploy
@@ -109,7 +110,24 @@ kube-scheduler-arg:
 # https://github.com/k3s-io/k3s/discussions/10125
 kubelet-arg:
 - "config=/etc/rancher/k3s/kubelet-config.yaml"
+
+# Pocket ID OIDC for the Kubernetes API
+# client id: ./kube-system/secrets.yaml (gitignored)
+kube-apiserver-arg:
+- "oidc-issuer-url=https://pocketid.stephanme.de"
+- "oidc-client-id=<k3s api client id>"
+- "oidc-username-claim=preferred_username"
+- "oidc-username-prefix=oidc:"
+- "oidc-groups-claim=groups"
+- "oidc-groups-prefix=oidc:"
 ```
+
+The `kube-apiserver-arg` block enables [Pocket ID](https://pocketid.stephanme.de) as OIDC
+provider for the Kubernetes API (e.g. used for the [Headlamp](./kube-system/headlamp/README.md)
+sign-in). Group `admins` is cluster-admin. Details: see [kube-system README](./kube-system/README.md).
+
+OIDC is only added to the authentication chain: the kubeconfig client certificates and the
+service-account login keep working even when Pocket ID is down.
 
 Kubelet config file `/etc/rancher/k3s/kubelet-config.yaml`
 ```

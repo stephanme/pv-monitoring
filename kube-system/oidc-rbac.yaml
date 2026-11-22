@@ -1,0 +1,27 @@
+---
+# RBAC for every user who authenticates to the kube-apiserver with a Pocket ID token
+# (Headlamp today, kubelogin/kubectl in the future - the identities are the same because
+# they all come from the one "Kubernetes API (k3s)" OIDC client).
+#
+# The names below are the ones kube-apiserver produces with
+#   oidc-username-claim=preferred_username, oidc-username-prefix=oidc:,
+#   oidc-groups-claim=groups, oidc-groups-prefix=oidc:
+# so changing those flags means changing the subject here. See README.md.
+#
+# Apply this BEFORE enabling the oidc-* kube-apiserver-arg flags on the nodes, otherwise
+# the first OIDC login is authenticated but has no permissions at all.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: k3s-oidc-admins
+  labels:
+    app.kubernetes.io/name: k3s-oidc
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  # Pocket ID user group "admins" (Administration -> User Groups), prefixed by kube-apiserver
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: oidc:admins
