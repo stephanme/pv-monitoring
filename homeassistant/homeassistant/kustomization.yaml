@@ -5,7 +5,7 @@ namespace: homeassistant
 
 images:
 - name: ghcr.io/home-assistant/home-assistant
-  newTag: "2026.11.2"
+  newTag: "2026.11.3"
 - name: ghcr.io/coder/code-server
   newTag: "4.146.0"
 
